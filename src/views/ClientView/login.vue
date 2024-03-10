@@ -4,16 +4,21 @@
       <div class="col-lg-5 bg-black rounded text-center row justify-content-center mt-5">
         <span class="fs-2 fw-bold text-white my-5"> Log in to Soundtify </span>
         <!-- Login with google -->
-        Login with google here  =)))
+        <div class="d-flex justify-content-center align-items-center bg-green" @click="loginWithGoogle">
+          <i class="bi bi-google p-2"></i>
+          <span>Login with google</span>
+        </div>
+       
         <div class="border-top border-secondary col-9 my-5 "></div>
         <!-- Login with email and password -->
         <form @submit.prevent="login" >
           <div class="my-4 d-flex justify-content-center">
             <div class="custom-form">
-              <input type="text" name="text" autocomplete="off" v-model="formData.email" />
+              <input type="text" name="text" autocomplete="off" v-model="formData.email" @blur="validate()" v-bind:class="{ 'is-invalid': error.email }" />
               <label for="text" class="label-name">
                 <span class="content-name"> Email </span>
               </label>
+              <div class="invalid-feedback text-white">{{ error.email }}</div>
             </div>
           </div>
           <div class="my-4 d-flex justify-content-center">
@@ -49,8 +54,7 @@
 </template>
 <script>
 import customBtn1 from '../../components/button/button_md_radius.vue'
-import auth from "../../firebase.js";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import auth from "../../service/auth/auth.js";
 export default {
   components:{
     customBtn1
@@ -58,6 +62,10 @@ export default {
   name: "login",
   data() {
     return {
+      error:{
+          email: "",
+          password: "",
+        },
       formData: {
         email: "",
         password: "",
@@ -66,19 +74,49 @@ export default {
     };
   },
   methods: {
+    validate() {
+        let invalid = true;
+        this.error = {
+          email: "",
+          password: "",
+        };
+
+        if (!this.formData.email) {
+          this.error.email = "Email is required";
+          invalid = false;
+        } else if (!this.isEmail(this.formData.email)) {
+          this.error.email = "Email to wrong";
+          invalid = false;
+        }
+        if (!this.formData.password) {
+          this.error.password = "Password is required";
+          invalid = false;
+        }
+        return invalid;
+      },
+      isEmail(value) {
+        return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value);
+      },
     login() {
-      signInWithEmailAndPassword(
-        auth.auth,
-        this.formData.email,
-        this.formData.password
-      )
+      if(this.validate() == true ){
+        auth.signIn(this.formData.email,this.formData.password)
         .then((res) => {
+          this.$router.push({name: "home.view"});
           console.log(res.user);
         })
         .catch((error) => {
           console.log("lỗi", error);
         });
+      }
     },
+    loginWithGoogle(){
+      auth.signWithGoogle().then((res) => {
+        console.log(res);
+        this.$router.push({name: "home.view"});
+      }).catch((error) => {
+        console.log(error);
+      })
+    }
   },
 };
 </script>

@@ -52,7 +52,7 @@
 <script>
 import customBtn1 from '../../components/button/button_md_radius.vue'
 import auth from '../../firebase.js'
-import firebaseAuth from "firebase/auth";
+import {createUserWithEmailAndPassword ,updateProfile} from "firebase/auth";
 export default {
   components: {
     customBtn1
@@ -70,9 +70,10 @@ export default {
   },
   methods: {
     register() {
-      firebaseAuth.createUserWithEmailAndPassword(auth.auth, this.formdata.email, this.formdata.password)
-        .then((userCredential) => {
+        createUserWithEmailAndPassword(auth.auth, this.formdata.email, this.formdata.password)
+          .then((userCredential) => {
           // Signed up 
+          updateProfile(auth.auth.currentUser,{displayName: this.formdata.name })
           const user = userCredential.user;
           console.log("test", user);
           // ...

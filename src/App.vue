@@ -58,6 +58,7 @@
       <!-- Start colums Right -->
       <div class="col-lg-9 overflow-auto"> 
             <div class="mt-2 me-2">
+              
               <router-view/>
             </div>
       </div>
