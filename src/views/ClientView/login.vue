@@ -4,9 +4,8 @@
       <div class="col-lg-5 bg-black rounded text-center row justify-content-center mt-5">
         <span class="fs-2 fw-bold text-white my-5"> Log in to Soundtify </span>
         <!-- Login with google -->
-        <div class="d-flex justify-content-center align-items-center bg-green" @click="loginWithGoogle">
-          <i class="bi bi-google p-2"></i>
-          <span>Login with google</span>
+        <div class="row justify-content-center"  @click="loginWithGoogle">
+          <btn-logo-radius :customContent="loginwidthGoogle"></btn-logo-radius>
         </div>
        
         <div class="border-top border-secondary col-9 my-5 "></div>
@@ -14,32 +13,34 @@
         <form @submit.prevent="login" >
           <div class="my-4 d-flex justify-content-center">
             <div class="custom-form">
-              <input type="text" name="text" autocomplete="off" v-model="formData.email" @blur="validate()" v-bind:class="{ 'is-invalid': error.email }" />
+              <input type="text" name="text"  v-model="formData.email" @blur="!isValidEmail" v-bind:class="{ 'is-invalid': error.email }" />
               <label for="text" class="label-name">
                 <span class="content-name"> Email </span>
               </label>
-              <div class="invalid-feedback text-white">{{ error.email }}</div>
+              
             </div>
+            <span v-if="!isValidEmail">Please enter a valid email address.</span>
           </div>
           <div class="my-4 d-flex justify-content-center">
             <div class="custom-form">
-              <input type="text" name="text" autocomplete="off" v-model="formData.password" />
+              <input type="text" name="text"  v-model="formData.password" />
               <label for="text" class="label-name">
                 <span class="content-name"> Mật khẩu </span>
               </label>
             </div>
+            <span v-if="!isValidPassword">Password must be at least 6 characters long.</span>
           </div>
           <div class="px-3 py-2">
             <!-- <button class="custom_btn_1 py-2" type="submit">
               Log in
             </button> -->
-            <custom-btn-1 :customContent="logintext"></custom-btn-1>
+            <btn-Md-Radius :customContent="logintext" :disabled="!isValidForm" ></btn-Md-Radius>
           </div>
         </form>
 
         <div class="pb-2">
           <span class="fs-6 px-2">Or
-            <span class="text-decoration-underline  text-link">forgot password</span>
+            <span class="text-decoration-underline fs-7 "><router-link class="txt-green fs-7" :to="'/forgotpassword'">forgot password</router-link></span>
           </span>
         </div>
         <div class="px-2 py-2 row justify-content-center">
@@ -53,11 +54,13 @@
   </div>
 </template>
 <script>
-import customBtn1 from '../../components/button/button_md_radius.vue'
+import btnMdRadius from '../../components/button/button_md_radius.vue'
+import btnLogoRadius from '../../components/button/button_logo_radius.vue'
 import auth from "../../service/auth/auth.js";
 export default {
   components:{
-    customBtn1
+    btnLogoRadius,
+    btnMdRadius,
   },
   name: "login",
   data() {
@@ -71,6 +74,7 @@ export default {
         password: "",
       },
       logintext: "Log in",
+      loginwidthGoogle: "Login With Google"
     };
   },
   methods: {
@@ -98,7 +102,7 @@ export default {
         return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value);
       },
     login() {
-      if(this.validate() == true ){
+      if(this.isValidForm){
         auth.signIn(this.formData.email,this.formData.password)
         .then((res) => {
           this.$router.push({name: "home.view"});
@@ -118,10 +122,24 @@ export default {
       })
     }
   },
+  computed: {
+    isValidEmail() {
+      // Simple email validation
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.formData.email);
+    },
+    isValidPassword() {
+      // Password length validation
+      return this.formData.password.length >= 6;
+    },
+    isValidForm() {
+      // Check if both email and password are valid
+      return this.isValidEmail && this.isValidPassword;
+    }
+  },
 };
 </script>
 
-<style>
+<style scoped>
 .custom-form {
   width: 70%;
   position: relative;

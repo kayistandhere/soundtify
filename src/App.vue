@@ -71,26 +71,29 @@
       <div class="nav-item d-block">
         <div class="function_control_music d-flex justify-content-center align-items-center">
             <span class="material-symbols-rounded p-2 text-white fs-2 custom-opacity">shuffle</span>
-            <span class="material-symbols-rounded p-2 text-white fs-2 custom-opacity">skip_previous</span>
-            <span class="material-symbols-rounded p-2 text-white fs-2 custom-opacity">play_circle</span>
-            <span class="material-symbols-rounded p-2 text-white fs-2 custom-opacity">skip_next</span>
+            <span class="material-symbols-rounded p-2 text-white fs-2 custom-opacity" @click="onSeekBackward">skip_previous</span>
+            <span class="material-symbols-rounded p-2 text-white fs-2 custom-opacity" @click="play" v-if="!this.playOrPause">play_circle</span>
+            <span class="material-symbols-rounded p-2 text-white fs-2 custom-opacity"  @click="pause" v-else>pause_circle</span>
+            <span class="material-symbols-rounded p-2 text-white fs-2 custom-opacity" @click="onSeekForward">skip_next</span>
             <span class="material-symbols-rounded p-2 text-white fs-2 custom-opacity">repeat</span>
+
             </div>
             <div class="d-flex align-items-center">
               <span class="fs-9 mx-2 text-white">3:20</span>
-              <input type="range" class="slider" style="width:30rem">
+              <input type="range" class="slider" style="width:30rem" min="0" max="100" step="1" value="0" 
+              v-model="this.seekingData" @input="onSeekSliderChange">
               <span class="fs-9 ms-2 text-white">4:43</span>
             </div>
           
       </div>
+      <!-- function control music -->
       <div class="nav-item d-flex d-flex align-items-center px-3">
           <span class="material-symbols-rounded p-1 text-white fs-5 custom-opacity">mic</span>
           <span class="material-symbols-rounded p-1 text-white fs-5 custom-opacity">list_alt</span>
           <span class="material-symbols-rounded p-1 text-white fs-5 custom-opacity">devices_other</span>
           <span class="material-symbols-rounded p-1 text-white fs-5 custom-opacity">brand_awareness</span>
-          <input type="range" class="slider" min="1" max="100" value="50" id="volume">
+          <input type="range" class="slider" min="1" max="100" value="50" id="volume" v-model="this.volumeValue">
       </div>
-    
     </div>
   </section>
   </div>
@@ -102,6 +105,7 @@ import trackItemCardAlbums2 from './components/card/track_item_card_albums_2.vue
 import trackItemCardAlbums from './components/card/track_item_card_albums.vue'
 import artistsItemCardAlbums from './components/card/artists_item_card_albums.vue'
 import btnTopic from '../src/components/button/button_radius.vue'
+import player from './store/player_store/player.js'
   export default {
     components : {
       btnTopic,
@@ -114,9 +118,39 @@ import btnTopic from '../src/components/button/button_radius.vue'
         Playlist :"Playlist",
         Albums :  "Albums",
         Artists :"Artists",
-        Podcasts :"Podcasts & Show"
+        Podcasts :"Podcasts & Show",
+
+
+        seekingData : 10,
+        volumeValue : 50,
+        playOrPause: false,
       }
-    }
+    },
+    methods:{
+        play(){
+          player.playControl();
+          this.playOrPause = true
+        },
+        pause(){
+          player.pauseControl();
+          this.playOrPause = false
+        },
+        onVolume(){
+          player.volumeControl(this.volumeValue)
+        },
+        onSeekBackward(){
+          player.seekBackward();
+        },
+        onSeekForward(){
+          player.seekForward();
+        },
+        onSeekSliderChange(){
+          player.seekingChange(this.seekingData);
+        },
+        updateSeekSlider(){
+          player.realTimeSeeking(this.seekingData)
+        }
+    },
   }
 </script>
 <style>

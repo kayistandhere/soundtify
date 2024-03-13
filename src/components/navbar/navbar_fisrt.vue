@@ -36,10 +36,11 @@
                             <img src="../../assets/Images/Artists/PhucDu.jpg" class="customImages" alt="images user"
                                 srcset="" width="40" height="40">
                         </button>
-                        <ul class="dropdown-menu dropdown-menu-lg-end">
-                            <li><a class="dropdown-item" href="#">Menu item</a></li>
-                            <li><a class="dropdown-item" href="#">Menu item</a></li>
-                            <li><a class="dropdown-item" href="#">Menu item</a></li>
+                        <ul class="dropdown-menu dropdown-menu-lg-end custom-dropdown fs-8">
+                            <li><a class="dropdown-item text-white custom-dropdown-item py-2" href="#">Profile</a></li>
+                            <li><a class="dropdown-item text-white custom-dropdown-item py-2" href="#">Setting</a></li>
+                            <div class="border-top border-secondary col-11 ms-2"></div>
+                            <li><a class="dropdown-item text-white custom-dropdown-item py-2" href="#" @click="logoutAccount">Log out</a></li>
                         </ul>
                         </div>
                     </li>
@@ -50,7 +51,14 @@
 </template>
 
 <script>
+import auth from '../../service/auth/auth.js'
 export default {
+    methods:{
+        logoutAccount(){
+             auth.logout();
+            this.$router.push({name: "login.vue"});
+        }
+    }
 }
 </script>
 
@@ -87,5 +95,20 @@ export default {
 .custom-text-link_logo:hover {
   color: #17cf5b;
   opacity: 1;
+}
+.custom-dropdown {
+    border-radius: 0px;
+    background-color: var(--color-gray1);
+}
+.custom-dropdown-item {
+    color: #fff;
+    background-color: var(--color-gray1);
+    opacity: 0.9;
+    
+}
+.custom-dropdown-item:hover {
+    color: #fff;
+    background-color: #2e2d2d;
+    opacity: 1;
 }
 </style>

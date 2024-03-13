@@ -51,8 +51,8 @@
 </template>
 <script>
 import customBtn1 from '../../components/button/button_md_radius.vue'
-import auth from '../../firebase.js'
-import {createUserWithEmailAndPassword ,updateProfile} from "firebase/auth";
+import auth from '../../service/auth/auth.js'
+
 export default {
   components: {
     customBtn1
@@ -70,46 +70,44 @@ export default {
   },
   methods: {
     register() {
-        createUserWithEmailAndPassword(auth.auth, this.formdata.email, this.formdata.password)
-          .then((userCredential) => {
-          // Signed up 
-          updateProfile(auth.auth.currentUser,{displayName: this.formdata.name })
-          const user = userCredential.user;
-          console.log("test", user);
+        auth.signUp(this.formdata.name,this.formdata.email, this.formdata.password)
+          .then((res) => {
+            this.$router.push({name : "login.view"});
+            console.log("dangky thanh cong ", res);
           // ...
         })
         .catch((error) => {
-          const errorCode = error.code;
           const errorMessage = error.message;
-          console.log("test2", error.message);
+          console.log("test2", errorMessage);
           // ..
         });
 
-    }
-  }
+    },
+    
+  },
 }
 </script>
 <style scoped>
-.form {
+.custom-form {
   width: 70%;
   position: relative;
   height: 50px;
   overflow: hidden;
 }
 
-.form input {
+.custom-form input {
   width: 100%;
   height: 100%;
   color: #000000;
   padding-top: 20px;
-
+  border-radius: 2px;
   padding-left: 10px;
   font-size: 14px;
   border: none;
   background-color: #ffffff;
 }
 
-.form label {
+.custom-form label {
   position: absolute;
   bottom: 0px;
   left: 0px;
@@ -119,7 +117,7 @@ export default {
   border-bottom: 1px solid white;
 }
 
-.form label::after {
+.custom-form label::after {
   content: "";
   position: absolute;
   bottom: -1px;
@@ -136,27 +134,26 @@ export default {
   bottom: 0px;
   left: 5px;
   font-size: 13px;
-  font-weight: 600;
   padding-left: 10px;
   padding-bottom: 10px;
   margin-bottom: 5px;
   transition: all 0.3s ease;
 }
 
-.form input:focus {
+.custom-form input:focus {
   outline: none;
 }
 
-.form input:focus+.label-name .content-name,
-.form input:valid+.label-name .content-name {
+.custom-form input:focus+.label-name .content-name,
+.custom-form input:valid+.label-name .content-name {
   transform: translateY(-60%);
   font-size: 11px;
   left: 0px;
   color: #000000;
 }
 
-.form input:focus+.label-name::after,
-.form input:valid+.label-name::after {
+.custom-form input:focus+.label-name::after,
+.custom-form input:valid+.label-name::after {
   transform: translateX(0%);
 }
 
@@ -166,5 +163,9 @@ export default {
 
 .custom-font-size-1 {
   font-size: 12px;
+}
+
+.custom-color-logo {
+  color: #4267b2;
 }
 </style>
