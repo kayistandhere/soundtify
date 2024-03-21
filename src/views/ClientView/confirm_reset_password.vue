@@ -4,7 +4,7 @@
         <div class="col-lg-5 bg-black rounded text-center row justify-content-center mt-5">
           <!-- Sign up with email password -->
           <form @submit.prevent="resetConfirmPassword" class=" row justify-content-center">
-            <span class="fs-2 fw-bold text-white mt-5"> Reset your password </span>
+            <span class="fs-2 fw-bold text-white mt-5"> Enter your new password </span>
             <div class=" px-2 col-7">
               <span class="custom-font-size">Enter your email address or username, and we'll send you a link to get back into your account.</span>
             </div>
@@ -27,7 +27,6 @@
         </div>
       </div>
     </div>
-
 </template>
 
 <script>
@@ -37,7 +36,9 @@ export default {
             mode: {},
             oobCode: {},
             passwordConfirm: "",
+            backText : "Confirm Password"
         }
+        
     },
     created(){
         this.getLink()

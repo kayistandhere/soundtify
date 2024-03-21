@@ -83,7 +83,8 @@ export default {
   },
   methods: {
     login() {
-      if(this.Validator){
+      if(!this.isCheckValidation){
+        alert("Please check validate form");
         auth.signIn(this.formData.email,this.formData.password)
         .then(() => {
           this.$router.push({name: "home.view"});
@@ -91,6 +92,8 @@ export default {
         .catch((error) => {
           console.log("lỗi", error);
         });
+      }else{
+        alert("Please check validate form");
       }
     },
    async loginWithGoogle(){

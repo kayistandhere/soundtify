@@ -7,28 +7,31 @@
           <span class="fs-2 fw-bold text-white my-5"> Sign up to Soundtify </span>
           <div class="my-3 d-flex justify-content-center">
             <div class="custom-form">
-              <input type="text" name="text" autocomplete="off" v-model="formdata.name" />
+              <input type="text" name="text" autocomplete="off" v-model="formData.name"  @blur="Validator"/>
               <label for="text" class="label-name">
                 <span class="content-name"> Name </span>
               </label>
             </div>
           </div>
+          <span class="fs-8 p-0 " v-if="!isCheckValidation">{{ this.error.name }}</span>
           <div class="my-3 d-flex justify-content-center">
             <div class="custom-form">
-              <input type="text" name="text" autocomplete="off" v-model="formdata.email" />
+              <input type="text" name="text" autocomplete="off" v-model="formData.email"  @blur="Validator"/>
               <label for="text" class="label-name">
                 <span class="content-name"> Email </span>
               </label>
             </div>
           </div>
+          <span class="fs-8 p-0 " v-if="!isCheckValidation">{{ this.error.email }}</span>
           <div class="my-3 d-flex justify-content-center">
             <div class="custom-form">
-              <input type="text" name="text" autocomplete="off" v-model="formdata.password" />
+              <input type="text" name="text" autocomplete="off" v-model="formData.password"  @blur="Validator"/>
               <label for="text" class="label-name">
                 <span class="content-name"> Mật khẩu </span>
               </label>
             </div>
           </div>
+          <span class="fs-8 p-0 " v-if="!isCheckValidation">{{ this.error.password }}</span>
           <div class="px-3 py-2">
             <custom-btn-1 :customContent="SignUptext" type="submit"></custom-btn-1>
           </div>
@@ -52,25 +55,30 @@
 <script>
 import customBtn1 from '../../components/button/button_md_radius.vue'
 import auth from '../../service/auth/auth.js'
-
+import regex from '../../util/regex.js'
 export default {
   components: {
     customBtn1
   },
   data() {
     return {
-      formdata: {
+      formData: {
         name: "",
         email: "",
         password: "",
-
       },
+      error:{
+          name : "",
+          email: "",
+          password: "",
+        },
+      isCheckValidation : true,
       SignUptext: "Sign up",
     };
   },
   methods: {
     register() {
-        auth.signUp(this.formdata.name,this.formdata.email, this.formdata.password)
+        auth.signUp(this.formData.name,this.formData.email, this.formData.password)
           .then((res) => {
             this.$router.push({name : "login.view"});
             console.log("dangky thanh cong ", res);
@@ -83,7 +91,36 @@ export default {
         });
 
     },
-    
+    Validator(){
+      if(regex.isRequired(this.formData.name)){
+        this.error.name = "Please enter this field"
+        this.isCheckValidation = false;
+      }else if(regex.isUsername(this.formData.name)){
+        this.error.name = "Please enter 3 or more characters"
+        this.isCheckValidation = false;
+      }else {
+        this.error.name = "";
+      }
+      if(regex.isRequired(this.formData.email)){
+        this.error.email = "Please enter this field"
+         this.isCheckValidation = false;
+      }else if(regex.isEmail(this.formData.email)){
+        this.error.email = "Enter incorrect email format";
+         this.isCheckValidation = false;
+      }else {
+        this.error.email = "";
+      }
+      if(regex.isRequired(this.formData.password)){
+        this.error.password = "Please enter this field";
+         this.isCheckValidation = false;
+      }else if(regex.isPassword(this.formData.password)){
+        this.error.password = "Enter incorrect password format";
+         this.isCheckValidation = false;
+      }else {
+        this.error.password = "";
+      }
+      return this.isCheckValidation;
+    },
   },
 }
 </script>

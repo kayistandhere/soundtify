@@ -15,7 +15,7 @@
       <th scope="row">1</th>
       <td>
         <div class="custom_card d-flex align-items-center">
-          <img class="custom_Img" src="../../assets/Images/Artists/WrenEvan.jpg" alt="" srcset="" width="30" height="30">
+          <img class="custom_Img" src="../../assets/Images/Artists/SonTung.jpg" alt="" srcset="" width="30" height="30">
           <div class="">
             <span class="fs-8">Em của ngày hôm qua</span>
             <div class="d-flex align-items-center">
@@ -33,7 +33,7 @@
       <th scope="row">2</th>
       <td>
         <div class="custom_card d-flex align-items-center">
-          <img class="custom_Img" src="../../assets/Images/Artists/WrenEvan.jpg" alt="" srcset="" width="30" height="30">
+          <img class="custom_Img" src="../../assets/Images/Artists/SonTung.jpg" alt="" srcset="" width="30" height="30">
           <div class="">
             <span class="fs-8">Em của ngày hôm qua</span>
             <div class="d-flex align-items-center">
@@ -51,7 +51,7 @@
       <th scope="row">3</th>
       <td>
         <div class="custom_card d-flex align-items-center">
-          <img class="custom_Img" src="../../assets/Images/Artists/WrenEvan.jpg" alt="" srcset="" width="30" height="30">
+          <img class="custom_Img" src="../../assets/Images/Artists/SonTung.jpg" alt="" srcset="" width="30" height="30">
           <div class="">
             <span class="fs-8">Em của ngày hôm qua</span>
             <div class="d-flex align-items-center">

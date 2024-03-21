@@ -17,7 +17,8 @@
 }
 :root {
     --color-black : #000;
-    --color-gray : #1f1f1f;
+    /* --color-gray : #1f1f1f; */
+    --color-gray : #121212;
     --color-gray1:#333333;
     --color-green: #17cf5b;
 }
@@ -80,6 +81,7 @@
   color: #fff;
   opacity: 0.7;
   text-decoration: none;
+  cursor: pointer;
 }
 .custom-text-link:hover {
   color: #fff;
