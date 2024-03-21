@@ -58,7 +58,6 @@
       <!-- Start colums Right -->
       <div class="col-lg-9 overflow-auto"> 
             <div class="mt-2 me-2">
-              
               <router-view/>
             </div>
       </div>
@@ -70,29 +69,35 @@
       </div>
       <div class="nav-item d-block">
         <div class="function_control_music d-flex justify-content-center align-items-center">
-            <span class="material-symbols-rounded p-2 text-white fs-2 custom-opacity">shuffle</span>
-            <span class="material-symbols-rounded p-2 text-white fs-2 custom-opacity" @click="onSeekBackward">skip_previous</span>
-            <span class="material-symbols-rounded p-2 text-white fs-2 custom-opacity" @click="play" v-if="!this.playOrPause">play_circle</span>
-            <span class="material-symbols-rounded p-2 text-white fs-2 custom-opacity"  @click="pause" v-else>pause_circle</span>
-            <span class="material-symbols-rounded p-2 text-white fs-2 custom-opacity" @click="onSeekForward">skip_next</span>
-            <span class="material-symbols-rounded p-2 text-white fs-2 custom-opacity">repeat</span>
-
+            <span class="material-symbols-rounded p-2 text-white fs-4 custom-opacity">shuffle</span>
+            <span class="material-symbols-rounded p-2 text-white fs-2 custom-opacity" @click="prevousTrack">skip_previous</span>
+            <span class="material-symbols-rounded p-2 text-white fs-2 custom-opacity" @click="onSeekBackward">replay_10</span>
+            <span class="material-symbols-rounded p-2 text-white fs-2 custom-opacity" @click="play" v-if="!this.playOrPause">play_arrow</span>
+            <span class="material-symbols-rounded p-2 text-white fs-2 custom-opacity" @click="pause" v-else>pause</span>
+            <span class="material-symbols-rounded p-2 text-white fs-2 custom-opacity" @click="onSeekForward">forward_10</span>
+            <span class="material-symbols-rounded p-2 text-white fs-2 custom-opacity" @click="nextTrack">skip_next</span>
+            <span class="material-symbols-rounded p-2 text-white fs-4 custom-opacity">replay</span>
+            
+            
             </div>
             <div class="d-flex align-items-center">
-              <span class="fs-9 mx-2 text-white">3:20</span>
-              <input type="range" class="slider" style="width:30rem" min="0" max="100" step="1" value="0" 
-              v-model="this.seekingData" @input="onSeekSliderChange">
-              <span class="fs-9 ms-2 text-white">4:43</span>
+              <span class="fs-9 mx-2 text-white"></span>
+              <input type="range" class="slider" style="width:30rem" min="0" max="100" step="1" :value="this.seekingData"
+              @input="onSeekSliderChange">
+              <span class="fs-9 ms-2 text-white">{{ this.total }}</span>
             </div>
           
       </div>
       <!-- function control music -->
       <div class="nav-item d-flex d-flex align-items-center px-3">
+        <span class="text-white">{{ currentTime }}sdas</span>
           <span class="material-symbols-rounded p-1 text-white fs-5 custom-opacity">mic</span>
           <span class="material-symbols-rounded p-1 text-white fs-5 custom-opacity">list_alt</span>
           <span class="material-symbols-rounded p-1 text-white fs-5 custom-opacity">devices_other</span>
           <span class="material-symbols-rounded p-1 text-white fs-5 custom-opacity">brand_awareness</span>
-          <input type="range" class="slider" min="1" max="100" value="50" id="volume" v-model="this.volumeValue">
+          <input type="range" class="slider" min="0" max="1" step="0.01" value="0.5" v-model="this.volumeValue">
+          <button @click="plays">check currentTime</button>
+            
       </div>
     </div>
   </section>
@@ -106,6 +111,11 @@ import trackItemCardAlbums from './components/card/track_item_card_albums.vue'
 import artistsItemCardAlbums from './components/card/artists_item_card_albums.vue'
 import btnTopic from '../src/components/button/button_radius.vue'
 import player from './store/player_store/player.js'
+// import { onAuthStateChanged } from 'firebase/auth';
+// import firebaseAuth from './firebase.js'
+import { mapActions ,mapGetters } from 'vuex';
+// import { count } from 'firebase/firestore';
+
   export default {
     components : {
       btnTopic,
@@ -120,23 +130,35 @@ import player from './store/player_store/player.js'
         Artists :"Artists",
         Podcasts :"Podcasts & Show",
 
-
-        seekingData : 10,
-        volumeValue : 50,
+        debouncedSeekingChange: null,
+        seekingData : 0 ,
+        volumeValue : 0.5,
         playOrPause: false,
+        total :null,
       }
     },
+    created(){
+      this.createTracks();
+      // onAuthStateChanged(firebaseAuth.auth , (user) =>{
+      //   this.oncurrentUserChange(user)
+      // })
+      
+    },
     methods:{
+      ...mapActions(['increment','plays']),
+        createTracks(){
+          player.created();
+        },
         play(){
           player.playControl();
-          this.playOrPause = true
+          this.playOrPause = true;
         },
         pause(){
           player.pauseControl();
-          this.playOrPause = false
+          this.playOrPause = false;
         },
         onVolume(){
-          player.volumeControl(this.volumeValue)
+          player.volumeControl(this.volumeValue);
         },
         onSeekBackward(){
           player.seekBackward();
@@ -144,13 +166,25 @@ import player from './store/player_store/player.js'
         onSeekForward(){
           player.seekForward();
         },
-        onSeekSliderChange(){
-          player.seekingChange(this.seekingData);
+        prevousTrack(){
+          console.log("Prevous Track");
+          player.prevousSong();
         },
-        updateSeekSlider(){
-          player.realTimeSeeking(this.seekingData)
-        }
-    },
+        nextTrack(){
+          console.log("Next Track");
+          player.nextSong();
+        },
+        onSeekSliderChange(){
+          player.debounce(player.seekingChange(this.seekingData),1000);
+        },
+
+      },
+    computed:{
+        ...mapGetters(['count','currentTime']),
+
+  },
+    watch:{
+    }
   }
 </script>
 <style>

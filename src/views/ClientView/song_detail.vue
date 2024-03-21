@@ -21,24 +21,49 @@
                 <span class="material-symbols-rounded fs-1 mx-4 txt-green">favorite</span>
                 <span class="material-symbols-rounded fs-2 mx-2">more_horiz</span>
             </div>
-            
             <div class="d-flex align-items-center">
               <span class="fs-8 mx-1">List</span>
               <span class="material-symbols-rounded fs-5">format_list_bulleted</span>
             </div>
           </div>
+          <!-- Table Music -->
           <section>
-            <table-items-border></table-items-border>
+         <table-items-border></table-items-border>
           </section>
+          <!-- Copy Right -->
+          <section>
+            
+            <p class="fs-8">1 tháng 1, 2023</p>
+            <p class="fs-9"><span class="material-symbols-rounded fs-9 px-2">copyright</span>2013 Avicii Music AB, / PRMD under exclusive license to Universal Music AB</p>
+          </section>
+          <!-- Albums for artists -->
+          <section>
+            <div class="d-flex justify-content-between">
+                <span class="fs-4 fw-bolder text-white"><a class="custom-text-link" href="#">Popular artists</a></span>
+                <span class="fs-9 fw-bold "><a class="custom-text-link" href="#">show all</a></span>
+            </div>
+            <div class="d-flex">
+                <card-item-song></card-item-song>
+                <card-item-song></card-item-song>
+                <card-item-song></card-item-song>
+                <card-item-song></card-item-song>
+                <card-item-song></card-item-song>
+                <card-item-song></card-item-song>
+                <card-item-song></card-item-song>
+            </div>
+          </section>
+          
     </div>
 </template>
 <script>
 import navbarFisrt from '../../components/navbar/navbar_fisrt.vue'
 import tableItemsBorder from '../../components/table/table_items_border.vue'
+import cardItemSong from '../../components/card/card_item_song.vue'
 export default {
     components:{
         navbarFisrt,
         tableItemsBorder,
+        cardItemSong
     }
 }
 </script>

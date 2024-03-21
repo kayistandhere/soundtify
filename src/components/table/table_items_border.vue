@@ -17,8 +17,11 @@
         <div class="custom_card d-flex align-items-center">
           <img class="custom_Img" src="../../assets/Images/Artists/WrenEvan.jpg" alt="" srcset="" width="30" height="30">
           <div class="">
-              <span class=" fs-8">Sơn Tùng MTP</span>
-              <span class=" fs-9">Artists</span> 
+            <span class="fs-8">Em của ngày hôm qua</span>
+            <div class="d-flex align-items-center">
+              <span class=" fs-9">Sơn Tùng MTP</span>
+            </div>
+             
           </div>
         </div>
       </td>
@@ -27,8 +30,42 @@
       <td>3:32</td>
     </tr>
     <tr class="fs-9">
+      <th scope="row">2</th>
+      <td>
+        <div class="custom_card d-flex align-items-center">
+          <img class="custom_Img" src="../../assets/Images/Artists/WrenEvan.jpg" alt="" srcset="" width="30" height="30">
+          <div class="">
+            <span class="fs-8">Em của ngày hôm qua</span>
+            <div class="d-flex align-items-center">
+              <span class=" fs-9">Sơn Tùng MTP</span>
+            </div>
+             
+          </div>
+        </div>
+      </td>
+      <td>Dance Dance Dance</td>
+      <td>Jul 18, 2023</td>
+      <td>3:32</td>
     </tr>
-
+    <tr class="fs-9">
+      <th scope="row">3</th>
+      <td>
+        <div class="custom_card d-flex align-items-center">
+          <img class="custom_Img" src="../../assets/Images/Artists/WrenEvan.jpg" alt="" srcset="" width="30" height="30">
+          <div class="">
+            <span class="fs-8">Em của ngày hôm qua</span>
+            <div class="d-flex align-items-center">
+              <span class=" fs-9">Sơn Tùng MTP</span>
+            </div>
+             
+          </div>
+        </div>
+      </td>
+      <td>Dance Dance Dance</td>
+      <td>Jul 18, 2023</td>
+      <td>3:32</td>
+    </tr>
+ 
   </tbody>
 </table>
     </div>
@@ -46,7 +83,6 @@ export default {
     display: flex;
     border-radius: 5px;
     width : 100%;
-    background-color: blue;
 }
   .custom_Img {
     border-radius: 5px;

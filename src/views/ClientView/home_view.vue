@@ -50,11 +50,19 @@
 import cardItemArtists from '../../components/card/card_item_artists.vue'
 import cardItemSong from '../../components/card/card_item_song.vue'
 import navbarFisrt from '../../components/navbar/navbar_fisrt.vue'
+import auth from '../../firebase.js'
+import { onAuthStateChanged } from 'firebase/auth'
 export default {
     components:{
         navbarFisrt,
         cardItemSong,
         cardItemArtists,
+    },
+    created(){
+        onAuthStateChanged(auth.auth, (user) =>{
+            console.log("home",user);   
+        })
+      
     }
 }
 </script>

@@ -5,7 +5,7 @@ import Login from '../views/ClientView/login.vue'
 import songDetail from '../views/ClientView/song_detail.vue'
 import forgotPassword from '../views/ClientView/forgot_password.vue'
 import resetPassword from '../views/ClientView/confirm_reset_password.vue'
-import testplayer from '../views/ClientView/testplayer.vue'
+import errorPage from '../views/ClientView/error_page.vue'
 const routes = [
   {
     path: '/',
@@ -38,9 +38,9 @@ const routes = [
     component: resetPassword
   },
   {
-    path: '/testplayer',
-    name: 'testplayer.view',
-    component: testplayer
+    path: '/error',
+    name: 'error.view',
+    component: errorPage
   }
 ]
 const router = createRouter({

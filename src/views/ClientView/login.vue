@@ -10,31 +10,33 @@
        
         <div class="border-top border-secondary col-9 my-5 "></div>
         <!-- Login with email and password -->
-        <form @submit.prevent="login" >
-          <div class="my-4 d-flex justify-content-center">
+        <form @submit.prevent="login" id="form-1">
+          <div class="my-2 d-flex justify-content-center">
             <div class="custom-form">
-              <input type="text" name="text"  v-model="formData.email" @blur="!isValidEmail" v-bind:class="{ 'is-invalid': error.email }" />
+              <input type="text" name="text" id="email"  v-model="formData.email" @blur="Validator"/>
               <label for="text" class="label-name">
                 <span class="content-name"> Email </span>
               </label>
-              
             </div>
-            <span v-if="!isValidEmail">Please enter a valid email address.</span>
           </div>
-          <div class="my-4 d-flex justify-content-center">
+          <span class="fs-8 p-0 " v-if="!isCheckValidation">{{ this.error.email }}</span>
+          
+
+          <div class="my-3 d-flex justify-content-center">
             <div class="custom-form">
-              <input type="text" name="text"  v-model="formData.password" />
+              <input type="text" name="text" id="password" v-model="formData.password" @blur="Validator"/>
               <label for="text" class="label-name">
                 <span class="content-name"> Mật khẩu </span>
               </label>
             </div>
-            <span v-if="!isValidPassword">Password must be at least 6 characters long.</span>
           </div>
+         
+          <span class="fs-8 p-0 " v-if="!isCheckValidation">{{ this.error.password }}</span>
           <div class="px-3 py-2">
             <!-- <button class="custom_btn_1 py-2" type="submit">
               Log in
             </button> -->
-            <btn-Md-Radius :customContent="logintext" :disabled="!isValidForm" ></btn-Md-Radius>
+            <btn-Md-Radius :customContent="logintext" ></btn-Md-Radius>
           </div>
         </form>
 
@@ -56,6 +58,7 @@
 <script>
 import btnMdRadius from '../../components/button/button_md_radius.vue'
 import btnLogoRadius from '../../components/button/button_logo_radius.vue'
+import regex from '../../util/regex.js'
 import auth from "../../service/auth/auth.js";
 export default {
   components:{
@@ -73,151 +76,150 @@ export default {
         email: "",
         password: "",
       },
+      isCheckValidation : true,
       logintext: "Log in",
       loginwidthGoogle: "Login With Google"
     };
   },
   methods: {
-    validate() {
-        let invalid = true;
-        this.error = {
-          email: "",
-          password: "",
-        };
-
-        if (!this.formData.email) {
-          this.error.email = "Email is required";
-          invalid = false;
-        } else if (!this.isEmail(this.formData.email)) {
-          this.error.email = "Email to wrong";
-          invalid = false;
-        }
-        if (!this.formData.password) {
-          this.error.password = "Password is required";
-          invalid = false;
-        }
-        return invalid;
-      },
-      isEmail(value) {
-        return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value);
-      },
     login() {
-      if(this.isValidForm){
+      if(this.Validator){
         auth.signIn(this.formData.email,this.formData.password)
-        .then((res) => {
+        .then(() => {
           this.$router.push({name: "home.view"});
-          console.log(res.user);
         })
         .catch((error) => {
           console.log("lỗi", error);
         });
       }
     },
-    loginWithGoogle(){
-      auth.signWithGoogle().then((res) => {
-        console.log(res);
-        this.$router.push({name: "home.view"});
-      }).catch((error) => {
+   async loginWithGoogle(){
+    await  auth.signWithGoogle().then(()=>{
+          this.$router.push({name: "home.view"});
+      }).catch((error)=>{
         console.log(error);
       })
-    }
-  },
-  computed: {
-    isValidEmail() {
-      // Simple email validation
-      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.formData.email);
+      
     },
-    isValidPassword() {
-      // Password length validation
-      return this.formData.password.length >= 6;
+    Validator(){
+      if(regex.isRequired(this.formData.email)){
+        this.error.email = "Please enter this field"
+         this.isCheckValidation = false;
+      }else if(regex.isEmail(this.formData.email)){
+        this.error.email = "Enter incorrect email format";
+         this.isCheckValidation = false;
+      }else {
+        this.error.email = "";
+      }
+      if(regex.isRequired(this.formData.password)){
+        this.error.password = "Please enter this field";
+         this.isCheckValidation = false;
+      }else if(regex.isPassword(this.formData.password)){
+        this.error.password = "Enter incorrect password format";
+         this.isCheckValidation = false;
+      }else {
+        this.error.password = "";
+      }
+      return this.isCheckValidation;
     },
-    isValidForm() {
-      // Check if both email and password are valid
-      return this.isValidEmail && this.isValidPassword;
-    }
+ 
   },
+  computed:{
+    
+    },
+    watch:{
+     
+    }
+  
+   
 };
+     
 </script>
-
 <style scoped>
+
 .custom-form {
-  width: 70%;
-  position: relative;
-  height: 50px;
-  overflow: hidden;
-}
-
-.custom-form input {
-  width: 100%;
-  height: 100%;
-  color: #000000;
-  padding-top: 20px;
-  border-radius: 2px;
-  padding-left: 10px;
-  font-size: 14px;
-  border: none;
-  background-color: #ffffff;
-}
-
-.custom-form label {
-  position: absolute;
-  bottom: 0px;
-  left: 0px;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  border-bottom: 1px solid white;
-}
-
-.custom-form label::after {
-  content: "";
-  position: absolute;
-  bottom: -1px;
-  left: 0px;
-  width: 100%;
-  height: 100%;
-  border-bottom: 2px solid #000000;
-  transform: translateX(-100%);
-  transition: all 0.3s ease;
-}
-
-.content-name {
-  position: absolute;
-  bottom: 0px;
-  left: 5px;
-  font-size: 13px;
-  padding-left: 10px;
-  padding-bottom: 10px;
-  margin-bottom: 5px;
-  transition: all 0.3s ease;
-}
-
-.custom-form input:focus {
-  outline: none;
-}
-
-.custom-form input:focus+.label-name .content-name,
-.custom-form input:valid+.label-name .content-name {
-  transform: translateY(-60%);
-  font-size: 11px;
-  left: 0px;
-  color: #000000;
-}
-
-.custom-form input:focus+.label-name::after,
-.custom-form input:valid+.label-name::after {
-  transform: translateX(0%);
-}
-
-.custom-font-size {
-  font-size: 14px;
-}
-
-.custom-font-size-1 {
-  font-size: 12px;
-}
-
-.custom-color-logo {
-  color: #4267b2;
-}
+    width: 70%;
+    position: relative;
+    height: 50px;
+    overflow: hidden;
+  }
+  
+  .custom-form input {
+    width: 100%;
+    height: 100%;
+    color: #000000;
+    padding-top: 20px;
+    border-radius: 2px;
+    padding-left: 10px;
+    font-size: 14px;
+    border: none;
+    background-color: #ffffff;
+  }
+  
+  .custom-form label {
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    border-bottom: 1px solid white;
+  }
+  
+  .custom-form label::after {
+    content: "";
+    position: absolute;
+    bottom: -1px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    border-bottom: 2px solid #000000;
+    transform: translateX(-100%);
+    transition: all 0.3s ease;
+  }
+  
+  .content-name {
+    position: absolute;
+    bottom: 0px;
+    left: 5px;
+    font-size: 13px;
+    padding-left: 10px;
+    padding-bottom: 10px;
+    margin-bottom: 5px;
+    transition: all 0.3s ease;
+  }
+  
+  .custom-form input:focus {
+    outline: none;
+  }
+  
+  .custom-form input:focus+.label-name .content-name,
+  .custom-form input:valid+.label-name .content-name {
+    transform: translateY(-60%);
+    font-size: 11px;
+    left: 0px;
+    color: #000000;
+  }
+  
+  .custom-form input:focus+.label-name::after,
+  .custom-form input:valid+.label-name::after {
+    transform: translateX(0%);
+  }
+  
+  .custom-font-size {
+    font-size: 14px;
+  }
+  
+  .custom-font-size-1 {
+    font-size: 12px;
+  }
+  
+  .custom-color-logo {
+    color: #4267b2;
+  }
+  .form-message {
+      font-size: 1.2rem;
+      line-height: 1.6rem;
+      padding: 4px 0 0;
+    }
 </style>
