@@ -3,18 +3,19 @@ import authStore from '../store/authStore.js'
 export default {
   beforeRouteUpdate(to, from, next) {
     if (authStore.state.currentUser != null) {
-      if (to.path === '/') {
-        console.log("next false");
-        next(false);
+      // if (to.path === '/') {
+      //   console.log("next false");
+      //   next(false);
       
-      } else {
-        console.log("next");
-        next();
-      }
+      // } else {
+      //   console.log("next");
+      //   next();
+      // }
+      console.log();
     }else{
-      if(to.path === '/home'){
-        from();
-      }
+      // if(to.path === '/'){
+      //   from();
+      // }
     }
     next();
   }

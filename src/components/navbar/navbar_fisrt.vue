@@ -1,7 +1,7 @@
 <template>
     <nav class="navbar navbar-expand-lg sticky-md-top bg-module">
         <div class="container-fluid ">
-            <a class="navbar-brand fw-bolder custom-text-link_logo fs-3" href="#">Soundtify</a>
+            <!-- <a class="navbar-brand fw-bolder custom-text-link_logo fs-3" href="#">Soundtify</a> -->
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav">
                     <li class="nav-item p-2">

@@ -20,7 +20,7 @@ isMinLength(min , value){
 },
 // Bao gồm cả chữ hoa, chữ thường, số, ký tự đặc biệt và ít nhất 8 ký tự
 isPassword(value){
-    var regex = /(?=(.*[0-9]))(?=.*[\!@#$%^&*()\\[\]{}\-_+=~`|:;"'<>,./?])(?=.*[a-z])(?=(.*[A-Z]))(?=(.*)).{8,}/ ;
+    var regex = /(?=(.*[0-9]))(?=.*[\!@#$%^&*()\\[\]{}\-_+=~`|:;"'<>,./?])(?=.*[a-z])(?=(.*[A-Z]))(?=(.*)).{8,}/;
     return regex.test(value) ? undefined :  value || "Vui lòng nhập đúng định dạng";
 },
 // Gồm chuỗi và số từ 3 đến 16 ký tự

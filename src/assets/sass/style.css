@@ -68,6 +68,9 @@
   .custom-line {
     line-height: 5px;
 }
+.custom-cursor{
+  cursor: pointer;
+}
 .userIcon {
   width: 30px;
   height: 30px;
@@ -87,6 +90,16 @@
   color: #fff;
   opacity: 1;
   text-decoration: underline;
+}
+.custom-router-link {
+  color: #fff;
+  text-decoration: none;
+  opacity: 0.7;
+  cursor: pointer;
+}
+.custom-router-link:hover{
+  color: #fff;
+  opacity: 1;
 }
 .two-lines {
   overflow: hidden;

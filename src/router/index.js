@@ -6,6 +6,8 @@ import songDetail from '../views/ClientView/song_detail.vue'
 import forgotPassword from '../views/ClientView/forgot_password.vue'
 import resetPassword from '../views/ClientView/confirm_reset_password.vue'
 import errorPage from '../views/ClientView/error_page.vue'
+import profileUser from '../views/ClientView/profile_user.vue'
+import searchTrackArtistsAlbums from '../views/ClientView/search_track_artists_albums.vue'
 const routes = [
   {
     path: '/',
@@ -36,6 +38,16 @@ const routes = [
     path: '/auth/action',
     name: 'resetPassword.view',
     component: resetPassword
+  },
+  {
+    path: '/profile',
+    name: 'editProfile.view',
+    component: profileUser
+  },
+  {
+    path: '/search',
+    name: 'search.view',
+    component: searchTrackArtistsAlbums
   },
   {
     path: '/error',

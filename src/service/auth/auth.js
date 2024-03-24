@@ -1,5 +1,5 @@
 
-import firebaseAuth  from "../../firebase.js";
+import firebaseAuth  from "../../firebase.ts";
 import {
   signInWithEmailAndPassword,
   GoogleAuthProvider,
@@ -13,7 +13,7 @@ import {
 } from "firebase/auth";
 
 const signIn = (email, password) => {
-  setPersistence(firebaseAuth.auth,browserLocalPersistence ).then(() => {
+    return setPersistence(firebaseAuth.auth,browserLocalPersistence ).then(() => {
       return signInWithEmailAndPassword(firebaseAuth.auth, email, password);
     }).catch((error) =>{
       console.log(error);
@@ -21,10 +21,13 @@ const signIn = (email, password) => {
 };
 
 const signUp = async (name, email, password) => {
-  await updateProfile(firebaseAuth.auth.currentUser, { displayName: name });
-  return createUserWithEmailAndPassword(firebaseAuth.auth, email, password);
+  try {
+    await updateProfile(firebaseAuth.auth.currentUser, { displayName: name });
+    return createUserWithEmailAndPassword(firebaseAuth.auth, email, password);
+  } catch (error) {
+    console.log(error);
+  }
 };
-
 const signWithGoogle = () => {
    return setPersistence(firebaseAuth.auth,browserLocalPersistence).then(() =>{
         const provider = new GoogleAuthProvider();

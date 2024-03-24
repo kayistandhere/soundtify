@@ -5,13 +5,17 @@
       <div class="col-lg-3 overflow-hidden rounded" >
         <!-- Button function -->
         <div class="d-block bg-module text-white m-2 rounded">
-          <div class="d-flex px-2 py-2 align-items-center">
-            <span class="material-symbols-rounded mx-3 fs-3">home</span>
-            <span class="fw-bolder fs-7">Home</span>
+          <div class="">
+            <router-link :to="'/home'" class="custom-router-link d-flex px-2 py-2 align-items-center">
+              <span class="material-symbols-rounded mx-3 fs-3">home</span>
+              <span class="fw-bolder fs-7">Home</span>
+          </router-link>
           </div>
-          <div class="d-flex px-2 py-2 align-items-center">
-            <span class="material-symbols-rounded mx-3 fs-3">search</span>
-            <span class="fw-bolder fs-7">Search</span>
+          <div class="">
+            <router-link :to="'/search'" class="custom-router-link d-flex px-2 py-2 align-items-center">
+              <span class="material-symbols-rounded mx-3 fs-3">search</span>
+              <span class="fw-bolder fs-7">Search</span>
+          </router-link>
           </div>
         </div>
         <!-- Library -->
@@ -90,13 +94,13 @@
       </div>
       <!-- function control music -->
       <div class="nav-item d-flex d-flex align-items-center px-3">
-        <span class="text-white">{{ currentTime }}sdas</span>
+      
           <span class="material-symbols-rounded p-1 text-white fs-5 custom-opacity">mic</span>
           <span class="material-symbols-rounded p-1 text-white fs-5 custom-opacity">list_alt</span>
           <span class="material-symbols-rounded p-1 text-white fs-5 custom-opacity">devices_other</span>
           <span class="material-symbols-rounded p-1 text-white fs-5 custom-opacity">brand_awareness</span>
           <input type="range" class="slider" min="0" max="1" step="0.01" value="0.5" v-model="this.volumeValue">
-          <button @click="plays">check currentTime</button>
+          
             
       </div>
     </div>
