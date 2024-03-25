@@ -1,0 +1,110 @@
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 2px rgb(0, 0, 0);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #575757;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #464646;
+}
+:root {
+    --color-black : #000;
+    /* --color-gray : #1f1f1f; */
+    --color-gray : #121212;
+    --color-gray1:#333333;
+    --color-green: #17cf5b;
+}
+*{
+    font-family: "Gotham","Medium" sans-serif;
+ }
+.bg-black {
+    background-color: var(--color-black);
+}
+.bg-module {
+    background-color: var(--color-gray);
+}
+.bg-module-1 {
+  background-color: var(--color-gray1);
+}
+.bg-green {
+  background-color: var(--color-green);
+}
+.txt-green {
+  color: var(--color-green);
+}
+   /* Text */
+.fs-7 {
+     font-size: 15px;
+   }
+.fs-8 {
+     font-size: 14px;
+   }
+.fs-9 {
+     font-size: 12px;
+   }
+.fs-10 {
+     font-size: 10px;
+   }  
+   .icon-button-next {
+    position: absolute;
+    color: #fff;
+    font-size: 20px;
+    transform: translate(-50%, -50%);
+  }
+  .button-next {
+    position: absolute;
+    top: 15px;
+    right: 0px;
+    transform: translate(50%, 50%);
+  }
+  .custom-line {
+    line-height: 5px;
+}
+.custom-cursor{
+  cursor: pointer;
+}
+.userIcon {
+  width: 30px;
+  height: 30px;
+  border-radius: 100%;
+  background-color: var(--color-Paragraph);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.custom-text-link {
+  color: #fff;
+  opacity: 0.7;
+  text-decoration: none;
+  cursor: pointer;
+}
+.custom-text-link:hover {
+  color: #fff;
+  opacity: 1;
+  text-decoration: underline;
+}
+.custom-router-link {
+  color: #fff;
+  text-decoration: none;
+  opacity: 0.7;
+  cursor: pointer;
+}
+.custom-router-link:hover{
+  color: #fff;
+  opacity: 1;
+}
+.two-lines {
+  overflow: hidden;
+  text-overflow: ellipsis; /* Nếu muốn hiển thị dấu ba chấm khi văn bản bị cắt ngắn */
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* Số dòng tối đa bạn muốn hiển thị */
+  -webkit-box-orient: vertical;
+}

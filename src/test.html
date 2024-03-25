@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <audio id="myAudio" controls>
+        <source src="https://firebasestorage.googleapis.com/v0/b/datn-578a6.appspot.com/o/demo%2Fdownload.mp3?alt=media&token=ca6925e7-50e2-40f8-b4ed-3326b077ae26" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+    <br>
+    <button id="seekBackward">
+        <<< /button>
+            <input type="range" id="seekSlider" min="0" max="100" step="1" value="0">
+            <button id="seekForward">>></button>
+            <script>
+                const audio = document.getElementById("myAudio");
+                const seekSlider = document.getElementById("seekSlider");
+                const seekBackwardButton = document.getElementById("seekBackward");
+                const seekForwardButton = document.getElementById("seekForward");
+
+                function seekBackward() {
+                    audio.currentTime -= 10; // Seek backward 10 seconds
+                }
+
+                function seekForward() {
+                    audio.currentTime += 10; // Seek forward 10 seconds
+                }
+
+                function updateSeekSlider() {
+                    const progress = (audio.currentTime / audio.duration) * 100;
+                    seekSlider.value = progress;
+                }
+
+                function onSeekSliderChange() {
+                    const seekTo = (audio.duration * seekSlider.value) / 100;
+                    audio.currentTime = seekTo;
+                }
+
+                audio.addEventListener("timeupdate", updateSeekSlider);
+                seekSlider.addEventListener("input", onSeekSliderChange);
+                seekBackwardButton.addEventListener("click", seekBackward);
+                seekForwardButton.addEventListener("click", seekForward);
+
+            </script>
+</body>
+
+</html>
+
+
+
+
+
+
