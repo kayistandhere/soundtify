@@ -6,4 +6,8 @@ const addUser = (user : User) =>{
     setDoc(docfire , user)
 }
 // do 2 trường này không được để null
-addUser({uuid:'',email:'email'})
+addUser({uuid:'',email:''})
+
+export default {
+    addUser,
+}

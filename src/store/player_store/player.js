@@ -36,7 +36,7 @@ export default {
           this.audio.pause();
       },
       volumeControl(value) {
-        this.audio.volume = value / 100;
+        this.audio.volume = value;
       },
       seekBackward() {
         this.audio.currentTime -= 10;

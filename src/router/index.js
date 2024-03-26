@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import authStore from '../store/authStore.js'
-import auth from '../firebase.ts'
+import firebase from '../firebase.ts'
 import HomeView from '../views/ClientView/home_view.vue'  
 import Register from '../views/ClientView/register.vue'
 import Login from '../views/ClientView/login.vue'  
@@ -14,7 +14,10 @@ const routes = [
   {
     path: '/',
     name: 'login.vue',
-    component: Login
+    component: Login,
+    meta :{
+      ignoreAuth: true
+    }
   },
   {
     path: '/home',
@@ -24,7 +27,10 @@ const routes = [
   {
     path: '/register',
     name: 'register.view',
-    component: Register
+    component: Register,
+    meta :{
+      ignoreAuth: true
+    }
   },
   {
     path: '/songDetail',
@@ -65,18 +71,26 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
 })
-router.afterEach((to, from ) => {
-  try {
-    if (auth.auth.currentUser != null){
-      console.log("test1" , auth.auth.currentUser);
-    }else{
-      console.log("test2" , auth.auth.currentUser);
-      return router.push({name : 'NotFound'})
-    } 
-  } catch (error) {
-    console.log(error);
+router.beforeEach((to, from, next) => {
+  /// TODO: Should update method to check user logged in from auth_store
+  if(firebase.auth.currentUser == null) {
+    /// Prevent user routing to other page without ignoreAuth
+    if(to.meta.ignoreAuth) {
+      next();
+      return;
+    }
+    next({path: "/"})
+    return;
+  } else {
+    /// TODO: Implement case to prevent routing if the user is logged in.
+    switch(to.path) {
+      case "/":
+      case "/register":
+        next({path: "/home"});
+      break;
+      default: next();
+    }
   }
-})
-
+});
 export default router
 

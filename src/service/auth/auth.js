@@ -15,12 +15,7 @@ import authStore from "../../store/authStore.js";
 
 const signIn = (email, password) => {
     return setPersistence(firebaseAuth.auth,browserLocalPersistence ).then(() => {
-      if(firebaseAuth.auth.currentUser != null){
         return signInWithEmailAndPassword(firebaseAuth.auth, email, password);
-      }else {
-        console.log("Không có tài khoản");
-      }
-     
     }).catch((error) =>{
       console.log(error);
     })

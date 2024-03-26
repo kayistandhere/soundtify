@@ -99,7 +99,7 @@
           <span class="material-symbols-rounded p-1 text-white fs-5 custom-opacity">list_alt</span>
           <span class="material-symbols-rounded p-1 text-white fs-5 custom-opacity">devices_other</span>
           <span class="material-symbols-rounded p-1 text-white fs-5 custom-opacity">brand_awareness</span>
-          <input type="range" class="slider" min="0" max="1" step="0.01" value="0.5" v-model="this.volumeValue">
+          <input type="range" class="slider" min="0" max="1" step="0.01" v-model="this.volumeValue" @input="test">
           
             
       </div>
@@ -136,7 +136,7 @@ import { mapActions ,mapGetters } from 'vuex';
 
         debouncedSeekingChange: null,
         seekingData : 0 ,
-        volumeValue : 0.5,
+        volumeValue : 0,
         playOrPause: false,
         total :null,
       }
@@ -185,9 +185,15 @@ import { mapActions ,mapGetters } from 'vuex';
       },
     computed:{
         ...mapGetters(['count','currentTime']),
+       
+        test(){
+         console.log("Volume" , this.volumeValue);
 
+      }
   },
     watch:{
+      
+     
     }
   }
 </script>
