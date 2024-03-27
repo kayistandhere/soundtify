@@ -44,8 +44,20 @@
               <span class="material-symbols-rounded fs-5 ">sort</span>
             </div>
           </div>
-          <div class="d-block overflow-hidden">
+          <div class="d-block overflow-auto">
             <div class="" style="height: 100vh;">
+            <artists-item-card-albums class="px-3"></artists-item-card-albums>
+            <track-item-card-albums class="px-3"></track-item-card-albums>
+            <artists-item-card-albums class="px-3"></artists-item-card-albums>
+            <artists-item-card-albums class="px-3"></artists-item-card-albums>
+            <track-item-card-albums class="px-3"></track-item-card-albums>
+            <artists-item-card-albums class="px-3"></artists-item-card-albums>
+            <artists-item-card-albums class="px-3"></artists-item-card-albums>
+            <track-item-card-albums class="px-3"></track-item-card-albums>
+            <artists-item-card-albums class="px-3"></artists-item-card-albums>
+            <artists-item-card-albums class="px-3"></artists-item-card-albums>
+            <track-item-card-albums class="px-3"></track-item-card-albums>
+            <artists-item-card-albums class="px-3"></artists-item-card-albums>
             <artists-item-card-albums class="px-3"></artists-item-card-albums>
             <track-item-card-albums class="px-3"></track-item-card-albums>
             <artists-item-card-albums class="px-3"></artists-item-card-albums>
