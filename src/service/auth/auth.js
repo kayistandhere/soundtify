@@ -11,7 +11,6 @@ import {
   browserLocalPersistence,
   updateProfile,
 } from "firebase/auth";
-import authStore from "../../store/authStore.js";
 
 const signIn = (email, password) => {
     return setPersistence(firebaseAuth.auth,browserLocalPersistence ).then(() => {

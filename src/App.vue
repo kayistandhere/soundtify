@@ -44,17 +44,29 @@
               <span class="material-symbols-rounded fs-5 ">sort</span>
             </div>
           </div>
-          <div class="d-block overflow-hidden">
-            <div class="" style="height: 100vh;">
+          <div class="d-block overflow-auto" style="height: 70vh">
+            <artists-item-card-albums class="px-3"></artists-item-card-albums>
+            <artists-item-card-albums class="px-3"></artists-item-card-albums>
+            <artists-item-card-albums class="px-3"></artists-item-card-albums>
+            <artists-item-card-albums class="px-3"></artists-item-card-albums>
+            <artists-item-card-albums class="px-3"></artists-item-card-albums>
+            <track-item-card-albums class="px-3"></track-item-card-albums>
+            <artists-item-card-albums class="px-3"></artists-item-card-albums>
+            <artists-item-card-albums class="px-3"></artists-item-card-albums>
+            <artists-item-card-albums class="px-3"></artists-item-card-albums>
+            <artists-item-card-albums class="px-3"></artists-item-card-albums>
+            <artists-item-card-albums class="px-3"></artists-item-card-albums>
+            <track-item-card-albums class="px-3"></track-item-card-albums>
+            <artists-item-card-albums class="px-3"></artists-item-card-albums>
+            <artists-item-card-albums class="px-3"></artists-item-card-albums>
+            <artists-item-card-albums class="px-3"></artists-item-card-albums>
+            <artists-item-card-albums class="px-3"></artists-item-card-albums>
             <artists-item-card-albums class="px-3"></artists-item-card-albums>
             <track-item-card-albums class="px-3"></track-item-card-albums>
             <artists-item-card-albums class="px-3"></artists-item-card-albums>
             <artists-item-card-albums class="px-3"></artists-item-card-albums>
             <track-item-card-albums class="px-3"></track-item-card-albums>
             <artists-item-card-albums class="px-3"></artists-item-card-albums>
-
-          </div>
-            
           </div>
         </div>
       </div>
@@ -99,7 +111,7 @@
           <span class="material-symbols-rounded p-1 text-white fs-5 custom-opacity">list_alt</span>
           <span class="material-symbols-rounded p-1 text-white fs-5 custom-opacity">devices_other</span>
           <span class="material-symbols-rounded p-1 text-white fs-5 custom-opacity">brand_awareness</span>
-          <input type="range" class="slider" min="0" max="1" step="0.01" v-model="this.volumeValue" @input="test">
+          <input type="range" class="slider" min="0" max="1" step="0.01" v-model="this.volumeValue" @input="onVolume">
           
             
       </div>
@@ -187,13 +199,12 @@ import { mapActions ,mapGetters } from 'vuex';
         ...mapGetters(['count','currentTime']),
        
         test(){
+          
          console.log("Volume" , this.volumeValue);
-
       }
   },
     watch:{
-      
-     
+
     }
   }
 </script>

@@ -37,7 +37,7 @@
                                 srcset="" width="40" height="40">
                         </button>
                         <ul class="dropdown-menu dropdown-menu-lg-end custom-dropdown fs-8">
-                            <li><a class="dropdown-item text-white custom-dropdown-item py-2" href="#">Profile</a></li>
+                            <li><router-link class="dropdown-item text-white custom-dropdown-item py-2" :to="'/profile'">Profile</router-link></li>
                             <li><a class="dropdown-item text-white custom-dropdown-item py-2" href="#">Setting</a></li>
                             <div class="border-top border-secondary col-11 ms-2"></div>
                             <li><a class="dropdown-item text-white custom-dropdown-item py-2" href="#" @click="logoutAccount">Log out</a></li>

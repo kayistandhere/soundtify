@@ -5,7 +5,6 @@
           <p class=" fs-8 fw-bold">Sơn Tùng MTP</p>
           <p class=" fs-9 custom_LineHeight">Artists</p> 
       </div>
-      
     </div>
   </template>
   

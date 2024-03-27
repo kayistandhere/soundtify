@@ -1,8 +1,7 @@
 <template>
     <div class="d-flex">
         <div class="custom-card-albums m-2 bg-module-1 ">
-                <img src="../../assets/Images/Artists/SonTung.jpg" class="custom-img-albums" alt="..." />
-      
+                <img src="../../assets/Images/Artists/SonTung.jpg"  class="custom-img-albums" alt="..." />
                 <div class="custom-title-albums">
                     <span>Pop</span>
                 </div>
@@ -28,17 +27,20 @@
     </div>
 </template>
 <script>
+// import checkColor from './util/checkColor.js'
 export default {
     name: 'cardAlbum',
     data(){
         return {
-            
+        //    use :src để lấy data
         }
     },
     setup(){
-
+        
     },
     methods:{
+        
+        // checkColor()
     },
     onMounted(){
         // const colors = ['#17cf5b', '#fcba03', '#4123v1'];

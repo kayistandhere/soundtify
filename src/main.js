@@ -10,6 +10,7 @@ import draggable from 'vuedraggable'
 import { onAuthStateChanged } from 'firebase/auth'
 import firebase from './firebase.ts'
 
+
 /// Ensure that the firebase has fully finished initialization.
 onAuthStateChanged(firebase.auth, (user) => {
     createApp(App)
