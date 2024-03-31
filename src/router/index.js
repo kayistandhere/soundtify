@@ -10,6 +10,7 @@ import resetPassword from '../views/ClientView/confirm_reset_password.vue'
 import errorPage from '../views/ClientView/error_page.vue'
 import profileUser from '../views/ClientView/profile_user.vue'
 import searchTrackArtistsAlbums from '../views/ClientView/search_track_artists_albums.vue'
+
 const routes = [
   {
     path: '/',
@@ -17,7 +18,7 @@ const routes = [
     component: Login,
     meta :{
       ignoreAuth: true
-    }
+    },
   },
   {
     path: '/home',
@@ -61,7 +62,7 @@ const routes = [
     path: '/error',
     name: 'NotFound',
     component: errorPage
-  }
+  },
 ]
 // router.beforeEach(async (to, from) => {
 //   return {name : 'register'}
@@ -72,7 +73,7 @@ const router = createRouter({
   routes
 })
 router.beforeEach((to, from, next) => {
-  /// TODO: Should update method to check user logged in from auth_store
+  // Should update method to check user logged in from auth_store
   if(firebase.auth.currentUser == null) {
     /// Prevent user routing to other page without ignoreAuth
     if(to.meta.ignoreAuth) {
@@ -82,7 +83,7 @@ router.beforeEach((to, from, next) => {
     next({path: "/"})
     return;
   } else {
-    /// TODO: Implement case to prevent routing if the user is logged in.
+    //Implement case to prevent routing if the user is logged in.
     switch(to.path) {
       case "/":
       case "/register":

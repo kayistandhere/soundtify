@@ -5,8 +5,11 @@ const addUser = (user : User) =>{
     const docfire = doc(colection, user.uuid)
     setDoc(docfire , user)
 }
+
 // do 2 trường này không được để null
 addUser({email:'', name: ''})
+
+
 
 export default {
     addUser,

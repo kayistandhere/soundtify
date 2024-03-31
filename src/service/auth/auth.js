@@ -15,6 +15,7 @@ import {
 const signIn = (email, password) => {
     return setPersistence(firebaseAuth.auth,browserLocalPersistence ).then(() => {
         return signInWithEmailAndPassword(firebaseAuth.auth, email, password);
+
     }).catch((error) =>{
       console.log(error);
     })

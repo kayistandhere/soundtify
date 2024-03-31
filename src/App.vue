@@ -148,7 +148,7 @@ import { mapActions ,mapGetters } from 'vuex';
 
         debouncedSeekingChange: null,
         seekingData : 0 ,
-        volumeValue : 0,
+        volumeValue : 0.5,
         playOrPause: false,
         total :null,
       }
@@ -158,7 +158,6 @@ import { mapActions ,mapGetters } from 'vuex';
       // onAuthStateChanged(firebaseAuth.auth , (user) =>{
       //   this.oncurrentUserChange(user)
       // })
-      
     },
     methods:{
       ...mapActions(['increment','plays']),

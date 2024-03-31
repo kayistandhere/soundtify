@@ -74,4 +74,4 @@ export default {
 
 <style>
 
-</style>
+</style>../../firebase-config../../firebase-config
