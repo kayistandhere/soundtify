@@ -16,21 +16,19 @@
             <span class="fs-8"> Folower : 2141</span>
           </div>
         </div>
-      </div>
+    </div>
       <!-- Modal -->
       <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">
           <div class="modal-content bg-module p-2">
-            <form action="" class="text-white">
+            <form action="" class="text-white" @submit.prevent="saveForm">
               <div class="d-flex justify-content-around position-relative">
                 <div class="d-block">
-                  <img src="../../assets/Images/Artists/PhucDu.jpg" class="m-2 custom-img-animation" width="220"
-                    id="tb-image" height="220" />
-                  <input type="file" class="" @change="uploadFile1" />
+                  <img src="../../assets/Images/Artists/PhucDu.jpg" class="m-2 custom-img-animation" width="220" height="220" id="tb-image"/>
+                  <input type="file" class="inputFile" id="file" @change="uploadFile" accept="image/*"/>
                 </div>
                 <!-- Form edit your profile -->
                 <div class="m-2">
-
                   <div class="row p-2">
                     <div class="col-6">
                       <input type="text" name="text" class="form-control" placeholder="Kayi" autocomplete="off"
@@ -76,7 +74,7 @@
                     </div>
                   </div>
                   <div class="d-flex p-2 justify-content-end">
-                    <button-lg-radius :customContent="backText"></button-lg-radius>
+                    <button-lg-radius :customContent="backText" data-bs-dismiss="modal"></button-lg-radius>
                     <button-md-radius :customContent="saveText" type="submit"></button-md-radius>
                   </div>
                   <div class="row">
@@ -143,7 +141,8 @@ import tableItemsBorder from "../../components/table/table_items_border.vue";
 import footer1 from "../../components/footer/footer_1.vue";
 import buttonLgRadius from "../../components/button/button_lg-radius.vue";
 import buttonMdRadius from "../../components/button/button_md_radius.vue";
-import filelol from '../../firebase/storage/storageQuery.ts'
+import firebase from "../../firebase.js"
+import {ref , uploadBytes } from "firebase/storage";
 export default {
   name: "Profile",
   components: {
@@ -180,8 +179,15 @@ export default {
         this.sexText = "Female";
       }
     },
-    uploadFile1(){
-      filelol.lol(this.formData.email);
+    async uploadFile(){
+      const file = document.getElementById("file").files[0];
+      const storageRef = ref(firebase.storage , `User/${firebase.auth.currentUser.uid}/avatar/` + file.name);
+      await uploadBytes(storageRef , file).then((snapshot) => {
+      console.log("Upload ảnh thành công!" , snapshot);
+}); 
+    },
+    saveForm(){
+
     }
   },
 };

@@ -13,6 +13,7 @@
     "firebase": "^10.8.1",
     "sass": "^1.71.1",
     "typescript": "^5.4.3",
+    "uuid": "^9.0.1",
     "vue": "^3.2.13",
     "vue-router": "^4.3.0",
     "vuedraggable": "^2.24.3",

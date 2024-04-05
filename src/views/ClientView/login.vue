@@ -59,7 +59,8 @@
 import btnMdRadius from '../../components/button/button_md_radius.vue'
 import btnLogoRadius from '../../components/button/button_logo_radius.vue'
 import regex from '../../util/regex.js'
-import auth from "../../service/auth/auth.js";
+// import auth from "../../service/auth/auth.js";
+// import store from '../../store/authStore.js'
 export default {
   components:{
     btnLogoRadius,
@@ -94,6 +95,10 @@ export default {
       }else{
         alert("Please check validate form");
       }
+      // store.commit('login', {
+      //   email: this.formData.email,
+      //   password : this.formData.password
+      // });
     },
    async loginWithGoogle(){
     await  auth.signWithGoogle().then(()=>{
@@ -101,7 +106,6 @@ export default {
       }).catch((error)=>{
         console.log(error);
       })
-      
     },
     Validator(){
       if(regex.isRequired(this.formData.email)){
@@ -124,10 +128,9 @@ export default {
       }
       return this.isCheckValidation;
     },
- 
   },
   computed:{
-    
+
     },
     watch:{
      

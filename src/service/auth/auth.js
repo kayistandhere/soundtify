@@ -1,5 +1,6 @@
 
-import firebaseAuth  from "../../firebase.ts";
+import firebaseAuth  from "../../firebase.js";
+// import { addUser } from '../../firebase/fireStore/fireQuery.js';
 import {
   signInWithEmailAndPassword,
   GoogleAuthProvider,
@@ -15,16 +16,16 @@ import {
 const signIn = (email, password) => {
     return setPersistence(firebaseAuth.auth,browserLocalPersistence ).then(() => {
         return signInWithEmailAndPassword(firebaseAuth.auth, email, password);
-
     }).catch((error) =>{
       console.log(error);
     })
 };
-const signUp = async (name, email, password) => {
+const signUp = async (name, email, password , sex , phone , age) => {
   try {
+    await createUserWithEmailAndPassword(firebaseAuth.auth, email, password);
     await updateProfile(firebaseAuth.auth.currentUser, { displayName: name });
-    return createUserWithEmailAndPassword(firebaseAuth.auth, email, password);
-  } catch (error) {
+    await addUser({"name":name , "email":email, "sex":sex , "phone":phone, "age":age})
+  }catch (error) {
     console.log(error);
   }
 };

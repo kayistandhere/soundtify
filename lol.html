@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <script>
+const MAX_TIME = 18;
+const MIN_BLOOM_TIME = 0;
+const MAX_BLOOM_TIME = 2;
+const MIN_FADE_TIME = 0;
+const MAX_FADE_TIME = 2;
+
+let currentTime = 6;
+let sunState = "Mọc";
+let birds = [];
+let flowers = [];
+
+// Tạo ngẫu nhiên số lượng hoa ban đầu
+const initialFlowerCount = Math.floor(Math.random() * 5) + 1;
+for (let i = 0; i < initialFlowerCount; i++) {
+  const color = Math.floor(Math.random() * 3);
+  flowers.push({
+    color,
+    bloomTime: 0,
+    fadeTime: 0,
+  });
+}
+
+function updateSunState() {
+  if (currentTime === 6) {
+    sunState = "Mọc";
+  } else if (currentTime === 18) {
+    sunState = "Lặn";
+  }
+}
+
+function updateFlowers() {
+  if (sunState === "Mọc") {
+    for (const flower of flowers) {
+      if (flower.bloomTime === 0) {
+        flower.bloomTime = Math.floor(Math.random() * (MAX_BLOOM_TIME - MIN_BLOOM_TIME + 1)) + MIN_BLOOM_TIME;
+      } else {
+        flower.bloomTime--;
+      }
+    }
+  } else if (sunState === "Lặn") {
+    for (const flower of flowers) {
+      if (flower.fadeTime === 0) {
+        flower.fadeTime = Math.floor(Math.random() * (MAX_FADE_TIME - MIN_FADE_TIME + 1)) + MIN_FADE_TIME;
+      } else {
+        flower.fadeTime--;
+        if (flower.fadeTime === 0) {
+          flowers.splice(flowers.indexOf(flower), 1);
+        }
+      }
+    }
+  }
+}
+
+function updateBirds() {
+  if (sunState === "Lặn") {
+    birds = [];
+  } else if (sunState === "Mọc") {
+    birds = [
+      {
+        lastFlowerColor: null,
+      },
+    ];
+  }
+
+  while (birds.length > 0) {
+    const bird = birds.pop();
+    const randomFlowerIndex = Math.floor(Math.random() * flowers.length);
+    const randomFlower = flowers[randomFlowerIndex];
+
+    if (
+      randomFlower.bloomTime > 0 &&
+      (bird.lastFlowerColor === null || bird.lastFlowerColor === randomFlower.color)
+    ) {
+      bird.lastFlowerColor = randomFlower.color;
+      flowers.splice(randomFlowerIndex, 1);
+
+      if (bird.lastFlowerColor !== null) {
+        flowers.push({
+          color: bird.lastFlowerColor,
+          bloomTime: 0,
+          fadeTime: 0,
+        });
+      }
+    }
+  }
+}
+
+function printState() {
+  console.log(`Thời gian: ${currentTime}`);
+  console.log(`Trạng thái mặt trời: ${sunState}`);
+  console.log(`Số lượng chim: ${birds.length}`);
+  console.log(`Số lượng hoa: ${flowers.length}`);
+  for (const flower of flowers) {
+    console.log(` - Màu hoa: ${flower.color}`);
+  }
+  console.log("---");
+}
+
+while (currentTime <= MAX_TIME) {
+  updateSunState();
+  updateFlowers();
+  updateBirds();
+  printState();
+  currentTime++;
+}
+    </script>
+</body>
+
+</html>

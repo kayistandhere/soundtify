@@ -1,51 +1,114 @@
 <template>
-  <div class="container-fluid text-secondary bg-module rounded" style="height: 100vh;">
+  <div class="container-fluid text-secondary bg-module rounded" style="height: 100vh">
     <div class="d-flex justify-content-center align-items-center">
       <div class="col-lg-5 bg-black rounded text-center row justify-content-center mt-5">
         <!-- Sign up with email password -->
-        <form @submit.prevent="register" class=" row justify-content-center">
-          <span class="fs-2 fw-bold text-white my-5"> Sign up to Soundtify </span>
-          <div class="my-3 d-flex justify-content-center">
-            <div class="custom-form">
-              <input type="text" name="text" autocomplete="off" v-model="formData.name"  @blur="Validator"/>
-              <label for="text" class="label-name">
-                <span class="content-name"> Name </span>
-              </label>
+        <form @submit.prevent="register" class="row justify-content-center">
+          <span class="fs-2 fw-bold text-white my-5">
+            Sign up to Soundtify
+          </span>
+
+          <div class="d-flex">
+            <!-- Name -->
+            <div class="col-8 px-1 py-2">
+              <div class="custom-form">
+                <input type="text" name="text" autocomplete="off" v-model="formData.name" @blur="Validator"
+                  placeholder="Elon Mush" />
+                <label for="text" class="label-name">
+                  <span class="content-name"> Name </span>
+                </label>
+              </div>
+              <span class="fs-8 p-0" v-if="!isCheckValidation">{{this.error.name}}</span>
+            </div>
+           
+            <!-- Sex -->
+            <div class="col-4 px-1 py-2">
+              <div class="custom-form">
+                <input type="text" name="text" autocomplete="off" v-model="formData.sex" @blur="Validator"
+                  placeholder="male" />
+                <label for="text" class="label-name">
+                  <span class="content-name"> Sex </span>
+                </label>
+              </div>
+              <span class="fs-8 p-0" v-if="!isCheckValidation">{{this.error.sex}}</span>
             </div>
           </div>
-          <span class="fs-8 p-0 " v-if="!isCheckValidation">{{ this.error.name }}</span>
-          <div class="my-3 d-flex justify-content-center">
-            <div class="custom-form">
-              <input type="text" name="text" autocomplete="off" v-model="formData.email"  @blur="Validator"/>
-              <label for="text" class="label-name">
-                <span class="content-name"> Email </span>
-              </label>
+          <!-- Email -->
+          <div class="px-3 py-2">
+              <div class="custom-form">
+                <input type="text" name="text" autocomplete="off" v-model="formData.email" @blur="Validator"
+                  placeholder="abc@gmail.com" />
+                <label for="text" class="label-name">
+                  <span class="content-name"> Email </span>
+                </label>
+              </div>
+              <span class="fs-8 p-0" v-if="!isCheckValidation">{{this.error.email}}</span>
+            </div>
+          <div class="d-flex">
+            <!-- phone -->
+            <div class="col-9 px-1 py-2">
+              <div class="custom-form">
+                <input type="text" name="text" autocomplete="off" v-model="formData.phone" @blur="Validator"
+                  placeholder="" />
+                <label for="text" class="label-name">
+                  <span class="content-name"> Phone </span>
+                </label>
+              </div>
+              <span class="fs-8 p-0" v-if="!isCheckValidation">{{this.error.phone}}</span>
+            </div>
+            <!-- age -->
+            <div class="col-3 px-1 py-2">
+              <div class="custom-form">
+                <input type="text" name="text" autocomplete="off" v-model="formData.age" @blur="Validator"
+                  placeholder="18" />
+                <label for="text" class="label-name">
+                  <span class="content-name"> Age </span>
+                </label>
+              </div>
+              <span class="fs-8 p-0" v-if="!isCheckValidation">{{this.error.age}}</span>
             </div>
           </div>
-          <span class="fs-8 p-0 " v-if="!isCheckValidation">{{ this.error.email }}</span>
-          <div class="my-3 d-flex justify-content-center">
-            <div class="custom-form">
-              <input type="text" name="text" autocomplete="off" v-model="formData.password"  @blur="Validator"/>
-              <label for="text" class="label-name">
-                <span class="content-name"> Mật khẩu </span>
-              </label>
+          <div class="d-flex">
+            <!-- Password -->
+            <div class="col-6 px-1 py-2">
+              <div class="custom-form">
+                <input type="password" name="text" autocomplete="off" v-model="formData.password" @blur="Validator"
+                  placeholder="******" />
+                <label for="text" class="label-name">
+                  <span class="content-name"> Password </span>
+                </label>
+              </div>
+              <span class="fs-8 p-0" v-if="!isCheckValidation">{{this.error.password}}</span>
+            </div>
+
+            <!-- Comfirm Password -->
+            <div class="col-6 px-1 py-2">
+              <div class="custom-form">
+                <input type="password" name="text" autocomplete="off" v-model="formData.comfirmPassWord"
+                  @blur="Validator" placeholder="******" />
+                <label for="text" class="label-name">
+                  <span class="content-name"> Comfirm password </span>
+                </label>
+              </div>
+              <span class="fs-8 p-0" v-if="!isCheckValidation">{{this.error.comfirmPassWord}}</span>
             </div>
           </div>
-          <span class="fs-8 p-0 " v-if="!isCheckValidation">{{ this.error.password }}</span>
+
           <div class="px-3 py-2">
             <custom-btn-1 :customContent="SignUptext" type="submit"></custom-btn-1>
           </div>
           <!-- Điều Khoản -->
           <div class="pb-2 col-7">
-            <span class="custom-font-size-1 px-2">By signing up, you agree to the 
+            <span class="custom-font-size-1 px-2">By signing up, you agree to the
               <span class="text-decoration-underline">Term of use </span>and
               <span class="text-decoration-underline">Privacy Policy</span>.
             </span>
           </div>
-          <div class="border-top border-secondary col-9 my-5 "></div>
-          <div class=" px-2 py-2 ">
-            <span class="custom-font-size">Bạn đã có tài khoản? Hãy <router-link :to="'/'"
-                class="text-link fw-bold txt-green">đăng nhập</router-link> </span>
+          <div class="border-top border-secondary col-9 my-5"></div>
+          <div class="px-2 py-2">
+            <span class="custom-font-size">Bạn đã có tài khoản? Hãy
+              <router-link :to="'/'" class="text-link fw-bold txt-green">Login</router-link>
+            </span>
           </div>
         </form>
       </div>
@@ -53,35 +116,42 @@
   </div>
 </template>
 <script>
-import customBtn1 from '../../components/button/button_md_radius.vue'
-import auth from '../../service/auth/auth.js'
-import regex from '../../util/regex.js'
+import customBtn1 from "../../components/button/button_md_radius.vue";
+import auth from "../../service/auth/auth.js";
+import regex from "../../util/regex.js";
 export default {
   components: {
-    customBtn1
+    customBtn1,
   },
   data() {
     return {
       formData: {
         name: "",
         email: "",
+        sex: "",
+        age: "",
+        phone: "",
         password: "",
+        comfirmPassWord: "",
       },
-      error:{
-          name : "",
-          email: "",
-          password: "",
-        },
-      isCheckValidation : true,
+      error: {
+        name: "",
+        email: "",
+        sex: "",
+        age: "",
+        phone: "",
+        password: "",
+        comfirmPassWord: "",
+      },
+      isCheckValidation: true,
       SignUptext: "Sign up",
     };
   },
   methods: {
-    register() {
-        auth.signUp(this.formData.name,this.formData.email, this.formData.password)
-          .then((res) => {
-            this.$router.push({name : "login.view"});
-            console.log("dangky thanh cong ", res);
+    register() {auth.signUp(this.formData.name, this.formData.email, this.formData.password ,this.formData.sex, this.formData.phone , this.formData.age)
+        .then((res) => {
+          this.$router.push({ name: "login.view" });
+          console.log("dang ky thanh cong ", res);
           // ...
         })
         .catch((error) => {
@@ -89,44 +159,73 @@ export default {
           console.log("test2", errorMessage);
           // ..
         });
-
     },
-    Validator(){
-      if(regex.isRequired(this.formData.name)){
-        this.error.name = "Please enter this field"
+    Validator() {
+      if (regex.isRequired(this.formData.name)) {
+        this.error.name = "Please enter this field";
         this.isCheckValidation = false;
-      }else if(regex.isUsername(this.formData.name)){
-        this.error.name = "Please enter 3 or more characters"
+      } else if (regex.isUsername(this.formData.name)) {
+        this.error.name = "Please enter 3 or more characters";
         this.isCheckValidation = false;
-      }else {
+      } else {
         this.error.name = "";
       }
-      if(regex.isRequired(this.formData.email)){
-        this.error.email = "Please enter this field"
-         this.isCheckValidation = false;
-      }else if(regex.isEmail(this.formData.email)){
-        this.error.email = "Enter incorrect email format";
-         this.isCheckValidation = false;
+      if(regex.isRequired(this.formData.sex)){
+        this.error.sex = "Please enter this field";
+        this.isCheckValidation = false;
       }else {
+        this.error.sex = "";
+      }
+      if (regex.isRequired(this.formData.email)) {
+        this.error.email = "Please enter this field";
+        this.isCheckValidation = false;
+      } else if (regex.isEmail(this.formData.email)) {
+        this.error.email = "Enter incorrect email format";
+        this.isCheckValidation = false;
+      } else {
         this.error.email = "";
       }
-      if(regex.isRequired(this.formData.password)){
+      if (regex.isRequired(this.formData.phone)) {
+        this.error.phone = "Please enter this field";
+        this.isCheckValidation = false;
+      }else{
+        this.error.phone = "";
+      }
+      if (regex.isRequired(this.formData.age)) {
+        this.error.age = "Enter this field";
+        this.isCheckValidation = false;
+      }else{
+        this.error.age = "";
+      }
+      if (regex.isRequired(this.formData.password)) {
         this.error.password = "Please enter this field";
-         this.isCheckValidation = false;
-      }else if(regex.isPassword(this.formData.password)){
+        this.isCheckValidation = false;
+      } else if (regex.isPassword(this.formData.password)) {
         this.error.password = "Enter incorrect password format";
-         this.isCheckValidation = false;
-      }else {
+        this.isCheckValidation = false;
+      } else {
         this.error.password = "";
+      }
+      if (regex.isRequired(this.formData.comfirmPassWord)) {
+        this.error.comfirmPassWord = "Please enter this field";
+        this.isCheckValidation = false;
+      } else if (regex.isPassword(this.formData.comfirmPassWord)) {
+        this.error.comfirmPassWord = "Enter incorrect password format";
+        this.isCheckValidation = false;
+      } else if (this.formData.password != this.formData.comfirmPassWord) {
+        this.error.comfirmPassWord = "Password does not match";
+        this.isCheckValidation = false;
+      } else {
+        this.error.comfirmPassWord = "";
       }
       return this.isCheckValidation;
     },
   },
-}
+};
 </script>
 <style scoped>
 .custom-form {
-  width: 70%;
+  width: 100%;
   position: relative;
   height: 50px;
   overflow: hidden;

@@ -1,5 +1,6 @@
 <template>
-  <div class="card custom-bg-card m-2 position-relative" style="width: 12rem;">
+    <router-link :to="'/songDetail'">
+    <div class="card custom-bg-card m-2 position-relative" style="width: 12rem;">
     <img src="../../assets/Images/Artists/SonTung.jpg" class="custom-img-thumbnail p-2" alt="...">
     <div class="p-2">
             <h5 class="card-title fs-6 fw-bolder text-white">Pop Rising Vietnam</h5>
@@ -10,8 +11,9 @@
         <i class="bi bi-play-fill fs-2 text-dark ms-1"></i>
         </div>
     </div>
-    
 </div>
+    </router-link>
+  
 </template> 
 
 <script>

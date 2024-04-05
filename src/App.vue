@@ -98,7 +98,7 @@
             </div>
             <div class="d-flex align-items-center">
               <span class="fs-9 mx-2 text-white"></span>
-              <input type="range" class="slider" style="width:30rem" min="0" max="100" step="1" :value="this.seekingData"
+              <input type="range" class="slider" style="width:30rem" min="0" max="100" step="1" v-model="this.seekingData"
               @input="onSeekSliderChange">
               <span class="fs-9 ms-2 text-white">{{ this.total }}</span>
             </div>
@@ -127,10 +127,7 @@ import trackItemCardAlbums from './components/card/track_item_card_albums.vue'
 import artistsItemCardAlbums from './components/card/artists_item_card_albums.vue'
 import btnTopic from '../src/components/button/button_radius.vue'
 import player from './store/player_store/player.js'
-// import { onAuthStateChanged } from 'firebase/auth';
-// import firebaseAuth from './firebase.js'
-import { mapActions ,mapGetters } from 'vuex';
-// import { count } from 'firebase/firestore';
+
 
   export default {
     components : {
@@ -160,7 +157,6 @@ import { mapActions ,mapGetters } from 'vuex';
       // })
     },
     methods:{
-      ...mapActions(['increment','plays']),
         createTracks(){
           player.created();
         },
@@ -190,17 +186,12 @@ import { mapActions ,mapGetters } from 'vuex';
           player.nextSong();
         },
         onSeekSliderChange(){
+          console.log("seeking", this.seekingData);
           player.debounce(player.seekingChange(this.seekingData),1000);
         },
 
       },
     computed:{
-        ...mapGetters(['count','currentTime']),
-       
-        test(){
-          
-         console.log("Volume" , this.volumeValue);
-      }
   },
     watch:{
 

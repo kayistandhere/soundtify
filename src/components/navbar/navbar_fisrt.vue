@@ -32,12 +32,13 @@
                     </li>
                     <li class="nav-item row align-items-center p-3">
                         <div class="btn-group ">
-                        <button type="button" class="bg-module border-0" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="../../assets/Images/Artists/PhucDu.jpg" class="customImages" alt="images user"
+                        <button type="button" class="bg-module border-0" data-bs-toggle="dropdown" aria-expanded="false" >
+                            <img src="../../assets/Images/Artists/SonTung.jpg" class="customImages" alt="images user"
                                 srcset="" width="40" height="40">
                         </button>
                         <ul class="dropdown-menu dropdown-menu-lg-end custom-dropdown fs-8">
                             <li><router-link class="dropdown-item text-white custom-dropdown-item py-2" :to="'/profile'">Profile</router-link></li>
+                            <li><router-link class="dropdown-item text-white custom-dropdown-item py-2" :to="'/upgradePackage'">Upgrade Package</router-link></li>
                             <li><a class="dropdown-item text-white custom-dropdown-item py-2" href="#">Setting</a></li>
                             <div class="border-top border-secondary col-11 ms-2"></div>
                             <li><a class="dropdown-item text-white custom-dropdown-item py-2" href="#" @click="logoutAccount">Log out</a></li>
@@ -52,11 +53,31 @@
 
 <script>
 import auth from '../../service/auth/auth.js'
+import firebase from '../../firebase.js'
+import { ref , listAll } from "firebase/storage";
 export default {
+    data(){
+        return {
+            user: null,
+            files: [],
+        }
+    },
+    created(){
+        this.avatarUser();
+        
+    },
     methods:{
         logoutAccount(){
              auth.logout();
             this.$router.push({name: "login.vue"});
+        },
+        avatarUser(){
+                const storageRef = ref(firebase.storage , `User/${firebase.auth.currentUser.uid}/avatar/` + firebase.auth.currentUser.uid);
+                listAll(storageRef)
+                        .then((res) => {
+                            this.files = res.items;
+                        })
+
         }
     }
 }

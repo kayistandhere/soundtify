@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import authStore from '../store/authStore.js'
-import firebase from '../firebase.ts'
+import firebase from '../firebase.js'
 import HomeView from '../views/ClientView/home_view.vue'  
 import Register from '../views/ClientView/register.vue'
 import Login from '../views/ClientView/login.vue'  
@@ -9,7 +8,9 @@ import forgotPassword from '../views/ClientView/forgot_password.vue'
 import resetPassword from '../views/ClientView/confirm_reset_password.vue'
 import errorPage from '../views/ClientView/error_page.vue'
 import profileUser from '../views/ClientView/profile_user.vue'
+import payment from '../views/ClientView/payment.vue'
 import searchTrackArtistsAlbums from '../views/ClientView/search_track_artists_albums.vue'
+import upgradePackage from '@/views/ClientView/upgrade-package.vue'
 
 const routes = [
   {
@@ -62,6 +63,16 @@ const routes = [
     path: '/error',
     name: 'NotFound',
     component: errorPage
+  },
+  {
+    path: '/payment',
+    name: 'payment',
+    component: payment
+  },
+  {
+    path: '/upgradePackage',
+    name: 'upgradePackage',
+    component: upgradePackage
   },
 ]
 // router.beforeEach(async (to, from) => {

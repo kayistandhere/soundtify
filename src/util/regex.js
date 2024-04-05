@@ -25,7 +25,7 @@ isPassword(value){
 },
 // Gồm chuỗi và số từ 3 đến 16 ký tự
 isUsername(value){
-    var regex = /^[a-z0-9_-]{3,16}$/ ;
+    var regex = /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/;
     return regex.test(value) ? undefined :  value || "Vui lòng nhập đúng định dạng";
 },
 /* Format YYYY-MM-dd */

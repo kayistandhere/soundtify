@@ -1,26 +1,20 @@
-import { createStore } from 'vuex'
+import Vuex from 'vuex';
 
-export default createStore({
-    state:{
-        currentUser: null,
+const store = new Vuex.Store({
+  state: {
+    isLoggedIn: false,
+    user: null,
+  },
+  mutations: {
+    login(state, user) {
+      state.isLoggedIn = true;
+      state.user = user;
     },
-    getters:{
-        currentUser: state => state.currentUser,
-        isLoggedIn(state) {
-            return state.currentUser !== null;
-          },
+    logout(state) {
+      state.isLoggedIn = false;
+      state.user = null;
     },
-    mutations:{
-        setUpdateCurrentUser:(state , value) =>{
-            state.currentUser = value
-        }
-    },
-    actions:{
-        oncurrentUserChange({commit} , value){
-            commit('setUpdateCurrentUser' , value);
-        }
-    },
-    modules:{
+  },
+});
 
-    }
-})
+export default store;
