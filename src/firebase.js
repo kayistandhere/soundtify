@@ -1,8 +1,8 @@
 import { initializeApp, getApp } from 'firebase/app';
 import { getAuth } from "firebase/auth";
-import { getFirestore } from 'firebase/firestore/lite';
 import { getStorage } from "firebase/storage";
 import { getDatabase } from "firebase/database";
+import { getFirestore } from 'firebase/firestore';
 // import { getFirestore, collection, getDocs } from 'firebase/firestore/lite';
 // TODO: Replace the following with your app's Firebase project configuration
 const firebaseConfig = {
@@ -16,11 +16,10 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const database = getFirestore(app);
+const database = getFirestore()
 const auth = getAuth(app);
 // Get a non-default Storage bucket
-const firebaseApp = getApp();
-const storage = getStorage(firebaseApp, "gs://datn-578a6.appspot.com");
+const storage = getStorage(app, "gs://datn-578a6.appspot.com");
 const realTimeDatabase = getDatabase(app);
 
 export default {
