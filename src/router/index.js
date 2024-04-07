@@ -9,6 +9,7 @@ import resetPassword from '../views/ClientView/confirm_reset_password.vue'
 import errorPage from '../views/ClientView/error_page.vue'
 import profileUser from '../views/ClientView/profile_user.vue'
 import payment from '../views/ClientView/payment.vue'
+import musicUploadManagerment from '../views/ClientView/music-upload-managerment.vue'
 import searchTrackArtistsAlbums from '../views/ClientView/search_track_artists_albums.vue'
 import upgradePackage from '@/views/ClientView/upgrade-package.vue'
 
@@ -73,6 +74,11 @@ const routes = [
     path: '/upgradePackage',
     name: 'upgradePackage',
     component: upgradePackage
+  },
+  {
+    path: '/musicUploadManagerment',
+    name: 'musicUpload',
+    component: musicUploadManagerment
   },
 ]
 // router.beforeEach(async (to, from) => {
