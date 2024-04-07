@@ -52,6 +52,7 @@
 </template>
 
 <script>
+import { useAuthStoreStore } from '../../store/authStore.js'
 import auth from '../../service/auth/auth.js'
 import firebase from '../../firebase.js'
 import { ref , listAll } from "firebase/storage";

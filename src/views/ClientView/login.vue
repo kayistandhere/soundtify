@@ -55,12 +55,12 @@
     </div>
   </div>
 </template>
-<script>
+<script >
 import btnMdRadius from '../../components/button/button_md_radius.vue'
 import btnLogoRadius from '../../components/button/button_logo_radius.vue'
 import regex from '../../util/regex.js'
-// import auth from "../../service/auth/auth.js";
-// import store from '../../store/authStore.js'
+import auth from "../../service/auth/auth.js";
+
 export default {
   components:{
     btnLogoRadius,
@@ -79,8 +79,12 @@ export default {
       },
       isCheckValidation : true,
       logintext: "Log in",
-      loginwidthGoogle: "Login With Google"
+      loginwidthGoogle: "Login With Google",
+      dulieu : null,
     };
+  },
+  setup(){
+ 
   },
   methods: {
     login() {
@@ -130,10 +134,10 @@ export default {
     },
   },
   computed:{
-
+    
     },
     watch:{
-     
+      
     }
   
    
