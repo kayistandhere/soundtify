@@ -16,6 +16,7 @@ export default {
   currentTrack: 0,
   isTimerPlaying: false,
 
+  
   // function
   created() {
     this.audio.src = this.tracks[this.currentTrackIndex].source;

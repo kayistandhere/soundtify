@@ -16,7 +16,7 @@ import upgradePackage from '@/views/ClientView/upgrade-package.vue'
 const routes = [
   {
     path: '/',
-    name: 'login.vue',
+    name: 'login.view',
     component: Login,
     meta :{
       ignoreAuth: true

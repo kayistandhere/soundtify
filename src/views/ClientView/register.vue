@@ -59,7 +59,7 @@
             <!-- age -->
             <div class="col-3 px-1 py-2">
               <div class="custom-form">
-                <input type="text" name="text" autocomplete="off" v-model="formData.age" @blur="Validator"
+                <input type="number" autocomplete="off" v-model="formData.age" @blur="Validator"
                   placeholder="18" />
                 <label for="text" class="label-name">
                   <span class="content-name"> Age </span>
@@ -126,13 +126,13 @@ export default {
   data() {
     return {
       formData: {
-        name: "",
-        email: "",
-        sex: "",
-        age: "",
-        phone: "",
-        password: "",
-        comfirmPassWord: "",
+        name: "levinhthuan",
+        email: "levinhthuan1604@gmail.com",
+        sex: "male",
+        age: 22,
+        phone: "0971053741",
+        password: "Kayi!123",
+        comfirmPassWord: "Kayi!123",
       },
       error: {
         name: "",

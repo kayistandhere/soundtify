@@ -2,7 +2,7 @@ export default ({
 // Định nghĩa rules
 // Kiểm tra yêu cầu nhập ()
 isRequired(value){
-    return value.trim() ? undefined :  value || "Bạn chưa nhập trường này";
+    return value ? undefined :  value || "Bạn chưa nhập trường này";
 },
 // Kiểm tra nhập đúng định dạng gmail
 isEmail(value){

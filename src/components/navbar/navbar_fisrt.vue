@@ -70,7 +70,7 @@ export default {
     methods:{
         logoutAccount(){
              auth.logout();
-            this.$router.push({name: "login.vue"});
+            this.$router.push({name: "login.view"});
         },
         avatarUser(){
                 const storageRef = ref(firebase.storage , `User/${firebase.auth.currentUser.uid}/avatar/` + firebase.auth.currentUser.uid);
