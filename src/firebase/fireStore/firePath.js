@@ -10,4 +10,5 @@ const songColection = collection(firebase.database, 'Song');
 export  {
     userColection,
     artistColection,
+    songColection,
 }

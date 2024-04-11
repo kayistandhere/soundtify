@@ -3,7 +3,7 @@ import {userColection , artistColection } from './firePath.js'
 import firebase from '../../firebase.js'
  
 export const addUser = async (user) =>{
-    const docfire = doc(userColection, `User/${user.uuid}`);
+    const docfire = doc(userColection, `${user.uuid}`);
     await setDoc(docfire , user);
 }
 export const registerAsArtist = async (artist , user) => {

@@ -1,20 +1,27 @@
 <template>
-    <div class="d-flex">
-        <card-payment class="mt-5"></card-payment>
-        <card-payment class="mt-5"></card-payment>
+    <div class="container-fluid bg-module" style="height: 100vh;">
+        <navbar-fisrt></navbar-fisrt>
+        <div class="d-flex">
+            <card-payment class="mt-5"></card-payment>
+            <card-payment class="mt-5"></card-payment>
+        </div>
+        <footer_1 class="mt-5"></footer_1>
     </div>
+   
  
-  <footer_1 class="mt-5"></footer_1>
+
 
 </template>
 
 <script>
+import navbarFisrt from '@/components/navbar/navbar_fisrt.vue';
 import footer_1 from '@/components/footer/footer_1.vue';
 import cardPayment from '../../components/card/card-payment.vue'
 export default {
     components:{
         cardPayment,
-        footer_1
+        footer_1,
+        navbarFisrt,
     }
 }
 </script>

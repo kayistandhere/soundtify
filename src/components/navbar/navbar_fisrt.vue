@@ -55,16 +55,17 @@
 import { useAuthStoreStore } from '../../store/authStore.js'
 import auth from '../../service/auth/auth.js'
 import firebase from '../../firebase.js'
+import { getAvatarUser } from '../../firebase/storage/storageQuery.js'
 import { ref , listAll } from "firebase/storage";
 export default {
     data(){
         return {
             user: null,
-            files: [],
+            files: null,
         }
     },
     created(){
-        this.avatarUser();
+        this.avatarUser(files);
         
     },
     methods:{
@@ -73,12 +74,7 @@ export default {
             this.$router.push({name: "login.view"});
         },
         avatarUser(){
-                const storageRef = ref(firebase.storage , `User/${firebase.auth.currentUser.uid}/avatar/` + firebase.auth.currentUser.uid);
-                listAll(storageRef)
-                        .then((res) => {
-                            this.files = res.items;
-                        })
-
+          
         }
     }
 }

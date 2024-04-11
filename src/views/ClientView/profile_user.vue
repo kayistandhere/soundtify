@@ -143,6 +143,9 @@ import buttonLgRadius from "../../components/button/button_lg-radius.vue";
 import buttonMdRadius from "../../components/button/button_md_radius.vue";
 import firebase from "../../firebase.js"
 import {ref , uploadBytes } from "firebase/storage";
+import uploadSingleFile from "@/firebase/storage/storageQuery";
+import { convertFireStorageUrl } from "@/util/download_url_parse";
+
 export default {
   name: "Profile",
   components: {
@@ -180,11 +183,14 @@ export default {
       }
     },
     async uploadFile(){
-      const file = document.getElementById("file").files[0];
-      const storageRef = ref(firebase.storage , `User/${firebase.auth.currentUser.uid}/avatar/` + file.name);
-      await uploadBytes(storageRef , file).then((snapshot) => {
-      console.log("Upload ảnh thành công!" , snapshot);
-}); 
+      // const file = document.getElementById("file").files[0];
+      // const storageRef = ref(firebase.storage , `User/${firebase.auth.currentUser.uid}/avatar/` + file.name);
+      // const uploadResource =  await uploadSingleFile(storageRef , file)
+      // console.log(uploadResource);
+      // convertFireStorageUrl(uploadResource);
+      //       await uploadBytes(storageRef , file).then((snapshot) => {
+//       console.log("Upload ảnh thành công!" , snapshot);
+// }); 
     },
     saveForm(){
 
