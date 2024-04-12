@@ -24,13 +24,13 @@
             <!-- Sex -->
             <div class="col-4 px-1 py-2">
               <div class="custom-form">
-                <input type="text" name="text" autocomplete="off" v-model="formData.sex" @blur="Validator"
+                <input type="text" name="text" autocomplete="off" v-model="formData.gender" @blur="Validator"
                   placeholder="male" />
                 <label for="text" class="label-name">
                   <span class="content-name"> Sex </span>
                 </label>
               </div>
-              <span class="fs-8 p-0" v-if="!isCheckValidation">{{this.error.sex}}</span>
+              <span class="fs-8 p-0" v-if="!isCheckValidation">{{this.error.gender}}</span>
             </div>
           </div>
           <!-- Email -->
@@ -128,7 +128,7 @@ export default {
       formData: {
         name: "levinhthuan",
         email: "levinhthuan1604@gmail.com",
-        sex: "male",
+        gender: "male",
         age: 22,
         phone: "0971053741",
         password: "Kayi!123",
@@ -137,7 +137,7 @@ export default {
       error: {
         name: "",
         email: "",
-        sex: "",
+        gender: "",
         age: "",
         phone: "",
         password: "",
@@ -148,7 +148,7 @@ export default {
     };
   },
   methods: {
-    register() {auth.signUp(this.formData.name, this.formData.email, this.formData.password ,this.formData.sex, this.formData.phone , this.formData.age)
+    register() {auth.signUp(this.formData.name, this.formData.email, this.formData.password ,this.formData.gender, this.formData.phone , this.formData.age)
         .then((res) => {
           this.$router.push({ name: "login.view" });
           console.log("dang ky thanh cong ", res);
@@ -170,11 +170,11 @@ export default {
       } else {
         this.error.name = "";
       }
-      if(regex.isRequired(this.formData.sex)){
-        this.error.sex = "Please enter this field";
+      if(regex.isRequired(this.formData.gender)){
+        this.error.gender = "Please enter this field";
         this.isCheckValidation = false;
       }else {
-        this.error.sex = "";
+        this.error.gender = "";
       }
       if (regex.isRequired(this.formData.email)) {
         this.error.email = "Please enter this field";

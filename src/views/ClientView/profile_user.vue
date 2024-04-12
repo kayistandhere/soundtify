@@ -40,22 +40,26 @@
                     </div>
                   </div>
                   <div class="row p-2">
-                    <div class="col-10">
+                    <div class="col-8">
                       <input type="text" name="text" class="form-control" placeholder="0971053741" autocomplete="off"
                         v-model="formData.phone" @blur="Validator" />
+                    </div>
+                    <div class="col-2">
+                      <input type="text" name="text" class="form-control" placeholder="18" autocomplete="off"
+                        v-model="formData.age" @blur="Validator" />
                     </div>
                     <div class="col-2">
                       <div class="dropdown">
                         <button class="btn bg-module-1 text-white dropdown-toggle px-2" type="button"
                           id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                          {{ this.sexText }}
+                          {{ this.genderText }}
                         </button>
                         <ul class="dropdown-menu bg-module-1" aria-labelledby="dropdownMenuButton1">
                           <li>
-                            <a class="dropdown-item text-white" @click="checkSex(true)">Male</a>
+                            <a class="dropdown-item text-white" @click="checkSex()">Male</a>
                           </li>
                           <li>
-                            <a class="dropdown-item text-white" @click="checkSex(false)">Female</a>
+                            <a class="dropdown-item text-white" @click="checkSex()">Female</a>
                           </li>
                         </ul>
                       </div>
@@ -143,8 +147,9 @@ import buttonLgRadius from "../../components/button/button_lg-radius.vue";
 import buttonMdRadius from "../../components/button/button_md_radius.vue";
 import firebase from "../../firebase.js"
 import {ref , uploadBytes } from "firebase/storage";
-import uploadSingleFile from "@/firebase/storage/storageQuery";
+import { uploadSingleFile }from "@/firebase/storage/storageQuery";
 import { convertFireStorageUrl } from "@/util/download_url_parse";
+import auth from '../../service/auth/auth.js'
 
 export default {
   name: "Profile",
@@ -160,42 +165,57 @@ export default {
   data() {
     return {
       formData: {
-        name: "Kayi",
-        email: "levinhthuan1604@gmail.com",
+        name: "",
+        email: "",
         phone: 0,
-        sex: true,
-        password: "ádasdasda",
+        age : 0,
+        gender: "",
+        password: "",
       },
       backText: "Back",
       saveText: "Save",
-      sexText: "Male",
+      genderText: "Male",
       file: null,
     };
   },
+  created() {
+    this.getProfileUser();
+  },
   methods: {
-    checkSex(value) {
-      if (value) {
-        this.formData.sex = true;
-        this.sexText = "Male";
+    checkSex() {
+      if (this.formData.gender == "male") {
+        this.formData.gender = "male";
+        this.genderText = "Male";
       } else {
-        this.formData.sex = false;
-        this.sexText = "Female";
+        this.formData.gender = "female";
+        this.genderText = "Female";
       }
     },
     async uploadFile(){
-      // const file = document.getElementById("file").files[0];
-      // const storageRef = ref(firebase.storage , `User/${firebase.auth.currentUser.uid}/avatar/` + file.name);
-      // const uploadResource =  await uploadSingleFile(storageRef , file)
-      // console.log(uploadResource);
-      // convertFireStorageUrl(uploadResource);
-      //       await uploadBytes(storageRef , file).then((snapshot) => {
-//       console.log("Upload ảnh thành công!" , snapshot);
-// }); 
+      const file = document.getElementById("file").files[0];
+      const storageRef = ref(firebase.storage , `User/${firebase.auth.currentUser.uid}/avatar/` + file.name);
+      const uploadResource =  await uploadSingleFile(storageRef , file)
+      convertFireStorageUrl(uploadResource);
+            await uploadBytes(storageRef , file).then((snapshot) => {
+      console.log("Upload ảnh thành công!" , snapshot);
+      }); 
+    },
+    getProfileUser(){
+        const user = firebase.auth.currentUser;
+        if(user != null) {
+          user.providerData.forEach((profile) => {
+            this.formData.name = profile.name,
+            this.formData.email = profile.email,
+            this.formData.phone = profile.phone,
+            this.formData.gender = profile.gender
+          })
+        }
     },
     saveForm(){
-
+        auth.updateProfileUser(this.formData.name , this.formData.email , this.formData.phone , this.formData.age , this.formData.gender)
     }
   },
+  
 };
 
 </script>

@@ -1,6 +1,6 @@
 
 import firebaseAuth  from "../../firebase.js";
-import { addUser } from '../../firebase/fireStore/fireQuery.js';
+import { addUser, updateUser } from '../../firebase/fireStore/fireQuery.js';
 import {
   signInWithEmailAndPassword,
   GoogleAuthProvider,
@@ -11,6 +11,8 @@ import {
   createUserWithEmailAndPassword,
   browserLocalPersistence,
   updateProfile,
+  onAuthStateChanged,
+  // updateEmail,
 } from "firebase/auth";
 
 const signIn = (email, password) => {
@@ -20,16 +22,16 @@ const signIn = (email, password) => {
       console.log(error);
     })
 };
-const signUp = async (name, email, password , sex , phone , age) => {
+const signUp = async (name, email, password , gender , phone , age) => {
   try {
     await createUserWithEmailAndPassword(firebaseAuth.auth, email, password);
     await updateProfile(firebaseAuth.auth.currentUser, { displayName: name });
     const uuid = firebaseAuth.auth.currentUser.uid;
     /// TODO: Ensure consistency between object properties in this line and the properties defined in Firestore. 
     /// Any discrepancies in object properties will lead to data synchronization issues across platforms. Please exercise caution.
-    await addUser({"uuid":uuid ,"name":name , "email":email, "gender":sex , "phone":phone, "age":age })
+    await addUser({"uuid":uuid ,"name":name , "email":email, "gender":gender , "phone":phone, "age":age })
     console.log(addUser);
-  }catch (error) {
+  }catch (error){
     /// Signout if get error while signup
     firebaseAuth.auth.signOut();
     console.log(error);
@@ -47,7 +49,13 @@ const signWithGoogle = () => {
 const sendEmail = (email) => {
   return sendPasswordResetEmail(firebaseAuth.auth, email);
 };
-
+const updateProfileUser = async (name , email , age , phone , gender ) =>{
+     updateUser(name ,email ,  gender, phone , age).then((res) => {
+      console.log("update profile successfully" , res);
+    }).catch((error) => {
+      console.log("Error update profile" , error);
+    })
+}
 const logout = () => {
   return signOut(firebaseAuth.auth);
 };
@@ -57,5 +65,6 @@ export default {
   signIn,
   signWithGoogle,
   sendEmail,
+  updateProfileUser,
   logout,
 };

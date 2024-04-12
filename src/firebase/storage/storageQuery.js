@@ -1,5 +1,4 @@
-import { getDownloadURL, StorageReference, uploadBytes } from "firebase/storage";
-import { userAvartaPath } from './storagePath.js';
+import { getDownloadURL, StorageReference, uploadBytes , ref , listAll } from "firebase/storage";
 import firebase from '../../firebase.js';
 /**
  * This function returns an object containing a URL and token. To obtain a normal URL, please utilize the {@link convertFireStorageUrl} function.
@@ -21,12 +20,9 @@ export const uploadSingleFile = async (ref, file) => {
     }
 };
 
-export const getAvartaUser = (images) =>{
-    const userAvartaPath = ref(firebase.storage , `User/${firebase.auth.currentUser.uid}/avatar`)
-    userAvartaPath.firebase.storage.listAll().then((result) =>{
-        const url = result.items[0].downloadURL;
-        console.log("Check avatar = " , url);
-        images.src = url;
-
-    })
+export const getAvatarUser = async () =>{
+    const userAvatarRef = ref(firebase.storage, `User/${firebase.auth.currentUser.uid}/avatar/`);
+    const file = (await listAll(userAvatarRef)).items[0];
+ const data = await getDownloadURL(file);
+ return data;
 }

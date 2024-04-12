@@ -33,7 +33,7 @@
                     <li class="nav-item row align-items-center p-3">
                         <div class="btn-group ">
                         <button type="button" class="bg-module border-0" data-bs-toggle="dropdown" aria-expanded="false" >
-                            <img src="../../assets/Images/Artists/SonTung.jpg" class="customImages" alt="images user"
+                            <img v-bind:src="this.avatarClient" class="customImages" alt="images user"
                                 srcset="" width="40" height="40">
                         </button>
                         <ul class="dropdown-menu dropdown-menu-lg-end custom-dropdown fs-8">
@@ -52,20 +52,19 @@
 </template>
 
 <script>
-import { useAuthStoreStore } from '../../store/authStore.js'
 import auth from '../../service/auth/auth.js'
 import firebase from '../../firebase.js'
-import { getAvatarUser } from '../../firebase/storage/storageQuery.js'
-import { ref , listAll } from "firebase/storage";
+import { getAvatarUser } from '@/firebase/storage/storageQuery.js';
+import { getDownloadURL, StorageReference, uploadBytes , ref , listAll } from "firebase/storage";
 export default {
     data(){
         return {
-            user: null,
-            files: null,
+            avatarClient: null,
         }
     },
     created(){
-        this.avatarUser(files);
+        this.avatarUser();
+        
         
     },
     methods:{
@@ -73,10 +72,12 @@ export default {
              auth.logout();
             this.$router.push({name: "login.view"});
         },
-        avatarUser(){
-          
+      async avatarUser(){
+         await  getAvatarUser().then((res) =>{
+            this.avatarClient = res
+          })
         }
-    }
+    },
 }
 </script>
 
