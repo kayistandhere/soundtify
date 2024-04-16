@@ -16,12 +16,13 @@
       </div>
       <div class="p-2 col-lg-6">
         <form class="row g-3">
+          <div class="d-flex align-items-center justify-content-between">
           <div class="col-md-6">
             <div class="my-2 d-flex justify-content-center">
               <div class="custom-form">
-                <input type="text" name="text" id="email" class="bg-module-1" />
+                <input type="text" name="text" id="email" required class="bg-module-1" />
                 <label for="text" class="label-name">
-                  <span class="content-name"> Name </span>
+                  <span class="content-name text-dark"> Name Track </span>
                 </label>
               </div>
             </div>
@@ -29,19 +30,20 @@
           <div class="col-md-6">
             <div class="custom-form">
               <select id="inputState" class="custom-form bg-module-1 border-0 text-white">
-              <option selected>Choose...</option>
-              <option>Singapor</option>
-              <option>VietNam</option>
-              <option>Campuchia</option>
+              <option selected>Category</option>
+              <option>Pop</option>
+              <option>Jazz</option>
+              <option>Rock</option>
             </select>
             </div>
           </div>
+        </div>
           <div class="col-10">
             <div class="my-2 d-flex justify-content-center">
               <div class="custom-form">
-                <input type="text" name="text" id="email" class="bg-module-1" />
+                <input type="text" name="text" id="email" required class="bg-module-1" />
                 <label for="text" class="label-name">
-                  <span class="content-name"> Email </span>
+                  <span class="content-name text-dark"> Email </span>
                 </label>
               </div>
             </div>
@@ -49,9 +51,9 @@
           <div class="col-md-2">
             <div class="my-2 d-flex justify-content-center">
               <div class="custom-form">
-                <input type="text" name="text" id="email" class="bg-module-1" />
+                <input type="text" name="text" id="email" required class="bg-module-1" />
                 <label for="text" class="label-name">
-                  <span class="content-name"> Email </span>
+                  <span class="content-name text-dark"> Category </span>
                 </label>
               </div>
             </div>
@@ -59,9 +61,9 @@
           <div class="col-12">
             <div class="my-2 d-flex justify-content-center">
               <div class="custom-form">
-                <input type="text" name="text" id="email" class="bg-module-1" />
+                <input type="text" name="text" id="email" required class="bg-module-1" />
                 <label for="text" class="label-name">
-                  <span class="content-name"> Email </span>
+                  <span class="content-name text-dark"> Email </span>
                 </label>
               </div>
             </div>
@@ -69,9 +71,9 @@
           <div class="col-12">
             <div class="my-2 d-flex justify-content-center">
               <div class="custom-form">
-                <input type="text" name="text" id="email" class="bg-module-1" />
+                <input type="text" name="text" id="email" required class="bg-module-1" />
                 <label for="text" class="label-name">
-                  <span class="content-name"> Email </span>
+                  <span class="content-name text-dark"> Email </span>
                 </label>
               </div>
             </div>
@@ -89,9 +91,9 @@
           <div class="col-md-8">
             <div class="my-2 d-flex justify-content-center">
               <div class="custom-form">
-                <input type="text" name="text" id="email" class="bg-module-1" />
+                <input type="text" name="text" id="email" required class="bg-module-1" />
                 <label for="text" class="label-name">
-                  <span class="content-name"> Email </span>
+                  <span class="content-name text-dark"> Email </span>
                 </label>
               </div>
             </div>
@@ -105,12 +107,10 @@
               <option>Campuchia</option>
             </select>
             </div>
-           
           </div>
-
           <div class="col-12">
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="gridCheck">
+              <input class="form-check-input" type="checkbox" required id="gridCheck">
               <label class="form-check-label" for="gridCheck">
                 Check me out
               </label>
@@ -132,15 +132,26 @@ import buttonMdRadius from '@/components/button/button_md_radius.vue';
 import sideBar from '../../components/sidebar/sidebar.vue'
 import navbarFisrt from '@/components/navbar/navbar_fisrt.vue';
 import firebase from '../../firebase.js'
-import {ref , uploadBytes } from "firebase/storage";
 export default {
   data() {
     return {
+      formData :{
+        name: "",
+        description : "",
+        artistId : "",
+        cover : null,
+        subtotal: null,
+        Category: "",
+        lyric : null,
+        duration : 0,
+        url : null,
+      },
       create: "Create",
       cancel: "Cancel"
     }
   },
   methods:{
+
   },
   components: {
     sideBar,
@@ -158,93 +169,7 @@ export default {
 
 </script>
 
-<style scoped>
-.custom-form {
-  width: 100%;
-  position: relative;
-  height: 50px;
-  overflow: hidden;
-}
-
-.custom-form input {
-  width: 100%;
-  height: 100%;
-  color: #000000;
-  padding-top: 20px;
-  border-radius: 2px;
-  padding-left: 10px;
-  font-size: 14px;
-  border: none;
-}
-
-.custom-form label {
-  position: absolute;
-  bottom: 0px;
-  left: 0px;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  border-bottom: 1px solid white;
-}
-
-.custom-form label::after {
-  content: "";
-  position: absolute;
-  bottom: -1px;
-  left: 0px;
-  width: 100%;
-  height: 100%;
-  border-bottom: 2px solid #000000;
-  transform: translateX(-100%);
-  transition: all 0.3s ease;
-}
-
-.content-name {
-  position: absolute;
-  bottom: 0px;
-  left: 5px;
-  font-size: 13px;
-  padding-left: 10px;
-  padding-bottom: 10px;
-  margin-bottom: 5px;
-  transition: all 0.3s ease;
-}
-
-.custom-form input:focus {
-  outline: none;
-}
-
-.custom-form input:focus+.label-name .content-name,
-.custom-form input:valid+.label-name .content-name {
-  transform: translateY(-60%);
-  font-size: 11px;
-  left: 0px;
-  color: #000000;
-}
-
-.custom-form input:focus+.label-name::after,
-.custom-form input:valid+.label-name::after {
-  transform: translateX(0%);
-}
-
-.custom-font-size {
-  font-size: 14px;
-}
-
-.custom-font-size-1 {
-  font-size: 12px;
-}
-
-.custom-color-logo {
-  color: #4267b2;
-}
-
-.form-message {
-  font-size: 1.2rem;
-  line-height: 1.6rem;
-  padding: 4px 0 0;
-}
-
+<style>
 /*  */
 
 .custom-card {

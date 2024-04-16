@@ -4,7 +4,18 @@
             <div class="col-lg-7">
                 <div class="row">
                     <div class="col-12">
-                        <card-payment></card-payment>
+                        <div>
+                            <stripe-checkout
+                            ref="checkoutRef"
+                            mode="payment"
+                            :pk="publishableKey"
+                            :line-items="lineItems"
+                            :success-url="successURL"
+                            :cancel-url="cancelURL"
+                            @loading="v => loading = v"
+                            />
+                            <button @click="submit">Pay now!</button>
+                        </div>
                     </div>
                   
                 </div>
@@ -85,10 +96,32 @@
 <script>
 import cardPayment from '../../components/card/card-payment.vue'
 import footer1 from '@/components/footer/footer_1.vue';
+import { StripeCheckout } from '@vue-stripe/vue-stripe';
+
 export default {
     components:{
         cardPayment,
         footer1,
+        StripeCheckout,
+    },
+    data(){
+        this.publishableKey = process.env.STRIPE_PUBLISHABLE_KEY;
+        return {
+            loading: false,
+             lineItems: [
+        {
+          price: 'some-price-id', // The id of the one-time price you created in your Stripe dashboard
+          quantity: 1,
+        },
+      ],
+      successURL: 'your-success-url',
+      cancelURL: 'your-cancel-url',
+        };
+    },
+    methods:{
+        submit(){
+            this.$refs.checkoutRef.redirectToCheckout();
+        }
     }
 }
 </script>

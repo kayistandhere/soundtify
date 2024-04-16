@@ -26,3 +26,10 @@ export const getAvatarUser = async () =>{
  const data = await getDownloadURL(file);
  return data;
 }
+
+export const getAvatarArtist = async () =>{
+    const userAvatarRef = ref(firebase.storage, `User/${firebase.auth.currentUser.uid}/artist/`);
+    const file = (await listAll(userAvatarRef)).items[0];
+ const data = await getDownloadURL(file);
+ return data;
+}

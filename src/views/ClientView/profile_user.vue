@@ -3,12 +3,13 @@
     <navbar-first></navbar-first>
     <!-- Profile Edit -->
     <section class="mt-5 p-2">
+      <modal-basic></modal-basic>
       <div class="d-flex text-white align-items-end custom-cursor" data-bs-toggle="modal"
         data-bs-target="#exampleModal">
-        <img src="../../assets/Images/Artists/SonTung.jpg" class="m-2 custom-img-animation" alt="" srcset="" />
+        <img :src="this.avatar" class="m-2 custom-img-animation" alt="" srcset="" />
         <div class="ms-2">
           <span class="fs-9">Profile</span>
-          <h1 class="custom-text-title fw-bolder">Kayi Stand Here</h1>
+          <h1 class="custom-text-title fw-bolder">Kayi Stand Here{{ this.formData.name }}</h1>
           <span class="fs-8">Avicii , Mck and more </span>
           <div class="d-flex align-items-center">
             <span class="fs-8">Soundtify</span><span class="material-symbols-rounded fs-8 p-2">blur_on</span>
@@ -24,7 +25,7 @@
             <form action="" class="text-white" @submit.prevent="saveForm">
               <div class="d-flex justify-content-around position-relative">
                 <div class="d-block">
-                  <img src="../../assets/Images/Artists/PhucDu.jpg" class="m-2 custom-img-animation" width="220" height="220" id="tb-image"/>
+                  <img :src="this.avatar" class="m-2 custom-img-animation" width="220" height="220" id="tb-image"/>
                   <input type="file" class="inputFile" id="file" @change="uploadFile" accept="image/*"/>
                 </div>
                 <!-- Form edit your profile -->
@@ -142,6 +143,7 @@ import cardItemsArtists from "../../components/card/card_item_artists.vue";
 import cardItemsSong from "../../components/card/card_item_song.vue";
 import navbarFirst from "../../components/navbar/navbar_fisrt.vue";
 import tableItemsBorder from "../../components/table/table_items_border.vue";
+import modalBasic from "@/components/modal/modal-basic.vue";
 import footer1 from "../../components/footer/footer_1.vue";
 import buttonLgRadius from "../../components/button/button_lg-radius.vue";
 import buttonMdRadius from "../../components/button/button_md_radius.vue";
@@ -150,7 +152,8 @@ import {ref , uploadBytes } from "firebase/storage";
 import { uploadSingleFile }from "@/firebase/storage/storageQuery";
 import { convertFireStorageUrl } from "@/util/download_url_parse";
 import auth from '../../service/auth/auth.js'
-
+import { getAvatarUser } from '@/firebase/storage/storageQuery.js';
+import { getUser } from "@/firebase/fireStore/fireQuery";
 export default {
   name: "Profile",
   components: {
@@ -160,6 +163,7 @@ export default {
     tableItemsBorder,
     buttonMdRadius,
     buttonLgRadius,
+    modalBasic,
     footer1,
   },
   data() {
@@ -172,6 +176,7 @@ export default {
         gender: "",
         password: "",
       },
+      avatar : null,
       backText: "Back",
       saveText: "Save",
       genderText: "Male",
@@ -180,8 +185,14 @@ export default {
   },
   created() {
     this.getProfileUser();
+    this.avatarUser();
   },
   methods: {
+    avatarUser(){
+      getAvatarUser().then((res) =>{
+        this.avatar = res;
+      })
+    },
     checkSex() {
       if (this.formData.gender == "male") {
         this.formData.gender = "male";
@@ -200,16 +211,15 @@ export default {
       console.log("Upload ảnh thành công!" , snapshot);
       }); 
     },
-    getProfileUser(){
-        const user = firebase.auth.currentUser;
-        if(user != null) {
-          user.providerData.forEach((profile) => {
-            this.formData.name = profile.name,
-            this.formData.email = profile.email,
-            this.formData.phone = profile.phone,
-            this.formData.gender = profile.gender
-          })
-        }
+    async getProfileUser(){
+      await getUser().then((userData)=>{
+        console.log("check = " , userData); 
+        this.formData.name = userData.name,
+            this.formData.email = userData.email,
+            this.formData.phone = userData.phone,
+            this.formData.gender = userData.gender,
+            this.formData.age = userData.age
+      })      
     },
     saveForm(){
         auth.updateProfileUser(this.formData.name , this.formData.email , this.formData.phone , this.formData.age , this.formData.gender)
@@ -219,7 +229,6 @@ export default {
 };
 
 </script>
-
 <style scoped>
 .custom-text-title {
   font-size: 72px;

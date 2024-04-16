@@ -5,7 +5,7 @@
         <!-- Sign up with email password -->
         <form @submit.prevent="register" class="row justify-content-center">
           <span class="fs-2 fw-bold text-white my-5">
-            Sign up to Soundtify
+            Sign up to ...
           </span>
 
           <div class="d-flex">
@@ -106,7 +106,7 @@
           </div>
           <div class="border-top border-secondary col-9 my-5"></div>
           <div class="px-2 py-2">
-            <span class="custom-font-size">Bạn đã có tài khoản? Hãy
+            <span class="custom-font-size">Do you have an account? Let
               <router-link :to="'/'" class="text-link fw-bold txt-green">Login</router-link>
             </span>
           </div>
@@ -230,7 +230,6 @@ export default {
   height: 50px;
   overflow: hidden;
 }
-
 .custom-form input {
   width: 100%;
   height: 100%;

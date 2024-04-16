@@ -50,11 +50,7 @@ const sendEmail = (email) => {
   return sendPasswordResetEmail(firebaseAuth.auth, email);
 };
 const updateProfileUser = async (name , email , age , phone , gender ) =>{
-     updateUser(name ,email ,  gender, phone , age).then((res) => {
-      console.log("update profile successfully" , res);
-    }).catch((error) => {
-      console.log("Error update profile" , error);
-    })
+    await updateUser(name ,email , gender, phone , age);
 }
 const logout = () => {
   return signOut(firebaseAuth.auth);

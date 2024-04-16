@@ -53,10 +53,13 @@
 
 <script>
 import auth from '../../service/auth/auth.js'
-import firebase from '../../firebase.js'
+import modalBasic from '../modal/modal-basic.vue';
 import { getAvatarUser } from '@/firebase/storage/storageQuery.js';
 import { getDownloadURL, StorageReference, uploadBytes , ref , listAll } from "firebase/storage";
 export default {
+    components:{
+        modalBasic,
+    },
     data(){
         return {
             avatarClient: null,
