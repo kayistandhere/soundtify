@@ -8,7 +8,6 @@ import global from './util/global.js'
 import draggable from 'vuedraggable'
 import { onAuthStateChanged } from 'firebase/auth'
 import firebase from './firebase.js'
-/// Ensure that the firebase has fully finished initialization.
 onAuthStateChanged(firebase.auth, (user) => {
     const pinia = createPinia();
     createApp(App)

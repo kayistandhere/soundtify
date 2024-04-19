@@ -99,8 +99,6 @@ export default {
         await uploadBytes(storageRef , file).then((snapshot) => {
               console.log("Upload ảnh thành công!" , snapshot);
       }); 
-      
-        
       }
   }
    

@@ -49,18 +49,15 @@ const signWithGoogle = () => {
 const sendEmail = (email) => {
   return sendPasswordResetEmail(firebaseAuth.auth, email);
 };
-const updateProfileUser = async (name , email , age , phone , gender ) =>{
-    await updateUser(name ,email , gender, phone , age);
-}
+
 const logout = () => {
   return signOut(firebaseAuth.auth);
 };
 
 export default {
-  signUp,
+  signUp, 
   signIn,
   signWithGoogle,
   sendEmail,
-  updateProfileUser,
   logout,
 };

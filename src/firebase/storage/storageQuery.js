@@ -30,6 +30,18 @@ export const getAvatarUser = async () =>{
 export const getAvatarArtist = async () =>{
     const userAvatarRef = ref(firebase.storage, `User/${firebase.auth.currentUser.uid}/artist/`);
     const file = (await listAll(userAvatarRef)).items[0];
- const data = await getDownloadURL(file);
+    const data = await getDownloadURL(file);
+ return data;
+}
+export const getSong = async () =>{
+    const songRef = ref(firebase.storage , `Song/${firebase.auth.currentUser.uid}/`);
+    const file = (await listAll(songRef)).items[0];
+    const data = await getDownloadURL(file);
+ return data;
+}
+export const getAvatarSong = async () =>{
+    const userAvatarRef = ref(firebase.storage, `Song/${firebase.auth.currentUser.uid}/avatar/`);
+    const file = (await listAll(userAvatarRef)).items[0];
+    const data = await getDownloadURL(file);
  return data;
 }

@@ -1,128 +1,73 @@
 <template>
   <div class="container-fluid bg-module text-white" style="height: 100vh;">
     <navbar-fisrt></navbar-fisrt>
-    <div class="d-flex">
-      <div class="p-2 col-lg-6">
-  <div class="custom-card bg-module-1">
-    <div class="drop_box">
-      <header>
-        <h4 class="text-white fw-bold">Select File here</h4>
-      </header>
-      <p>Files Supported: Audio , Images , Mutifile</p>
-      <input type="file" hidden id="fileId">
-      <button class="btn" @click="clickInput">Choose File</button>
+    <div>
+      <div class="d-flex">
+          <!-- formData -->
+          <div class="p-2 col-lg-6">
+            <form class="row g-3" @submit.prevent="uploadDetailSong">
+              <div class="d-flex align-items-center justify-content-between">
+                <div class="col-lg-8 px-1">
+                  <div class="my-2 d-flex justify-content-center">
+                    <div class="custom-form">
+                      <input type="text" name="text" id="email" required class="bg-module-1" v-model="this.formData.name"/>
+                      <label for="text" class="label-name">
+                        <span class="content-name text-dark"> Name Track </span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-4 px-1">
+                  <div class="custom-form">
+                    <select id="inputState" class="custom-form bg-module-1 border-0 text-white" v-model="this.formData.category">
+                      <option selected>Category</option>
+                      <option>Pop</option>
+                      <option>Jazz</option>
+                      <option>Rock</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="d-flex align-items-center justify-content-between">
+                <div class="col-lg-4 px-1">
+                  <div class="custom-form">
+                    <select id="inputState" class="custom-form bg-module-1 border-0 text-white" v-model="this.formData.artistId">
+                      <option :key="artist.id" v-for="artist in allArtist" >{{ artist.id }}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-lg-8 px-1">
+                  <div class="my-2 d-flex justify-content-center">
+                    <div class="custom-form">
+                      <input type="text" name="text" id="email" required class="bg-module-1"/>
+                      <label for="text" class="label-name">
+                        <span class="content-name text-dark"> Orther Artist </span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12">
+                <textarea class="col-12 " placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px" v-model="this.formData.description"></textarea>
+              </div>
+              <div class="col-12 d-flex">
+                <button-lg-radius :customContent="cancel"></button-lg-radius>
+                <button-md-radius :customContent="create" type="submit" class="mx-3"></button-md-radius>
+              </div>
+            </form>
+          </div>
+          <!-- Lyric with img -->
+          <div class="p-2 col-lg-6 d-flex">
+            <input type="file" name="" id="fileImage" accept="image/*" @change="uploadImage">
+            <input type="file" name="" id="fileLyric" @change="uploadLyric()">
+          </div>
+     </div>
+     <div class="row">
+      <input type="file" name="" id="fileSong" accept="audio/*" @change="uploadSong()">
+     </div>
     </div>
-</div>
-      </div>
-      <div class="p-2 col-lg-6">
-        <form class="row g-3">
-          <div class="d-flex align-items-center justify-content-between">
-          <div class="col-md-6">
-            <div class="my-2 d-flex justify-content-center">
-              <div class="custom-form">
-                <input type="text" name="text" id="email" required class="bg-module-1" />
-                <label for="text" class="label-name">
-                  <span class="content-name text-dark"> Name Track </span>
-                </label>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="custom-form">
-              <select id="inputState" class="custom-form bg-module-1 border-0 text-white">
-              <option selected>Category</option>
-              <option>Pop</option>
-              <option>Jazz</option>
-              <option>Rock</option>
-            </select>
-            </div>
-          </div>
-        </div>
-          <div class="col-10">
-            <div class="my-2 d-flex justify-content-center">
-              <div class="custom-form">
-                <input type="text" name="text" id="email" required class="bg-module-1" />
-                <label for="text" class="label-name">
-                  <span class="content-name text-dark"> Email </span>
-                </label>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-2">
-            <div class="my-2 d-flex justify-content-center">
-              <div class="custom-form">
-                <input type="text" name="text" id="email" required class="bg-module-1" />
-                <label for="text" class="label-name">
-                  <span class="content-name text-dark"> Category </span>
-                </label>
-              </div>
-            </div>
-          </div>
-          <div class="col-12">
-            <div class="my-2 d-flex justify-content-center">
-              <div class="custom-form">
-                <input type="text" name="text" id="email" required class="bg-module-1" />
-                <label for="text" class="label-name">
-                  <span class="content-name text-dark"> Email </span>
-                </label>
-              </div>
-            </div>
-          </div>
-          <div class="col-12">
-            <div class="my-2 d-flex justify-content-center">
-              <div class="custom-form">
-                <input type="text" name="text" id="email" required class="bg-module-1" />
-                <label for="text" class="label-name">
-                  <span class="content-name text-dark"> Email </span>
-                </label>
-              </div>
-            </div>
-          </div>
-          <div class="col-12">
-            <div class="custom-form">
-              <select id="inputState" class="custom-form bg-module-1 border-0 text-white">
-              <option selected>Choose...</option>
-              <option>Singapor</option>
-              <option>VietNam</option>
-              <option>Campuchia</option>
-            </select>
-            </div>
-          </div>
-          <div class="col-md-8">
-            <div class="my-2 d-flex justify-content-center">
-              <div class="custom-form">
-                <input type="text" name="text" id="email" required class="bg-module-1" />
-                <label for="text" class="label-name">
-                  <span class="content-name text-dark"> Email </span>
-                </label>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="custom-form">
-              <select id="inputState" class="custom-form bg-module-1 border-0 text-white">
-              <option selected>Choose...</option>
-              <option>Singapor</option>
-              <option>VietNam</option>
-              <option>Campuchia</option>
-            </select>
-            </div>
-          </div>
-          <div class="col-12">
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" required id="gridCheck">
-              <label class="form-check-label" for="gridCheck">
-                Check me out
-              </label>
-            </div>
-          </div>
-          <div class="col-12 d-flex">
-            <button-lg-radius :customContent="cancel"></button-lg-radius>
-            <button-md-radius :customContent="create" class="mx-3"></button-md-radius>
-          </div>
-        </form>
-      </div>
-    </div>
+ 
   </div>
 </template>
 
@@ -132,100 +77,138 @@ import buttonMdRadius from '@/components/button/button_md_radius.vue';
 import sideBar from '../../components/sidebar/sidebar.vue'
 import navbarFisrt from '@/components/navbar/navbar_fisrt.vue';
 import firebase from '../../firebase.js'
+import { v4 } from "uuid"
+import { ref , uploadBytes} from 'firebase/storage';
+import {  uploadSingleFile , getSong , getAvatarSong} from '@/firebase/storage/storageQuery';
+import { convertFireStorageUrl } from "@/util/download_url_parse";
+import { uploadSong , getAllArtist } from '@/firebase/fireStore/fireQuery';
 export default {
-  data() {
-    return {
-      formData :{
-        name: "",
-        description : "",
-        artistId : "",
-        cover : null,
-        subtotal: null,
-        Category: "",
-        lyric : null,
-        duration : 0,
-        url : null,
-      },
-      create: "Create",
-      cancel: "Cancel"
-    }
-  },
-  methods:{
-
-  },
   components: {
     sideBar,
     buttonMdRadius,
     buttonLgRadius,
     navbarFisrt
   },
-  computed: {
-
+  data() {
+    return {
+      formData: {
+        name: "",
+        description: "",
+        category: "",
+        cover: null,
+        lyric: null,
+        url: null,
+        otherArtist: [],
+        // dynamic data
+        id: "",
+        duration: 0,
+        listenCount: 0,
+        artistId: "",
+        token: "",
+        uploadTime: Date.now()
+      },
+      create: "Create",
+      cancel: "Cancel",
+      allArtist: {},
+    
+      audio: new Audio(),
+    }
   },
-  watch: {
+  created(){
+    getAllArtist().then((res) =>{
+      this.allArtist = res;
+      console.log("allArtist = " , res);
+    });
+    
+  },
+  methods: {
 
-  }
+    async uploadSong(){
+      const fileSong = document.getElementById("fileSong").files[0];
+        const storageRef = ref(firebase.storage , `Song/${firebase.auth.currentUser.uid}/` + fileSong.name);
+        const uploadResource = await uploadSingleFile(storageRef,fileSong);
+        this.formData.token = uploadResource.token;
+        convertFireStorageUrl(uploadResource);
+      await uploadBytes(storageRef , fileSong).then((snapshot) => {
+              console.log("Upload nhạc thành công!" , snapshot);
+      }).catch((error) =>{
+        console.log("Upload song false!" , error);
+      }); 
+      await getSong().then((res) =>{
+        this.formData.url = res;
+        console.log("url = " ,this.formData.url);
+      }).catch((error) =>{
+        console.log(error);
+      })
+      await this.getDataSong();
+    },
+    async uploadImage(){
+      const fileImage = document.getElementById("fileImage").files[0];
+      // const fileLyric = document.getElementById("fileLyric")
+        const storageRef = ref(firebase.storage , `Song/${firebase.auth.currentUser.uid}/avatar/` + fileImage.name);
+        const uploadResource = await uploadSingleFile(storageRef,fileImage);
+        convertFireStorageUrl(uploadResource);
+        await uploadBytes(storageRef , fileImage).then((snapshot) => {
+              console.log("Upload ảnh thành công!" , snapshot);
+
+      }).catch((error) =>{
+        console.log("Upload image false!" , error);
+      }); ; 
+      await this.getDataAvatarSong();
+    },
+    async uploadLyric(){
+      const fileLyric = document.getElementById("fileLyric").files[0];
+        const storageRef = ref(firebase.storage , `Song/${firebase.auth.currentUser.uid}/lyric/` + fileLyric.name);
+        const uploadResource = await uploadSingleFile(storageRef,fileLyric);
+        convertFireStorageUrl(uploadResource);
+        await uploadBytes(storageRef , fileLyric).then((snapshot) => {
+              console.log("Upload lyric thành công!" , snapshot);
+      }).catch((error) =>{
+        console.log("Upload lyric false!" , error);
+      }); ; 
+    },
+    async getDataSong(){
+      this.audio.src = await this.formData.url;
+      console.log("audio src = ", this.audio.src);
+      this.formData.duration = await this.audio.duration;
+      console.log("duration" ,this.audio.duration);
+    },
+    getDataAvatarSong(){
+      getAvatarSong().then((res) =>{
+      this.formData.cover = res
+    })
+    },
+    uploadDetailSong(){
+      
+      const detailSong = {
+            "artistId":this.formData.artistId ,
+            "cover":this.formData.cover,
+            "description":this.formData.description,
+            "duration":this.formData.duration,
+            "id": v4() ,
+            "listenCount":this.formData.listenCount,
+            "lyric":this.formData.lyric,
+            "name":this.formData.name,
+            "otherArtist":this.formData.otherArtist,
+            "token":this.formData.token,
+            "uploadTime":this.formData.uploadTime,
+            "url":this.formData.url,
+            }
+            console.log("FormData = ", detailSong);
+            console.log("FormData = ", this.formData);
+        uploadSong(detailSong).then((res) =>{
+            console.log("upload detailSong successful" , res);
+        }).catch((error) =>{
+          console.log("upload detailSong false" , error);
+        })
+    }
+  },
+  
 }
 
 </script>
 
 <style>
 /*  */
-
-.custom-card {
-  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.3);
-  width: 100%;
-  padding: 10px 10px 10px 10px;
-}
-
-.drop_box {
-  padding: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  border: 3px dotted #a3a3a3;
-}
-
-.drop_box h4 {
-  font-size: 16px;
-  font-weight: 400;
-  color: #2e2e2e;
-}
-
-.drop_box p {
-  margin-top: 10px;
-  margin-bottom: 10px;
-  font-size: 12px;
-  color: #a3a3a3;
-}
-
-.btn {
-  text-decoration: none;
-  background-color: #0d110e;
-  color: #ffffff;
-  padding: 10px 20px;
-  border: none;
-  outline: none;
-  border-radius: 20px;
-  transition: 0.3s;
-}
-
-.btn:hover{
-  text-decoration: none;
-  background-color: #26a11b;
-  color: #ffffff;
-  padding: 10px 20px;
-  border: none;
-}
-#fileID {
-  margin: 10px 0;
-  width: 100%;
-  background-color: #292424;
-  border: none;
-  outline: none;
-  padding: 12px 20px;
-  border-radius: 4px;
-}
 
 </style>

@@ -1,30 +1,23 @@
 <template>
-  <div class="bg-module">
+    <div class="bg-module">
         <div class="row">
             <div class="col-lg-7">
                 <div class="row">
                     <div class="col-12">
                         <div>
-                            <stripe-checkout
-                            ref="checkoutRef"
-                            mode="payment"
-                            :pk="publishableKey"
-                            :line-items="lineItems"
-                            :success-url="successURL"
-                            :cancel-url="cancelURL"
-                            @loading="v => loading = v"
-                            />
-                            <button @click="submit">Pay now!</button>
+                            <!-- <stripe-element-payment ref="paymentRef" :pk="pk" :elements-options="elementsOptions"
+                                :confirm-params="confirmParams" />
+                            <button @click="pay">Pay Now</button> -->
                         </div>
                     </div>
-                  
+
                 </div>
             </div>
             <div class="col-lg-5 p-0 ps-lg-4 text-white">
                 <div class="row m-0">
                     <div class="col-12 px-4">
                         <div class="d-flex align-items-end mt-4 mb-2">
-                           <h3 class="text-white">PAYMENT</h3>
+                            <h3 class="text-white">PAYMENT</h3>
                         </div>
                         <div class="d-flex justify-content-between mb-2">
                             <p class="textmuted">Qty</p>
@@ -88,6 +81,7 @@
                     </div>
                 </div>
             </div>
+            <button type="button" @click="getPaymentData()">VBVBVBVBV</button>
         </div>
         <footer-1></footer-1>
     </div>
@@ -96,39 +90,52 @@
 <script>
 import cardPayment from '../../components/card/card-payment.vue'
 import footer1 from '@/components/footer/footer_1.vue';
-import { StripeCheckout } from '@vue-stripe/vue-stripe';
+// import { StripeElementPayment } from '@vue-stripe/vue-stripe';
 
 export default {
-    components:{
+    components: {
         cardPayment,
         footer1,
-        StripeCheckout,
+        // StripeElementPayment,
     },
-    data(){
-        this.publishableKey = process.env.STRIPE_PUBLISHABLE_KEY;
+    data() {
         return {
-            loading: false,
-             lineItems: [
-        {
-          price: 'some-price-id', // The id of the one-time price you created in your Stripe dashboard
-          quantity: 1,
-        },
-      ],
-      successURL: 'your-success-url',
-      cancelURL: 'your-cancel-url',
+            // pk: 'your-publishable-key',
+            // elementsOptions: {
+            //     appearance: {}, // appearance options
+            // },
+            // confirmParams: {
+            //     return_url: 'http://localhost:8080/success', // success url
+            // },
         };
     },
-    methods:{
-        submit(){
-            this.$refs.checkoutRef.redirectToCheckout();
-        }
+    methods: {
+        // async generatePaymentIntent() {
+        //     const paymentIntent = await apiCallToGeneratePaymentIntent(); // this is just a dummy, create your own API call
+        //     this.elementsOptions.clientSecret = paymentIntent.client_secret;
+        // },
+        getPaymentData() {
+            fetch("https://api.stripe.com/v1/payment_intents", {
+                method: "POST", headers: {
+                    'Authorization': `Bearer sk_test_51P12gMRv6DqQwfzy7NsZ47z4vlJ5RhkW3ksjCzIbgpYQksbl4gJPawz6TOeroQYsvMHNiTXIRwywOLJeQE1ejPSG00qJLxMl66`,
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body:{'amount': 10000, 'currency': 'vnd'}
+            }).then((res) => {
+                console.log(res.body);
+            })
+        },
+        // pay() {
+        //     this.$refs.paymentRef.submit();
+        // },
+    },
+    mounted() {
+        // this.generatePaymentIntent();
     }
 }
 </script>
 
 <style scoped>
-
-
 .form-control {
     height: 25px;
     width: 150px;

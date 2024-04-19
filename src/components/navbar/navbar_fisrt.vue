@@ -67,8 +67,6 @@ export default {
     },
     created(){
         this.avatarUser();
-        
-        
     },
     methods:{
         logoutAccount(){

@@ -9,7 +9,9 @@
         <img :src="this.avatar" class="m-2 custom-img-animation" alt="" srcset="" />
         <div class="ms-2">
           <span class="fs-9">Profile</span>
-          <h1 class="custom-text-title fw-bolder">Kayi Stand Here{{ this.formData.name }}</h1>
+          <h1 class="custom-text-title fw-bolder">
+            Kayi Stand Here{{ this.formData.name }}
+          </h1>
           <span class="fs-8">Avicii , Mck and more </span>
           <div class="d-flex align-items-center">
             <span class="fs-8">Soundtify</span><span class="material-symbols-rounded fs-8 p-2">blur_on</span>
@@ -17,7 +19,7 @@
             <span class="fs-8"> Folower : 2141</span>
           </div>
         </div>
-    </div>
+      </div>
       <!-- Modal -->
       <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">
@@ -25,56 +27,74 @@
             <form action="" class="text-white" @submit.prevent="saveForm">
               <div class="d-flex justify-content-around position-relative">
                 <div class="d-block">
-                  <img :src="this.avatar" class="m-2 custom-img-animation" width="220" height="220" id="tb-image"/>
-                  <input type="file" class="inputFile" id="file" @change="uploadFile" accept="image/*"/>
+                  <img :src="this.avatar" class="m-2 custom-img-animation" width="220" height="220" id="tb-image" />
+                  <input type="file" class="inputFile" id="file" @change="uploadFile" accept="image/*" />
                 </div>
                 <!-- Form edit your profile -->
                 <div class="m-2">
                   <div class="row p-2">
                     <div class="col-6">
-                      <input type="text" name="text" class="form-control" placeholder="Kayi" autocomplete="off"
-                        v-model="formData.name" @blur="Validator" />
+                      <div class="custom-form">
+                        <input type="text" name="text" id="email" required class="bg-module-1"
+                          v-model="this.formData.name" />
+                        <label for="text" class="label-name">
+                          <span class="content-name text-dark"> Name </span>
+                        </label>
+                      </div>
                     </div>
                     <div class="col-6">
-                      <input type="text" name="text" class="form-control" placeholder="levinhthuan1604@gmail.com"
-                        autocomplete="off" v-model="formData.email" @blur="Validator" />
+                      <div class="custom-form">
+                        <input type="text" name="text" id="email" required class="bg-module-1"
+                          v-model="this.formData.email" />
+                        <label for="text" class="label-name">
+                          <span class="content-name text-dark"> Email</span>
+                        </label>
+                      </div>
                     </div>
                   </div>
                   <div class="row p-2">
-                    <div class="col-8">
-                      <input type="text" name="text" class="form-control" placeholder="0971053741" autocomplete="off"
-                        v-model="formData.phone" @blur="Validator" />
+                    <div class="col-6">
+                      <div class="custom-form">
+                        <input type="text" name="text" id="email" required class="bg-module-1"
+                          v-model="this.formData.phone" />
+                        <label for="text" class="label-name">
+                          <span class="content-name text-dark">
+                            Phone
+                          </span>
+                        </label>
+                      </div>
                     </div>
-                    <div class="col-2">
-                      <input type="text" name="text" class="form-control" placeholder="18" autocomplete="off"
-                        v-model="formData.age" @blur="Validator" />
+                    <div class="col-3">
+                      <div class="custom-form">
+                        <input type="number" name="text" id="email" required class="bg-module-1"
+                          v-model="this.formData.age" />
+                        <label for="text" class="label-name">
+                          <span class="content-name text-dark"> age </span>
+                        </label>
+                      </div>
                     </div>
-                    <div class="col-2">
-                      <div class="dropdown">
-                        <button class="btn bg-module-1 text-white dropdown-toggle px-2" type="button"
-                          id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                          {{ this.genderText }}
-                        </button>
-                        <ul class="dropdown-menu bg-module-1" aria-labelledby="dropdownMenuButton1">
-                          <li>
-                            <a class="dropdown-item text-white" @click="checkSex()">Male</a>
-                          </li>
-                          <li>
-                            <a class="dropdown-item text-white" @click="checkSex()">Female</a>
-                          </li>
-                        </ul>
+                    <div class="col-3">
+                      <div class="custom-form">
+                        <select id="inputState" class="custom-form bg-module-1 border-0 text-white"
+                          v-model="this.formData.gender">
+                          <option selected>male</option>
+                          <option>male</option>
+                          <option>female</option>
+                          <option>male</option>
+                          <option>male</option>
+                          <option>male</option>
+                        </select>
                       </div>
                     </div>
                   </div>
                   <div class="row p-2">
                     <div class="col-12 d-flex">
-                      <div class="col-10">
-                        <input type="password" name="password" class="form-control" placeholder="*********"
-                          autocomplete="off" v-model="formData.password" @blur="Validator" />
-                      </div>
-                      <div class="col-2">
-                        <router-link :to="'/'"
-                          class="txt-green ms-2 text-decoration-none ms-4 fs-8">Change</router-link>
+                      <div class="custom-form">
+                        <input type="password" name="text" id="email" required class="bg-module-1"
+                          v-model="this.formData.password" />
+                        <label for="text" class="label-name">
+                          <span class="content-name text-dark"> Password </span>
+                        </label>
                       </div>
                     </div>
                   </div>
@@ -89,7 +109,6 @@
                       right to upload the image.
                     </p>
                   </div>
-
                 </div>
               </div>
             </form>
@@ -147,13 +166,12 @@ import modalBasic from "@/components/modal/modal-basic.vue";
 import footer1 from "../../components/footer/footer_1.vue";
 import buttonLgRadius from "../../components/button/button_lg-radius.vue";
 import buttonMdRadius from "../../components/button/button_md_radius.vue";
-import firebase from "../../firebase.js"
-import {ref , uploadBytes } from "firebase/storage";
-import { uploadSingleFile }from "@/firebase/storage/storageQuery";
+import firebase from "../../firebase.js";
+import { ref, uploadBytes } from "firebase/storage";
+import { uploadSingleFile } from "@/firebase/storage/storageQuery";
 import { convertFireStorageUrl } from "@/util/download_url_parse";
-import auth from '../../service/auth/auth.js'
-import { getAvatarUser } from '@/firebase/storage/storageQuery.js';
-import { getUser } from "@/firebase/fireStore/fireQuery";
+import { getAvatarUser } from "@/firebase/storage/storageQuery.js";
+import { getUser, updateUser } from "@/firebase/fireStore/fireQuery";
 export default {
   name: "Profile",
   components: {
@@ -172,14 +190,13 @@ export default {
         name: "",
         email: "",
         phone: 0,
-        age : 0,
+        age: 0,
         gender: "",
         password: "",
       },
-      avatar : null,
+      avatar: null,
       backText: "Back",
       saveText: "Save",
-      genderText: "Male",
       file: null,
     };
   },
@@ -188,46 +205,45 @@ export default {
     this.avatarUser();
   },
   methods: {
-    avatarUser(){
-      getAvatarUser().then((res) =>{
+    avatarUser() {
+      getAvatarUser().then((res) => {
         this.avatar = res;
-      })
+      });
     },
-    checkSex() {
-      if (this.formData.gender == "male") {
-        this.formData.gender = "male";
-        this.genderText = "Male";
-      } else {
-        this.formData.gender = "female";
-        this.genderText = "Female";
-      }
-    },
-    async uploadFile(){
-      const file = document.getElementById("file").files[0];
-      const storageRef = ref(firebase.storage , `User/${firebase.auth.currentUser.uid}/avatar/` + file.name);
-      const uploadResource =  await uploadSingleFile(storageRef , file)
-      convertFireStorageUrl(uploadResource);
-            await uploadBytes(storageRef , file).then((snapshot) => {
-      console.log("Upload ảnh thành công!" , snapshot);
-      }); 
-    },
-    async getProfileUser(){
-      await getUser().then((userData)=>{
-        console.log("check = " , userData); 
-        this.formData.name = userData.name,
-            this.formData.email = userData.email,
-            this.formData.phone = userData.phone,
-            this.formData.gender = userData.gender,
-            this.formData.age = userData.age
-      })      
-    },
-    saveForm(){
-        auth.updateProfileUser(this.formData.name , this.formData.email , this.formData.phone , this.formData.age , this.formData.gender)
-    }
-  },
-  
-};
 
+    async uploadFile() {
+      const file = document.getElementById("file").files[0];
+      const storageRef = ref(
+        firebase.storage,
+        `User/${firebase.auth.currentUser.uid}/avatar/` + file.name
+      );
+      const uploadResource = await uploadSingleFile(storageRef, file);
+      convertFireStorageUrl(uploadResource);
+      await uploadBytes(storageRef, file).then((snapshot) => {
+        console.log("Upload ảnh thành công!", snapshot);
+      });
+    },
+    async getProfileUser() {
+      await getUser().then((res) => {
+        console.log("GET USER = ", res);
+        // this.formData.name = userData.name,
+        //     this.formData.email = userData.email,
+        //     this.formData.phone = userData.phone,
+        //     this.formData.gender = userData.gender,
+        //     this.formData.age = userData.age
+      });
+    },
+    saveForm() {
+      updateUser(
+        this.formData.name,
+        this.formData.email,
+        this.formData.phone,
+        this.formData.age,
+        this.formData.gender
+      );
+    },
+  },
+};
 </script>
 <style scoped>
 .custom-text-title {

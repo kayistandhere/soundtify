@@ -1,5 +1,5 @@
 import { doc, getDoc, getDocs, query, setDoc, runTransaction } from "firebase/firestore"
-import { userColection, artistColection } from './firePath.js'
+import { userColection, artistColection , songColection } from './firePath.js'
 import firebase from '../../firebase.js'
 
 export const addUser = async (user) => {
@@ -27,6 +27,10 @@ export const getUser = async () =>{
    const snapshot = await getDoc(doc(userColection , firebase.auth.currentUser.uid))
    return snapshot.data();
 }
+export const getArtist = async () =>{
+    const snapshot = await getDoc(doc(artistColection , firebase.auth.currentUser.uid))
+    return snapshot.data();
+ }
 
 // trickger
 export const registerAsArtist = async (artist, user) => {
@@ -49,13 +53,20 @@ export const getUserById = async (id) => {
     const data = await getDoc(docfire)
     return data.data()
 }
-
-export const uploadSong = async (song) => (await setDoc(doc(songCollection, song.id), song))
+export const uploadSong = async (song) => (await setDoc(doc(songColection, song.id), song))
 
 export const getAllSong = async () => {
     let snapshot = await getDocs(
         query(
             songCollection
+        )
+    )
+    return snapshot.docs.map((e) => (e.data()))
+}
+export const getAllArtist = async () => {
+    let snapshot = await getDocs(
+        query(
+            artistColection
         )
     )
     return snapshot.docs.map((e) => (e.data()))

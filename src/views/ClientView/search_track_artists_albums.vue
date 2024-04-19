@@ -20,7 +20,6 @@
             </div>
     <card-albums></card-albums>
   </section>
-  
   </div>
 
 </template>
