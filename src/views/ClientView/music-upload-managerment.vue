@@ -147,11 +147,13 @@ export default {
         url : null,
       },
       create: "Create",
-      cancel: "Cancel"
+      cancel: "Cancel",
     }
   },
   methods:{
-
+    generateUploadTime() {
+      return Date.now();
+    }
   },
   components: {
     sideBar,

@@ -50,6 +50,12 @@ export const getUserById = async (id) => {
     return data.data()
 }
 
+export const getArtistById = async (id) => {
+    const docfire = doc(artistColection, id)
+    const data = await getDoc(docfire)
+    return data.data()
+}
+
 export const uploadSong = async (song) => (await setDoc(doc(songCollection, song.id), song))
 
 export const getAllSong = async () => {
