@@ -6,11 +6,11 @@
       <modal-basic></modal-basic>
       <div class="d-flex text-white align-items-end custom-cursor" data-bs-toggle="modal"
         data-bs-target="#exampleModal">
-        <img :src="this.avatar" class="m-2 custom-img-animation" alt="" srcset="" />
+        <img :src="this.formData.avatar" class="m-2 custom-img-animation" alt="" srcset="" />
         <div class="ms-2">
           <span class="fs-9">Profile</span>
           <h1 class="custom-text-title fw-bolder">
-            Kayi Stand Here{{ this.formData.name }}
+            {{ this.formData.name }}
           </h1>
           <span class="fs-8">Avicii , Mck and more </span>
           <div class="d-flex align-items-center">
@@ -27,22 +27,22 @@
             <form action="" class="text-white" @submit.prevent="saveForm">
               <div class="d-flex justify-content-around position-relative">
                 <div class="d-block">
-                  <img :src="this.avatar" class="m-2 custom-img-animation" width="220" height="220" id="tb-image" />
+                  <img :src="this.formData.avatar" class="m-2 custom-img-animation" width="220" height="220" id="tb-image" />
                   <input type="file" class="inputFile" id="file" @change="uploadFile" accept="image/*" />
                 </div>
                 <!-- Form edit your profile -->
                 <div class="m-2">
-                  <div class="row p-2">
-                    <div class="col-6">
+                  <div class="row py-1">
+                    <div class="col-6 px-1">
                       <div class="custom-form">
                         <input type="text" name="text" id="email" required class="bg-module-1"
-                          v-model="this.formData.name" />
+                          v-model="this.formData.name"/>
                         <label for="text" class="label-name">
                           <span class="content-name text-dark"> Name </span>
                         </label>
                       </div>
                     </div>
-                    <div class="col-6">
+                    <div class="col-6 px-1">
                       <div class="custom-form">
                         <input type="text" name="text" id="email" required class="bg-module-1"
                           v-model="this.formData.email" />
@@ -52,8 +52,9 @@
                       </div>
                     </div>
                   </div>
-                  <div class="row p-2">
-                    <div class="col-6">
+                  <div class="row py-1 ">
+                    <!-- phone -->
+                    <div class="col-6 px-1">
                       <div class="custom-form">
                         <input type="text" name="text" id="email" required class="bg-module-1"
                           v-model="this.formData.phone" />
@@ -64,7 +65,8 @@
                         </label>
                       </div>
                     </div>
-                    <div class="col-3">
+                    <!-- age -->
+                    <div class="col-3 px-1">
                       <div class="custom-form">
                         <input type="number" name="text" id="email" required class="bg-module-1"
                           v-model="this.formData.age" />
@@ -73,7 +75,8 @@
                         </label>
                       </div>
                     </div>
-                    <div class="col-3">
+                    <!-- gender -->
+                    <div class="col-3 px-1">
                       <div class="custom-form">
                         <select id="inputState" class="custom-form bg-module-1 border-0 text-white"
                           v-model="this.formData.gender">
@@ -87,8 +90,8 @@
                       </div>
                     </div>
                   </div>
-                  <div class="row p-2">
-                    <div class="col-12 d-flex">
+                  <div class="row py-1 ">
+                    <div class="col-12 px-1 d-flex">
                       <div class="custom-form">
                         <input type="password" name="text" id="email" required class="bg-module-1"
                           v-model="this.formData.password" />
@@ -98,11 +101,11 @@
                       </div>
                     </div>
                   </div>
-                  <div class="d-flex p-2 justify-content-end">
+                  <div class="d-flex justify-content-end">
                     <button-lg-radius :customContent="backText" data-bs-dismiss="modal"></button-lg-radius>
                     <button-md-radius :customContent="saveText" type="submit"></button-md-radius>
                   </div>
-                  <div class="row">
+                  <div class="row py-1">
                     <p class="fs-9 text-secondary">
                       By proceeding, you agree to give Spotify access to the
                       image you choose to upload. Please make sure you have the
@@ -171,7 +174,7 @@ import { ref, uploadBytes } from "firebase/storage";
 import { uploadSingleFile } from "@/firebase/storage/storageQuery";
 import { convertFireStorageUrl } from "@/util/download_url_parse";
 import { getAvatarUser } from "@/firebase/storage/storageQuery.js";
-import { getUser, updateUser } from "@/firebase/fireStore/fireQuery";
+import { updateUser , getUserById } from "@/firebase/fireStore/fireQuery";
 export default {
   name: "Profile",
   components: {
@@ -193,8 +196,9 @@ export default {
         age: 0,
         gender: "",
         password: "",
+        avatar: null,
       },
-      avatar: null,
+      
       backText: "Back",
       saveText: "Save",
       file: null,
@@ -207,10 +211,9 @@ export default {
   methods: {
     avatarUser() {
       getAvatarUser().then((res) => {
-        this.avatar = res;
+        this.formData.avatar = res;
       });
     },
-
     async uploadFile() {
       const file = document.getElementById("file").files[0];
       const storageRef = ref(
@@ -223,23 +226,28 @@ export default {
         console.log("Upload ảnh thành công!", snapshot);
       });
     },
-    async getProfileUser() {
-      await getUser().then((res) => {
+    getProfileUser() {
+      const id = firebase.auth.currentUser.uid;
+      getUserById(id).then((res) => {
         console.log("GET USER = ", res);
-        // this.formData.name = userData.name,
-        //     this.formData.email = userData.email,
-        //     this.formData.phone = userData.phone,
-        //     this.formData.gender = userData.gender,
-        //     this.formData.age = userData.age
+        this.formData.name = res.name
+        this.formData.email = res.email
+        this.formData.phone = res.phone
+        this.formData.age = res.age
+        this.formData.gender = res.gender
+        this.formData.avatar = res.avatar
+      }).catch((error)=>{
+        console.log(error);
       });
     },
     saveForm() {
       updateUser(
         this.formData.name,
         this.formData.email,
+        this.formData.gender,
         this.formData.phone,
         this.formData.age,
-        this.formData.gender
+        this.formData.avatar
       );
     },
   },

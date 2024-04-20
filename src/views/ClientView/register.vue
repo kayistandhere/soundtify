@@ -126,13 +126,13 @@ export default {
   data() {
     return {
       formData: {
-        name: "levinhthuan",
-        email: "levinhthuan1604@gmail.com",
-        gender: "male",
+        name: "",
+        email: "",
+        gender: "",
         age: 22,
-        phone: "0971053741",
-        password: "Kayi!123",
-        comfirmPassWord: "Kayi!123",
+        phone: "",
+        password: "",
+        comfirmPassWord: "",
       },
       error: {
         name: "",
@@ -194,7 +194,11 @@ export default {
       if (regex.isRequired(this.formData.age)) {
         this.error.age = "Enter this field";
         this.isCheckValidation = false;
-      }else{
+      }else if(this.formData.age <= 15 ){
+        this.error.age = "Enter this age > 15";
+        this.isCheckValidation = false;
+      }
+      else{
         this.error.age = "";
       }
       if (regex.isRequired(this.formData.password)) {
