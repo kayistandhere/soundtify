@@ -12,7 +12,7 @@ import payment from '../views/ClientView/payment.vue'
 import musicUploadManagerment from '../views/ClientView/music-upload-managerment.vue'
 import searchTrackArtistsAlbums from '../views/ClientView/search_track_artists_albums.vue'
 import upgradePackage from '@/views/ClientView/upgrade-package.vue'
-
+import trackManagerment from '@/views/ClientView/track-managerment.vue'
 const routes = [
   {
     path: '/',
@@ -80,10 +80,12 @@ const routes = [
     name: 'musicUpload',
     component: musicUploadManagerment
   },
+  {
+    path: '/trackManagerment',
+    name: 'trackManagerment',
+    component: trackManagerment
+  },
 ]
-// router.beforeEach(async (to, from) => {
-//   return {name : 'register'}
-// })
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),

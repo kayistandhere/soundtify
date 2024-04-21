@@ -1,4 +1,4 @@
-import { doc, getDoc, getDocs, query, setDoc, runTransaction } from "firebase/firestore"
+import { doc, getDoc, getDocs, query, setDoc, runTransaction, deleteDoc } from "firebase/firestore"
 import { userColection, artistColection , songColection } from './firePath.js'
 import firebase from '../../firebase.js'
 
@@ -72,10 +72,19 @@ export const getUserById = async (id) => {
   
 export const uploadSong = async (song) => (await setDoc(doc(songColection, song.id), song))
 
+
+export const deleteSong = async (id) =>{
+    return deleteDoc(doc(songColection , id)).then((res) =>{
+        console.log("successfull" ,res);
+    }).catch((error) =>{
+        console.log("fasle" , error);
+    })
+}
+// GetData
 export const getAllSong = async () => {
     let snapshot = await getDocs(
         query(
-            songCollection
+            songColection
         )
     )
     return snapshot.docs.map((e) => (e.data()))
