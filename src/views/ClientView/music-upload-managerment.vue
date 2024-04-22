@@ -179,7 +179,6 @@ export default {
     })
     },
     uploadDetailSong(){
-      
       const detailSong = {
             "artistId":this.formData.artistId ,
             "cover":this.formData.cover,
@@ -198,6 +197,7 @@ export default {
             console.log("FormData = ", this.formData);
         uploadSong(detailSong).then((res) =>{
             console.log("upload detailSong successful" , res);
+            this.$router.push({name : "trackManagerment"})
         }).catch((error) =>{
           console.log("upload detailSong false" , error);
         })

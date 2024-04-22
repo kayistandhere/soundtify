@@ -1,4 +1,4 @@
-import { doc, getDoc, getDocs, query, setDoc, runTransaction, deleteDoc } from "firebase/firestore"
+import { doc, getDoc, getDocs, query, setDoc, runTransaction, deleteDoc ,updateDoc } from "firebase/firestore"
 import { userColection, artistColection , songColection } from './firePath.js'
 import firebase from '../../firebase.js'
 
@@ -69,10 +69,17 @@ export const getUserById = async (id) => {
       throw error;
     }
   };
-  
 export const uploadSong = async (song) => (await setDoc(doc(songColection, song.id), song))
 
-
+export const updateSong = async (song) => {
+    const docRef = doc(songColection ,song.id)
+    await updateDoc(docRef,song).then(() => {
+        console.log("Document updated successfully!");
+    })
+        .catch((error) => {
+            console.error("Error updating document:", error);
+        });
+}
 export const deleteSong = async (id) =>{
     return deleteDoc(doc(songColection , id)).then((res) =>{
         console.log("successfull" ,res);
@@ -88,6 +95,21 @@ export const getAllSong = async () => {
         )
     )
     return snapshot.docs.map((e) => (e.data()))
+}
+export const getSongById = async (id) => {
+    try {
+        const docRef = doc(songColection , id);
+        const docSnapshot = await getDoc(docRef);
+        if(docSnapshot.exists()){
+            return docSnapshot.data();
+        } else {
+            console.warn(`Song with id ${id} not found in fireStore`);
+            return null;
+        }
+    } catch (error) {
+        console.log("Error not fetching song data" , error);
+        throw error;
+    }
 }
 export const getAllArtist = async () => {
     let snapshot = await getDocs(

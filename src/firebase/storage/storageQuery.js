@@ -13,14 +13,13 @@ import firebase from '../../firebase.js';
 export const uploadSingleFile = async (ref, file) => {
     const uploadResult = await uploadBytes(ref, file);
     const url = await getDownloadURL(uploadResult.ref)
-    const parseUrl = url.split("&token=");
+    const parseUrl = url.split("&token = ");
     return {
         url: parseUrl[0],
         token: parseUrl[1]
     }
 };
-
-export const getAvatarUser = async () =>{
+export const getAvatarUser = async () => {
     const userAvatarRef = ref(firebase.storage, `User/${firebase.auth.currentUser.uid}/avatar/`);
     const file = (await listAll(userAvatarRef)).items[0];
  const data = await getDownloadURL(file);
@@ -33,12 +32,14 @@ export const getAvatarArtist = async () =>{
     const data = await getDownloadURL(file);
  return data;
 }
+
 export const getSong = async () =>{
     const songRef = ref(firebase.storage , `Song/${firebase.auth.currentUser.uid}/`);
     const file = (await listAll(songRef)).items[0];
     const data = await getDownloadURL(file);
  return data;
 }
+
 export const getAvatarSong = async () =>{
     const userAvatarRef = ref(firebase.storage, `Song/${firebase.auth.currentUser.uid}/avatar/`);
     const file = (await listAll(userAvatarRef)).items[0];
