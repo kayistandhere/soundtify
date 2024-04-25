@@ -13,7 +13,7 @@
         <form @submit.prevent="login" id="form-1">
           <div class="my-2 d-flex justify-content-center">
             <div class="custom-form">
-              <input type="text" name="text" id="email"  v-model="formData.email" @blur="Validator"/>
+              <input type="text" name="text" id="email" required v-model="formData.email" @blur="Validator"/>
               <label for="text" class="label-name">
                 <span class="content-name"> Email </span>
               </label>
@@ -24,7 +24,7 @@
 
           <div class="my-3 d-flex justify-content-center">
             <div class="custom-form">
-              <input type="text" name="text" id="password" v-model="formData.password" @blur="Validator"/>
+              <input type="text" name="text" id="password" required v-model="formData.password" @blur="Validator"/>
               <label for="text" class="label-name">
                 <span class="content-name"> Mật khẩu </span>
               </label>

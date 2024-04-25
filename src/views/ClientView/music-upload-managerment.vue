@@ -24,6 +24,11 @@
                       <option>Pop</option>
                       <option>Jazz</option>
                       <option>Rock</option>
+                      <option>A&B</option>
+                      <option>EDM</option>
+                      <option>Sleep</option>
+                      <option>Love</option>
+                      <option>Punk</option>
                     </select>
                   </div>
                 </div>
@@ -33,7 +38,7 @@
                 <div class="col-lg-4 px-1">
                   <div class="custom-form">
                     <select id="inputState" class="custom-form bg-module-1 border-0 text-white" v-model="this.formData.artistId">
-                      <option :key="artist.id" v-for="artist in allArtist" >{{ artist.id }}</option>
+                      <option :key="artist.id" v-for="artist in allArtist" :value="artist.id" selected>{{ artist.name }}</option>
                     </select>
                   </div>
                 </div>

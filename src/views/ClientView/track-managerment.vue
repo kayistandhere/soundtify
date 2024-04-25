@@ -151,7 +151,7 @@ export default {
       lyric: null,
       songData: [],
       updateSongData: {},
-      perPage: 2,
+      perPage: 5,
       currentPage: 1,
     };
   },
@@ -166,6 +166,7 @@ export default {
     updateSongEvent() {
       updateSong(this.updateSongData).then((res) => {
         console.log("update song successfull", res);
+        this.$router.push({name : "trackManagerment"});
       }).catch((error) => {
         console.log("update song false", error);
       })

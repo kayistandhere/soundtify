@@ -1,87 +1,122 @@
 <template>
     <div class="bg-module">
-        <div class="row">
-            <div class="col-lg-7">
-                <div class="row">
-                    <div class="col-12">
+        <navbar-fist></navbar-fist>
+        <div class="container rounded bg-module text-white">
+            <div class="row d-flex justify-content-center pb-5">
+                <div class="col-sm-5 col-md-5 ml-1">
+                    <div class="py-4 d-flex flex-row">
+                        <h5><b>STRIPE</b> | </h5><span
+                            class="pl-2">Pay</span>
+                    </div>
+                    <div class="card border-0 m-2 col-lg-12">
+                        <img src="../../assets/Images/Background/prenium.jpg" class="custom-img-card" alt="..." />
+                        <div class="card-body bg-module">
+                            <h5 class="card-title">{{ subscriptionPlansData.name }}</h5>
+                            <ul class="">
+                                <li class="d-flex align-items-center" :key="Des" v-for="Des in subscriptionPlansData.descriptions">
+                                    <span class="material-symbols-rounded txt-green me-3">done</span><span>{{ Des }}</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="card-footer d-flex bg-module">
+                            <h5 class="card-text">{{ subscriptionPlansData.price }} {{ subscriptionPlansData.currency }} / {{ subscriptionPlansData.type }}</h5>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="pt-2">
+                        <div class="d-flex">
+                            <div>
+                                <p><b>Patient Balance.</b><span class="green">$13.24</span></p>
+                            </div>
+                            <div class="ml-auto p-2">
+                                <p class="text-primary"><i class="fa fa-plus-circle text-primary"></i>Add payment card
+                                </p>
+                            </div>
+                        </div>
+                        <p>
+                            This is an estimate for the portion of your order (not covered by insurance) due
+                            today . once insurance finalizes their review refunds and/or balances will reconcile
+                            automatically.
+                        </p>
+                        <form class="pb-3">
+                            <div class="d-flex flex-row align-content-center">
+                                <div class="pt-2 pr-2"><input type="radio" name="radio1" id="r1" checked></div>
+                                <div class="rounded border d-flex w-100 px-2">
+                                    <div class="pt-2">
+                                        <p><i class="fa fa-cc-visa text-primary pr-2"></i>Visa Debit Card</p>
+                                    </div>
+                                    <div class="ml-auto pt-2">************3456</div>
+                                </div>
+                            </div>
+                        </form>
+                        <form class="pb-3">
+                            <div class="d-flex flex-row w-100">
+                                <div class="pt-2 pr-2"><input type="radio" name="radio2" id="r2"></div>
+                                <div class="rounded  d-flex w-100 px-2">
+                                    <div class="pt-2">
+                                        <p><i class="fa fa-cc-mastercard pr-2"></i>Mastercard Office</p>
+                                    </div>
+                                    <div class="ml-auto pt-2">************1038</div>
+                                </div>
+                            </div>
+                        </form>
                         <div>
-                            <!-- <stripe-element-payment ref="paymentRef" :pk="pk" :elements-options="elementsOptions"
-                                :confirm-params="confirmParams" />
-                            <button @click="pay">Pay Now</button> -->
+                            <input type="button" value="Proceed to payment" class="btn btn-primary btn-block">
                         </div>
                     </div>
-
                 </div>
-            </div>
-            <div class="col-lg-5 p-0 ps-lg-4 text-white">
-                <div class="row m-0">
-                    <div class="col-12 px-4">
-                        <div class="d-flex align-items-end mt-4 mb-2">
-                            <h3 class="text-white">PAYMENT</h3>
-                        </div>
-                        <div class="d-flex justify-content-between mb-2">
-                            <p class="textmuted">Qty</p>
-                            <p class="fs-14 fw-bold">1</p>
-                        </div>
-                        <div class="d-flex justify-content-between mb-2">
-                            <p class="textmuted">Subtotal</p>
-                            <p class="fs-14 fw-bold"><span class="fas fa-dollar-sign pe-1"></span>1,450</p>
-                        </div>
-                        <div class="d-flex justify-content-between mb-2">
-                            <p class="textmuted">Shipping</p>
-                            <p class="fs-14 fw-bold">Free</p>
-                        </div>
-                        <div class="d-flex justify-content-between mb-2">
-                            <p class="textmuted">Promo code</p>
-                            <p class="fs-14 fw-bold">-<span class="fas fa-dollar-sign px-1"></span>100</p>
-                        </div>
-                        <div class="d-flex justify-content-between mb-3">
-                            <p class="textmuted fw-bold">Total</p>
-                            <div class="d-flex align-text-top ">
-                                <span class="fas fa-dollar-sign mt-1 pe-1 fs-14 "></span><span class="h4">1,350</span>
-                            </div>
-                        </div>
+                <div class="col-sm-3 col-md-4 offset-md-1 mobile bg-module-1">
+                    <div class="py-4 d-flex justify-content-end">
+                        <router-link :to="'/upgradePackage'" class="custom-text-link">Back</router-link>
                     </div>
-                    <div class="col-12 px-0">
-                        <div class="row bg-module-1 m-0">
-                            <div class="col-12 px-4 my-4">
-                                <p class="fw-bold">Payment detail</p>
-                            </div>
-                            <div class="col-12 px-4">
-                                <div class="d-flex  mb-4">
-                                    <span class="">
-                                        <p class="text-muted">Card number</p>
-                                        <input class="form-control" type="text" value="4485 6888 2359 1498"
-                                            placeholder="1234 5678 9012 3456">
-                                    </span>
-                                    <div class=" w-100 d-flex flex-column align-items-end">
-                                        <p class="text-muted">Expires</p>
-                                        <input class="form-control2" type="text" value="01/2020" placeholder="MM/YYYY">
-                                    </div>
-                                </div>
-                                <div class="d-flex mb-5">
-                                    <span class="me-5">
-                                        <p class="text-muted">Cardholder name</p>
-                                        <input class="form-control" type="text" value="David J.Frias"
-                                            placeholder="Name">
-                                    </span>
-                                    <div class="w-100 d-flex flex-column align-items-end">
-                                        <p class="text-muted">CVC</p>
-                                        <input class="form-control3" type="text" value="630" placeholder="XXX">
-                                    </div>
-                                </div>
-                            </div>
+                    <div class="bg-module-1 rounded d-flex flex-column">
+                        <div class="p-2 ml-3">
+                            <h4>Order Recap</h4>
                         </div>
-                        <div class="row m-0">
-                            <div class="col-12  mb-4 p-0">
-                                <div class="btn btn-primary">Purchase<span class="fas fa-arrow-right ps-2"></span>
-                                </div>
-                            </div>
+                        <div class="p-2 d-flex">
+                            <div class="col-8">Contracted Price</div>
+                            <div class="ml-auto">$186.76</div>
+                        </div>
+                        <div class="p-2 d-flex">
+                            <div class="col-8">Amount toward deductible</div>
+                            <div class="ml-auto">$0.00</div>
+                        </div>
+                        <div class="p-2 d-flex">
+                            <div class="col-8">Coinsurance( 0% )</div>
+                            <div class="ml-auto">+ $0.00</div>
+                        </div>
+                        <div class="p-2 d-flex">
+                            <div class="col-8">Copayment</div>
+                            <div class="ml-auto">+ $40.00</div>
+                        </div>
+                        <div class="border-top px-4 mx-3">
+                        </div>
+                        <div class="p-2 d-flex pt-3">
+                            <div class="col-8">Total Deductible, Coinsurance, and Copay</div>
+                            <div class="ml-auto">$40.00</div>
+                        </div>
+                        <div class="p-2 d-flex">
+                            <div class="col-8">Maximum out-of-pocket on Insurance Policy (not reached)</div>
+                            <div class="ml-auto">$6500.00</div>
+                        </div>
+                        <div class="border-top px-4 mx-3"></div>
+                        <div class="p-2 d-flex pt-3">
+                            <div class="col-8">Insurance Responsibility</div>
+                            <div class="ml-auto"><b>$71.76</b></div>
+                        </div>
+                        <div class="p-2 d-flex">
+                            <div class="col-8">Patient Balance <span
+                                    class="fa fa-question-circle text-secondary"></span></div>
+                            <div class="ml-auto"><b>$71.76</b></div>
+                        </div>
+                        <div class="border-top px-4 mx-3"></div>
+                        <div class="p-2 d-flex pt-3">
+                            <div class="col-8"><b>Total</b></div>
+                            <div class="ml-auto"><b class="green">$85.00</b></div>
                         </div>
                     </div>
                 </div>
             </div>
-            <button type="button" @click="getPaymentData()">VBVBVBVBV</button>
         </div>
         <footer-1></footer-1>
     </div>
@@ -90,47 +125,54 @@
 <script>
 import cardPayment from '../../components/card/card-payment.vue'
 import footer1 from '@/components/footer/footer_1.vue';
+import navbarFist from '@/components/navbar/navbar_fisrt.vue';
+import { getSubPlantById } from '@/firebase/fireStore/fireQuery';
+import { mapState, mapActions } from 'pinia'
+import { usePaymentStoreStore } from '@/store/paymentStore';
 // import { StripeElementPayment } from '@vue-stripe/vue-stripe';
 
 export default {
     components: {
+        navbarFist,
         cardPayment,
         footer1,
         // StripeElementPayment,
     },
     data() {
         return {
-            // pk: 'your-publishable-key',
-            // elementsOptions: {
-            //     appearance: {}, // appearance options
-            // },
-            // confirmParams: {
-            //     return_url: 'http://localhost:8080/success', // success url
-            // },
+            subscriptionPlansData: {}
         };
     },
-    methods: {
-        // async generatePaymentIntent() {
-        //     const paymentIntent = await apiCallToGeneratePaymentIntent(); // this is just a dummy, create your own API call
-        //     this.elementsOptions.clientSecret = paymentIntent.client_secret;
-        // },
-        getPaymentData() {
-            fetch("https://api.stripe.com/v1/payment_intents", {
-                method: "POST", headers: {
-                    'Authorization': `Bearer sk_test_51P12gMRv6DqQwfzy7NsZ47z4vlJ5RhkW3ksjCzIbgpYQksbl4gJPawz6TOeroQYsvMHNiTXIRwywOLJeQE1ejPSG00qJLxMl66`,
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body:{'amount': 10000, 'currency': 'vnd'}
-            }).then((res) => {
-                console.log(res.body);
-            })
-        },
-        // pay() {
-        //     this.$refs.paymentRef.submit();
-        // },
+    created() {
+        getSubPlantById(this.dataSubscription.id).then((res) => {
+            this.subscriptionPlansData = res;
+            console.log("check data =" , res);
+        }).catch((error) =>{
+            console.log(error);
+        })
     },
-    mounted() {
-        // this.generatePaymentIntent();
+    methods: {
+        async getPaymentData() {
+            try {
+                console.log(this.dataSubscription);
+                const response = await this.axios.post('https://api.stripe.com/v1/payment_intents', {
+                    amount: this.dataSubscription.price,
+                    currency: this.dataSubscription.currency,
+                }, {
+                    headers: {
+                        Authorization: `Bearer ${process.env.VUE_APP_STRIPE_SECRET_KEY}`,
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                });
+                console.log(response.data); // Access the response data
+            } catch (error) {
+                console.error('Error fetching payment data:', error);
+            }
+        }
+    },
+    computed: {
+        ...mapState(usePaymentStoreStore, ['dataSubscription']),
+        ...mapActions(usePaymentStoreStore, ['paymentStore'])
     }
 }
 </script>
@@ -259,5 +301,8 @@ img {
 h5,
 .text-muted {
     font-family: 'Poppins', sans-serif;
+}
+.custom-img-card{
+    height: 100px;
 }
 </style>

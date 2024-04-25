@@ -28,7 +28,7 @@
               <div class="d-flex justify-content-around position-relative">
                 <div class="d-block">
                   <img :src="this.formData.avatar" class="m-2 custom-img-animation" width="220" height="220" id="tb-image" />
-                  <input type="file" class="inputFile" id="file" @change="uploadFile" accept="image/*" />
+                  <input type="file" id="fileImage" @change="uploadFile" accept="image/*" />
                 </div>
                 <!-- Form edit your profile -->
                 <div class="m-2">
@@ -170,11 +170,11 @@ import footer1 from "../../components/footer/footer_1.vue";
 import buttonLgRadius from "../../components/button/button_lg-radius.vue";
 import buttonMdRadius from "../../components/button/button_md_radius.vue";
 import firebase from "../../firebase.js";
-import { ref, uploadBytes } from "firebase/storage";
+import { ref, uploadBytes ,  } from "firebase/storage";
 import { uploadSingleFile } from "@/firebase/storage/storageQuery";
 import { convertFireStorageUrl } from "@/util/download_url_parse";
 import { getAvatarUser } from "@/firebase/storage/storageQuery.js";
-import { updateUser , getUserById } from "@/firebase/fireStore/fireQuery";
+import { updateUserClient , getUserById } from "@/firebase/fireStore/fireQuery";
 export default {
   name: "Profile",
   components: {
@@ -215,16 +215,16 @@ export default {
       });
     },
     async uploadFile() {
-      const file = document.getElementById("file").files[0];
-      const storageRef = ref(
-        firebase.storage,
-        `User/${firebase.auth.currentUser.uid}/avatar/` + file.name
-      );
+      const file = document.getElementById("fileImage").files[0];
+      const storageRef = ref(firebase.storage,`User/${firebase.auth.currentUser.uid}/avatar/` + file.name);
       const uploadResource = await uploadSingleFile(storageRef, file);
       convertFireStorageUrl(uploadResource);
-      await uploadBytes(storageRef, file).then((snapshot) => {
-        console.log("Upload ảnh thành công!", snapshot);
-      });
+      await uploadBytes(storageRef , file).then((snapshot) => {
+              console.log("Upload ảnh thành công!" , snapshot);
+
+      }).catch((error) =>{
+        console.log("Upload image false!" , error);
+      }); ;
     },
     getProfileUser() {
       const id = firebase.auth.currentUser.uid;
@@ -241,7 +241,7 @@ export default {
       });
     },
     saveForm() {
-      updateUser(
+      updateUserClient(
         this.formData.name,
         this.formData.email,
         this.formData.gender,

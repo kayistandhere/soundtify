@@ -8,11 +8,6 @@
             </div>
             <div class="d-flex">
                 <card-item-song></card-item-song>
-                <card-item-song></card-item-song>
-                <card-item-song></card-item-song>
-                <card-item-song></card-item-song>
-                <card-item-song></card-item-song>
-                <card-item-song></card-item-song>
             </div>
         </section>
         <section>
@@ -22,11 +17,6 @@
             </div>
             <div class="d-flex">
                 <card-item-song></card-item-song>
-                <card-item-song></card-item-song>
-                <card-item-song></card-item-song>
-                <card-item-song></card-item-song>
-                <card-item-song></card-item-song>
-                <card-item-song></card-item-song>
             </div>
         </section>
         <section>
@@ -35,11 +25,6 @@
                 <span class="fs-9 fw-bold "><a class="custom-text-link" href="#">show all</a></span>
             </div>
             <div class="d-flex">
-                <card-item-artists></card-item-artists>
-                <card-item-artists></card-item-artists>
-                <card-item-artists></card-item-artists>
-                <card-item-artists></card-item-artists>
-                <card-item-artists></card-item-artists>
                 <card-item-artists></card-item-artists>
             </div>
         </section>

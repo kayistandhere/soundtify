@@ -1,18 +1,10 @@
 <template>
-    <div class="container-fluid bg-module" style="height: 100vh;">
+    <div class="container-fluid bg-module">
         <navbar-fisrt></navbar-fisrt>
-        <div class="d-flex">
             <card-payment class="mt-5"></card-payment>
-            <card-payment class="mt-5"></card-payment>
-        </div>
         <footer_1 class="mt-5"></footer_1>
     </div>
-   
- 
-
-
 </template>
-
 <script>
 import navbarFisrt from '@/components/navbar/navbar_fisrt.vue';
 import footer_1 from '@/components/footer/footer_1.vue';

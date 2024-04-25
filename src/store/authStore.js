@@ -1,47 +1,60 @@
 import { defineStore, acceptHMRUpdate } from 'pinia'
 import { onAuthStateChanged } from 'firebase/auth';
-export  const useAuthStoreStore = defineStore('authStore', {
- state: () => ({
-  isLoggedIn: false,
-  user: null,
-  count : 0,
- }),
- setup(){
-  this.onAuthStateChanged();
- },
- getters: {
-  doubleCount(state) {
-    return state.count * 2
+import { getUserById, getArtistById } from '@/firebase/fireStore/fireQuery';
+import firebase from '@/firebase.js'
+export const useAuthStoreStore = defineStore('authStore', {
+  state: () => ({
+    user: null,
+    artist: null,
+    count: 0,
+    isSyncing: false,
+  }),
+  getters: {
+    isLoggedIn(state) {
+      return state.user != null
+    },
+    isArtist(state) {
+      return state.artist != null;
+    },
   },
- },
- actions: {
-  login(state, user) {
-    state.isLoggedIn = true;
-    state.user = user;
-  },
-  logout(state) {
-    state.isLoggedIn = false;
-    state.user = null;
-  },
-  onAuthStateChanged() {
-    onAuthStateChanged((user) => {
-      if(user){
-        this.$patch({
-          user
-        });
-        state.user = user;
-        state.isLoggedIn = true;
-      }else {
-        this.$patch({
-          user
-        });
-        state.isLoggedIn = false;
+  actions: {
+    setup() {
+      onAuthStateChanged(firebase.auth, (user) => {
+        if (user) {
+          this.syncData(user.uid);
+        } else {
+          this.user = null;
+        }
+      });
+    },
+    login(state, user) {
+      state.isLoggedIn = true;
+      state.user = user;
+    },
+    logout(state) {
+      state.isLoggedIn = false;
+      state.user = null;
+    },
+    toggleArtist() {
+      this.isSyncing = !this.isSyncing;
+    },
+    async syncData(uid) {
+      if (this.isSyncing) return;
+      this.isSyncing = true;
+      this.user = await getUserById(uid);
+      // Check user profile if has artistId the sync Artist data
+      if (this.user.artistId) {
+        
+        await this.syncArtistData(this.user.artistId);
       }
-    })
-  }
- },
+      this.isSyncing = false;
+    },
+    async syncArtistData(artistId) {
+      this.artist = await getArtistById(artistId);
+    },
+  },
 })
 
 if (import.meta.hot) {
- import.meta.hot.accept(acceptHMRUpdate(useAuthStoreStore, import.meta.hot))
+  import.meta.hot.accept(acceptHMRUpdate(useAuthStoreStore, import.meta.hot))
 }

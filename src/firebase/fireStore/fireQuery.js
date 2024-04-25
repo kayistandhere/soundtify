@@ -1,12 +1,12 @@
 import { doc, getDoc, getDocs, query, setDoc, runTransaction, deleteDoc ,updateDoc } from "firebase/firestore"
-import { userColection, artistColection , songColection } from './firePath.js'
+import { userColection, artistColection , songColection , subscriptionPlans } from './firePath.js'
 import firebase from '../../firebase.js'
 
 export const addUser = async (user) => {
     const docfire = doc(userColection, `${user.uuid}`);
     await setDoc(docfire, user);
 }
-export const updateUser = async (name , email ,gender , phone , age ,avatar) => {
+export const updateUserClient = async (name , email ,gender , phone , age ,avatar) => {
     const indexUser = firebase.auth.currentUser.uid
     const docRef = doc(userColection ,`${indexUser}`)
     await setDoc(docRef,{
@@ -119,6 +119,11 @@ export const getAllArtist = async () => {
     )
     return snapshot.docs.map((e) => (e.data()))
 }
+export const getArtistById = async (id) => {
+    const docfire = doc(artistColection, id)
+    const data = await getDoc(docfire)
+    return data.data()
+}
 export const getAllUser = async () => {
     let snapshot = await getDocs(
         query(
@@ -126,4 +131,17 @@ export const getAllUser = async () => {
         )
     )
     return snapshot.docs.map((e) => (e.data()))
+}
+export const getAllSubscriptionPlans = async () => {
+    let snapshot = await getDocs(
+        query(
+            subscriptionPlans
+        )
+    )
+    return snapshot.docs.map((e) => (e.data()))
+}
+export const getSubPlantById = async (id) => {
+    const docfire = doc(subscriptionPlans, id)
+    const data = await getDoc(docfire)
+    return data.data()
 }

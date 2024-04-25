@@ -13,6 +13,8 @@ import musicUploadManagerment from '../views/ClientView/music-upload-managerment
 import searchTrackArtistsAlbums from '../views/ClientView/search_track_artists_albums.vue'
 import upgradePackage from '@/views/ClientView/upgrade-package.vue'
 import trackManagerment from '@/views/ClientView/track-managerment.vue'
+import audioSocial from '@/views/ClientView/audio-social.vue'
+import artistAllbums from '@/views/ClientView/artist-allbums.vue'
 const routes = [
   {
     path: '/',
@@ -39,6 +41,11 @@ const routes = [
     path: '/songDetail',
     name: 'songdetail.list',
     component: songDetail
+  },
+  {
+    path: '/artistAllbums',
+    name: 'artistAllbums',
+    component: artistAllbums
   },
   {
     path: '/forgotpassword',
@@ -84,6 +91,11 @@ const routes = [
     path: '/trackManagerment',
     name: 'trackManagerment',
     component: trackManagerment
+  },
+  {
+    path: '/audioSocial',
+    name: 'audioSocial',
+    component: audioSocial
   },
 ]
 

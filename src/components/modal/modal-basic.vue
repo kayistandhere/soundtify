@@ -1,7 +1,7 @@
 <template>
   <!-- Button trigger modal -->
 <button type="button" class="btn bg-green d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-    <span class="material-symbols-rounded me-2">stars</span>Faculty upgrades
+    <span class="material-symbols-rounded me-2">stars</span>Faculty upgrades {{ isArtist }}
 </button>
 
 <!-- Modal -->
@@ -59,6 +59,8 @@ import { ref , uploadBytes} from 'firebase/storage';
 import firebase from '../../firebase.js';
 import { getAvatarArtist, uploadSingleFile } from '@/firebase/storage/storageQuery';
 import { convertFireStorageUrl } from "@/util/download_url_parse";
+import { useAuthStoreStore } from '@/store/authStore';
+import { mapStores, mapWritableState} from 'pinia';
 export default {
   components :{
       buttonLgRadius,
@@ -100,6 +102,9 @@ export default {
               console.log("Upload ảnh thành công!" , snapshot);
       }); 
       }
+  },
+  computed: {
+    ...mapWritableState(useAuthStoreStore, ['isArtist'])
   }
    
 }

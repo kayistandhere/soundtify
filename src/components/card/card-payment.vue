@@ -1,49 +1,59 @@
 <template>
-    <div class="card-group text-white">
-
-        <div class="card border-0 m-2" style="width: 40em">
+    <div class="d-block text-white">
+        <div class="card border-0 m-2 col-lg-12" :key="card.id" v-for="card in subscriptionPlansData">
             <img src="../../assets/Images/Background/prenium.jpg" class="card-img-top custom-img-card" height="200"
                 alt="..." />
             <div class="card-body bg-module">
-                <h5 class="card-title">NORMAL SOUNDTIFY</h5>
+                <h5 class="card-title">{{ card.name }}</h5>
                 <ul class="">
-                    <li class="d-flex align-items-center">
-                        <span class="material-symbols-rounded txt-green me-3">done</span><span>1 account free</span>
+                    <li class="d-flex align-items-center" :key="Des" v-for="Des in card.descriptions">
+                        <span class="material-symbols-rounded txt-green me-3">done</span><span>{{ Des }}</span>
                     </li>
-                    <li class="d-flex align-items-center">
-                        <span class="material-symbols-rounded txt-green me-3">done</span><span>Just listen music
-                            online</span>
-                    </li>
-                    <li class="d-flex align-items-center">
-                        <span class="material-symbols-rounded txt-green me-3">done</span><span>Listen music with
-                            Ads</span>
-                    </li>
-                    <li class="d-flex align-items-center">
-                        <span class="material-symbols-rounded txt-green me-3">done</span><span>Sound quality
-                            basic</span>
-                    </li>
+                    
                 </ul>
-                <h5 class="card-text">$3 / Month</h5>
-                <button-md-radius class="d-block ms-auto text-dark" :customContent="select"></button-md-radius>
-                <p class="card-text">
-                    <small class="text-muted">Last updated 3 mins ago</small>
-                </p>
+               
+               
+            </div>
+            <div class="card-footer d-flex bg-module">
+                <h5 class="card-text">{{ card.price }} {{ card.currency }} / {{ card.type }}</h5>
+                <button-md-radius class="d-block ms-auto text-dark" :customContent="select" @click="subscriptionPlansBuy(card)"></button-md-radius>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import { getAllSubscriptionPlans } from "@/firebase/fireStore/fireQuery";
 import buttonMdRadius from "../button/button_md_radius.vue";
+import { usePaymentStoreStore } from "@/store/paymentStore";
+import { mapActions } from "pinia";
 export default {
-    data() {
-        return {
-            select: "Select",
-        };
-    },
     components: {
         buttonMdRadius,
     },
+    data() {
+        return {
+            select: "Select",
+            subscriptionPlansData : {}
+        };
+    },
+    created(){
+        getAllSubscriptionPlans().then((res) =>{
+            this.subscriptionPlansData = res;
+        })
+    },
+    methods : {
+        ...mapActions(usePaymentStoreStore , ["paymentStore"]),
+        async subscriptionPlansBuy(data) {
+           await this.paymentStore({
+                "currency":data.currency,
+                "price":data.price,
+                "id" : data.id,
+            });
+            this.$router.push({name : "payment"})
+        }
+    }
+    
 };
 </script>
 

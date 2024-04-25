@@ -1,6 +1,6 @@
 
 import firebaseAuth  from "../../firebase.js";
-import { addUser, updateUser } from '../../firebase/fireStore/fireQuery.js';
+import { addUser } from '../../firebase/fireStore/fireQuery.js';
 import {
   signInWithEmailAndPassword,
   GoogleAuthProvider,

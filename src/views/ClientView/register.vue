@@ -12,8 +12,8 @@
             <!-- Name -->
             <div class="col-8 px-1 py-2">
               <div class="custom-form">
-                <input type="text" name="text" autocomplete="off" v-model="formData.name" @blur="Validator"
-                  placeholder="Elon Mush" />
+                <input type="text" name="text" autocomplete="off" required v-model="formData.name" @blur="Validator"
+                  />
                 <label for="text" class="label-name">
                   <span class="content-name"> Name </span>
                 </label>
@@ -24,20 +24,21 @@
             <!-- Sex -->
             <div class="col-4 px-1 py-2">
               <div class="custom-form">
-                <input type="text" name="text" autocomplete="off" v-model="formData.gender" @blur="Validator"
-                  placeholder="male" />
-                <label for="text" class="label-name">
-                  <span class="content-name"> Sex </span>
-                </label>
-              </div>
+                    <select id="inputState" class="custom-form bg-module-1 border-0 text-white" v-model="this.formData.gender">
+                      <option selected value="">male</option>
+                      <option>female</option>
+                      <option>Non-binary</option>
+                      <option>Prefer Not To Say</option>
+                    </select>
+                  </div>
               <span class="fs-8 p-0" v-if="!isCheckValidation">{{this.error.gender}}</span>
             </div>
           </div>
           <!-- Email -->
           <div class="px-3 py-2">
               <div class="custom-form">
-                <input type="text" name="text" autocomplete="off" v-model="formData.email" @blur="Validator"
-                  placeholder="abc@gmail.com" />
+                <input type="text" name="text" autocomplete="off" required v-model="formData.email" @blur="Validator"
+                />
                 <label for="text" class="label-name">
                   <span class="content-name"> Email </span>
                 </label>
@@ -48,8 +49,8 @@
             <!-- phone -->
             <div class="col-9 px-1 py-2">
               <div class="custom-form">
-                <input type="text" name="text" autocomplete="off" v-model="formData.phone" @blur="Validator"
-                  placeholder="" />
+                <input type="text" name="text" autocomplete="off" required v-model="formData.phone" @blur="Validator"
+            />
                 <label for="text" class="label-name">
                   <span class="content-name"> Phone </span>
                 </label>
@@ -59,8 +60,8 @@
             <!-- age -->
             <div class="col-3 px-1 py-2">
               <div class="custom-form">
-                <input type="number" autocomplete="off" v-model="formData.age" @blur="Validator"
-                  placeholder="18" />
+                <input type="number" autocomplete="off" required v-model="formData.age" @blur="Validator"
+                   />
                 <label for="text" class="label-name">
                   <span class="content-name"> Age </span>
                 </label>
@@ -72,8 +73,7 @@
             <!-- Password -->
             <div class="col-6 px-1 py-2">
               <div class="custom-form">
-                <input type="password" name="text" autocomplete="off" v-model="formData.password" @blur="Validator"
-                  placeholder="******" />
+                <input type="password" name="text" autocomplete="off" required v-model="formData.password" @blur="Validator" />
                 <label for="text" class="label-name">
                   <span class="content-name"> Password </span>
                 </label>
@@ -84,8 +84,9 @@
             <!-- Comfirm Password -->
             <div class="col-6 px-1 py-2">
               <div class="custom-form">
-                <input type="password" name="text" autocomplete="off" v-model="formData.comfirmPassWord"
-                  @blur="Validator" placeholder="******" />
+                <input type="password" name="text" autocomplete="off" required v-model="formData.comfirmPassWord"
+                  @blur="Validator" />
+                  
                 <label for="text" class="label-name">
                   <span class="content-name"> Comfirm password </span>
                 </label>
@@ -95,7 +96,7 @@
           </div>
 
           <div class="px-3 py-2">
-            <custom-btn-1 :customContent="SignUptext" type="submit"></custom-btn-1>
+            <custom-btn-1 :customContent="signUpText" type="submit"></custom-btn-1>
           </div>
           <!-- Điều Khoản -->
           <div class="pb-2 col-7">
@@ -129,7 +130,7 @@ export default {
         name: "",
         email: "",
         gender: "",
-        age: 22,
+        age: 0,
         phone: "",
         password: "",
         comfirmPassWord: "",
@@ -144,11 +145,14 @@ export default {
         comfirmPassWord: "",
       },
       isCheckValidation: true,
-      SignUptext: "Sign up",
+      signUpText: "Sign up",
     };
   },
   methods: {
-    register() {auth.signUp(this.formData.name, this.formData.email, this.formData.password ,this.formData.gender, this.formData.phone , this.formData.age)
+
+    register() {
+      if(this.isCheckValidation){
+        auth.signUp(this.formData.name, this.formData.email, this.formData.password ,this.formData.gender, this.formData.phone , this.formData.age)
         .then((res) => {
           this.$router.push({ name: "login.view" });
           console.log("dang ky thanh cong ", res);
@@ -159,13 +163,15 @@ export default {
           console.log("test2", errorMessage);
           // ..
         });
+      }
+      
     },
     Validator() {
       if (regex.isRequired(this.formData.name)) {
         this.error.name = "Please enter this field";
         this.isCheckValidation = false;
-      } else if (regex.isUsername(this.formData.name)) {
-        this.error.name = "Please enter 3 or more characters";
+      }else if((this.formData.name).length < 3){
+        this.error.name = "Enter more 3 character";
         this.isCheckValidation = false;
       } else {
         this.error.name = "";

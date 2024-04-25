@@ -11,7 +11,10 @@
                     </li>
                     <li class="nav-item p-2">
                         <div class="custom-button_radius d-flex align-items-center">
-                            <span class="fs-8 fw-bold">Soundtify Social</span>
+                            <router-link :to="'/audioSocial'" class="custom-router-link">
+                                <span class="fs-8 fw-bold">Soundtify Social</span>
+                            </router-link>
+                            
                         </div>
                     </li>
                 </ul>
@@ -38,6 +41,8 @@
                         </button>
                         <ul class="dropdown-menu dropdown-menu-lg-end custom-dropdown fs-8">
                             <li><router-link class="dropdown-item text-white custom-dropdown-item py-2" :to="'/profile'">Profile</router-link></li>
+                            <li><router-link class="dropdown-item text-white custom-dropdown-item py-2" :to="'/profile'" @click="toggleArtist">Upgrade To Artist</router-link></li>
+
                             <li><router-link class="dropdown-item text-white custom-dropdown-item py-2" :to="'/upgradePackage'">Upgrade Package</router-link></li>
                             <li><a class="dropdown-item text-white custom-dropdown-item py-2" href="#">Setting</a></li>
                             <div class="border-top border-secondary col-11 ms-2"></div>
@@ -55,7 +60,8 @@
 import auth from '../../service/auth/auth.js'
 import modalBasic from '../modal/modal-basic.vue';
 import { getAvatarUser } from '@/firebase/storage/storageQuery.js';
-import { getDownloadURL, StorageReference, uploadBytes , ref , listAll } from "firebase/storage";
+import { useAuthStoreStore } from '@/store/authStore.js';
+import { mapActions , mapWritableState } from 'pinia';
 export default {
     components:{
         modalBasic,
@@ -74,11 +80,16 @@ export default {
             this.$router.push({name: "login.view"});
         },
       async avatarUser(){
-         await  getAvatarUser().then((res) =>{
-            this.avatarClient = res
+         await getAvatarUser().then((res) =>{
+            this.avatarClient = res;
           })
-        }
+        },
     },
+    
+    computed:{
+    ...mapActions(useAuthStoreStore , ["toggleArtist"])
+    
+    }
 }
 </script>
 

@@ -93,8 +93,6 @@
             <span class="material-symbols-rounded p-2 text-white fs-2 custom-opacity" @click="onSeekForward">forward_10</span>
             <span class="material-symbols-rounded p-2 text-white fs-2 custom-opacity" @click="nextTrack">skip_next</span>
             <span class="material-symbols-rounded p-2 text-white fs-4 custom-opacity">replay</span>
-            
-            
             </div>
             <div class="d-flex align-items-center">
               <span class="fs-9 mx-2 text-white"></span>
@@ -106,14 +104,11 @@
       </div>
       <!-- function control music -->
       <div class="nav-item d-flex d-flex align-items-center px-3">
-      
           <span class="material-symbols-rounded p-1 text-white fs-5 custom-opacity">mic</span>
           <span class="material-symbols-rounded p-1 text-white fs-5 custom-opacity">list_alt</span>
           <span class="material-symbols-rounded p-1 text-white fs-5 custom-opacity">devices_other</span>
           <span class="material-symbols-rounded p-1 text-white fs-5 custom-opacity">brand_awareness</span>
           <input type="range" class="slider" min="0" max="1" step="0.01" v-model="this.volumeValue" @input="onVolume">
-          
-            
       </div>
     </div>
   </section>
@@ -127,7 +122,8 @@ import trackItemCardAlbums from './components/card/track_item_card_albums.vue'
 import artistsItemCardAlbums from './components/card/artists_item_card_albums.vue'
 import btnTopic from '../src/components/button/button_radius.vue'
 import player from './store/player_store/player.js'
-
+import { mapActions } from 'pinia';
+import { useAuthStoreStore } from './store/authStore';
 
   export default {
     components : {
@@ -152,13 +148,13 @@ import player from './store/player_store/player.js'
     },
     created(){
       this.createTracks();
-      // onAuthStateChanged(firebaseAuth.auth , (user) =>{
-      //   this.oncurrentUserChange(user)
-      // })
+      this.setup();
     },
     methods:{
+        ...mapActions(useAuthStoreStore, ['setup']),
         createTracks(){
           player.created();
+
         },
         play(){
           player.playControl();
