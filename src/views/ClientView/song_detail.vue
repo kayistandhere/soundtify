@@ -2,7 +2,7 @@
     <div class="container-fluid text-white bg-module rounded pb-5" >
         <navbar-fisrt></navbar-fisrt>
         <div class="d-flex text-white align-items-end">
-            <img src="../../assets/Images/Artists/SonTung.jpg" class="rounded m-2 custom-img-animation" alt="" srcset="" width="220" height="220">
+            <img :src="songDetailData.cover" class="rounded m-2 custom-img-animation" alt="" srcset="" width="220" height="220">
             <div class="ms-2">
                 <span class="fs-9 ">Song</span>
                 <h1 class="custom-text-title fw-bolder">{{ songDetailData.name }}</h1>
@@ -51,7 +51,7 @@ import cardItemSong from '../../components/card/card_item_song.vue'
 import footer1 from '../../components/footer/footer_1.vue'
 import { useIndexStore } from '@/store/index'
 import { mapWritableState } from 'pinia'
-import { getSongById , getArtistById } from '@/firebase/fireStore/fireQuery'
+import { getSongById , getArtistById  } from '@/firebase/fireStore/fireQuery'
 export default {
     components:{
         navbarFisrt,

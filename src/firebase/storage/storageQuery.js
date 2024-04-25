@@ -13,7 +13,7 @@ import firebase from '../../firebase.js';
 export const uploadSingleFile = async (ref, file) => {
     const uploadResult = await uploadBytes(ref, file);
     const url = await getDownloadURL(uploadResult.ref)
-    const parseUrl = url.split("&token = ");
+    const parseUrl = url.split("&token=");
     return {
         url: parseUrl[0],
         token: parseUrl[1]

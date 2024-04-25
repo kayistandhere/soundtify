@@ -33,7 +33,6 @@
                   </div>
                 </div>
               </div>
-
               <div class="d-flex align-items-center justify-content-between">
                 <div class="col-lg-4 px-1">
                   <div class="custom-form">
@@ -133,6 +132,7 @@ export default {
         const storageRef = ref(firebase.storage , `Song/${firebase.auth.currentUser.uid}/` + fileSong.name);
         const uploadResource = await uploadSingleFile(storageRef,fileSong);
         this.formData.token = uploadResource.token;
+        console.log(uploadResource);
         convertFireStorageUrl(uploadResource);
       await uploadBytes(storageRef , fileSong).then((snapshot) => {
               console.log("Upload nhạc thành công!" , snapshot);

@@ -127,12 +127,6 @@
       </div>
       <div class="d-flex">
         <card-items-artists></card-items-artists>
-        <card-items-artists></card-items-artists>
-        <card-items-artists></card-items-artists>
-        <card-items-artists></card-items-artists>
-        <card-items-artists></card-items-artists>
-        <card-items-artists></card-items-artists>
-        <card-items-artists></card-items-artists>
       </div>
     </section>
     <section class="mt-5 p-2">
@@ -149,8 +143,6 @@
           <span class="fs-4 fw-bolder text-white"><a class="custom-text-link" href="#">Top Albums</a></span>
         </div>
         <div class="d-flex">
-          <card-items-song></card-items-song>
-          <card-items-song></card-items-song>
           <card-items-song></card-items-song>
         </div>
       </div>

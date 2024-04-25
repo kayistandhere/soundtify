@@ -164,7 +164,6 @@ export default {
           // ..
         });
       }
-      
     },
     Validator() {
       if (regex.isRequired(this.formData.name)) {
