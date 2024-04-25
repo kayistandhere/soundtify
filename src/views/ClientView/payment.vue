@@ -5,21 +5,23 @@
             <div class="row d-flex justify-content-center pb-5">
                 <div class="col-sm-5 col-md-5 ml-1">
                     <div class="py-4 d-flex flex-row">
-                        <h5><b>STRIPE</b> | </h5><span
-                            class="pl-2">Pay</span>
+                        <h5><b>STRIPE</b> | </h5><span class="pl-2">Pay</span>
                     </div>
                     <div class="card border-0 m-2 col-lg-12">
                         <img src="../../assets/Images/Background/prenium.jpg" class="custom-img-card" alt="..." />
                         <div class="card-body bg-module">
                             <h5 class="card-title">{{ subscriptionPlansData.name }}</h5>
                             <ul class="">
-                                <li class="d-flex align-items-center" :key="Des" v-for="Des in subscriptionPlansData.descriptions">
-                                    <span class="material-symbols-rounded txt-green me-3">done</span><span>{{ Des }}</span>
+                                <li class="d-flex align-items-center" :key="Des"
+                                    v-for="Des in subscriptionPlansData.descriptions">
+                                    <span class="material-symbols-rounded txt-green me-3">done</span><span>{{ Des
+                                        }}</span>
                                 </li>
                             </ul>
                         </div>
                         <div class="card-footer d-flex bg-module">
-                            <h5 class="card-text">{{ subscriptionPlansData.price }} {{ subscriptionPlansData.currency }} / {{ subscriptionPlansData.type }}</h5>
+                            <h5 class="card-text">{{ subscriptionPlansData.price }} {{ subscriptionPlansData.currency }}
+                                / {{ subscriptionPlansData.type }}</h5>
                         </div>
                     </div>
                     <hr>
@@ -61,11 +63,13 @@
                             </div>
                         </form>
                         <div>
-                            <input type="button" value="Proceed to payment" class="btn btn-primary btn-block">
+                            <div id="payment-container"></div>
+                            <input type="button" value="Proceed to payment" class="btn btn-primary btn-block"
+                                @click="pay">
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-3 col-md-4 offset-md-1 mobile bg-module-1">
+                <div class=" col-sm-3 col-md-4 offset-md-1 mobile bg-module-1">
                     <div class="py-4 d-flex justify-content-end">
                         <router-link :to="'/upgradePackage'" class="custom-text-link">Back</router-link>
                     </div>
@@ -123,35 +127,70 @@
 </template>
 
 <script>
-import cardPayment from '../../components/card/card-payment.vue'
+// import cardPayment from '../../components/card/card-payment.vue'
 import footer1 from '@/components/footer/footer_1.vue';
 import navbarFist from '@/components/navbar/navbar_fisrt.vue';
-import { getSubPlantById } from '@/firebase/fireStore/fireQuery';
-import { mapState, mapActions } from 'pinia'
-import { usePaymentStoreStore } from '@/store/paymentStore';
-// import { StripeElementPayment } from '@vue-stripe/vue-stripe';
+import { createPaymentIntent } from '@/service/payment_service/payment';
+import { StripeElements, StripeElement} from 'vue-stripe-js'
+import { loadStripe } from '@stripe/stripe-js'
 
 export default {
     components: {
         navbarFist,
-        cardPayment,
+        // cardPayment,
         footer1,
-        // StripeElementPayment,
     },
     data() {
         return {
-            subscriptionPlansData: {}
+            subscriptionPlansData: {},
+            stripeLoaded: false,
+            stripe: null,
+            elements: null,
         };
     },
-    created() {
-        getSubPlantById(this.dataSubscription.id).then((res) => {
-            this.subscriptionPlansData = res;
-            console.log("check data =" , res);
-        }).catch((error) =>{
-            console.log(error);
-        })
+    async created() {
+        // getSubPlantById(this.dataSubscription.id).then((res) => {
+        //     this.subscriptionPlansData = res;
+        //     console.log("check data =" , res);
+        // }).catch((error) =>{
+        //     console.log(error);
+        // })
+        // elements.create('payment');
+        this.initPayment();
+        
     },
     methods: {
+        async initPayment() {
+            const paymentIntent = await createPaymentIntent({
+                price: 100000,
+                currency: "vnd",
+                id: "asdsfwnek"
+            }, this.user);
+
+            this.stripe = await loadStripe("pk_test_51P12gMRv6DqQwfzyu9TjKKrn0UHthbuT99e4ADBzFBR5YSkzFonvow0jqelkp9CTqcDco0MNbJackNo5FDubYW2Y00ETgXAAcJ".toString());
+            this.elements = this.stripe.elements({clientSecret: paymentIntent.client_secret});
+            const payElement = this.elements.create('payment', {
+                classes: {
+                    /// Style cho cái form nhập thẻ ở đây
+                    base: 'bg-gray-100 rounded border border-gray-300 focus:border-indigo-500 text-base outline-none text-gray-700 p-3 leading-8 transition-colors duration-200 ease-in-out'
+                }
+            });
+            payElement.mount('#payment-container');
+            this.stripeLoaded = true;
+        },
+        async pay() {
+            console.log("Submit");
+            const data = await this.stripe.confirmPayment({
+                elements: this.elements,
+                confirmParams: {
+                    /// Tạo một trang để nhận kết quả
+                    // return_url: 'http://localhost:8080/success'
+                }
+               
+            });
+            console.log(data);
+        },
+
         async getPaymentData() {
             try {
                 console.log(this.dataSubscription);
@@ -171,8 +210,8 @@ export default {
         }
     },
     computed: {
-        ...mapState(usePaymentStoreStore, ['dataSubscription']),
-        ...mapActions(usePaymentStoreStore, ['paymentStore'])
+        // ...mapState(useAuthStoreStore, ['user']),
+        pk: `${process.env.VUE_APP_STRIPE_PUBLIC_KEY}`
     }
 }
 </script>
