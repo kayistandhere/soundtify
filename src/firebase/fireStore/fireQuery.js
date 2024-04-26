@@ -1,7 +1,8 @@
-import { doc, getDoc, getDocs, query, setDoc, runTransaction, deleteDoc ,updateDoc } from "firebase/firestore"
+import { doc, getDoc, getDocs, query, setDoc, runTransaction, deleteDoc ,updateDoc ,where} from "firebase/firestore"
 import { userColection, artistColection , songColection , subscriptionPlans } from './firePath.js'
 import firebase from '../../firebase.js'
 
+// User----------------------------------------------------------------------------------------
 export const addUser = async (user) => {
     const docfire = doc(userColection, `${user.uuid}`);
     await setDoc(docfire, user);
@@ -23,37 +24,6 @@ export const updateUserClient = async (name , email ,gender , phone , age ,avata
             console.error("Error updating document:", error);
         });
 }
-// Not working this function
-export const getUser = async () =>{
-   const snapshot = await getDoc(doc(userColection , firebase.auth.currentUser.uid))
-   console.log("with data",snapshot.data());
-   return snapshot.data();
-}
-export const getArtist = async () =>{
-    const snapshot = await getDoc(doc(artistColection , firebase.auth.currentUser.uid))
-    return snapshot.data();
- }
-// trickger
-export const registerAsArtist = async (artist, user) => {
-    try {
-        await runTransaction(firebase.database, async (transaction) => {
-            user.artistId = artist.id
-            await transaction.update(doc(userColection, user.uuid), user)
-            console.log("userColec" , doc(userColection, user.uuid));
-            artist.uid = user.uuid
-            await transaction.set(doc(artistColection, artist.id ),artist)
-            console.log("userColec" , doc(artistColection, artist.id));
-        });
-        console.log("Transaction successfully committed!");
-    } catch (error) {
-        console.log("Transaction failed: ", error);
-    }
-}
-// export const getUserById = async (id) => {
-//     const docfire = doc(userColection, id)
-//     const data = await getDocs(docfire)
-//     return data.data()
-// }
 export const getUserById = async (id) => {
     try {
       const userRef = doc(userColection, id);
@@ -69,6 +39,54 @@ export const getUserById = async (id) => {
       throw error;
     }
   };
+export const getAllUser = async () => {
+    let snapshot = await getDocs(
+        query(
+            userColection
+        )
+    )
+    return snapshot.docs.map((e) => (e.data()))
+}
+// Not working this function
+export const getUser = async () =>{
+   const snapshot = await getDoc(doc(userColection , firebase.auth.currentUser.uid))
+   console.log("with data",snapshot.data());
+   return snapshot.data();
+}
+// Artist----------------------------------------------------------------------------------------
+export const getArtist = async () =>{
+    const snapshot = await getDoc(doc(artistColection , firebase.auth.currentUser.uid))
+    return snapshot.data();
+ }
+export const registerAsArtist = async (artist, user) => {
+    try {
+        await runTransaction(firebase.database, async (transaction) => {
+            user.artistId = artist.id
+            await transaction.update(doc(userColection, user.uuid), user)
+            console.log("userColec" , doc(userColection, user.uuid));
+            artist.uid = user.uuid
+            await transaction.set(doc(artistColection, artist.id ),artist)
+            console.log("userColec" , doc(artistColection, artist.id));
+        });
+        console.log("Transaction successfully committed!");
+    } catch (error) {
+        console.log("Transaction failed: ", error);
+    }
+}
+export const getAllArtist = async () => {
+    let snapshot = await getDocs(
+        query(
+            artistColection
+        )
+    )
+    return snapshot.docs.map((e) => (e.data()))
+}
+export const getArtistById = async (id) => {
+    const docfire = doc(artistColection, id)
+    const data = await getDoc(docfire)
+    return data.data()
+}
+// Song----------------------------------------------------------------------------------------
 export const uploadSong = async (song) => (await setDoc(doc(songColection, song.id), song))
 
 export const updateSong = async (song) => {
@@ -87,7 +105,6 @@ export const deleteSong = async (id) =>{
         console.log("fasle" , error);
     })
 }
-// GetData
 export const getAllSong = async () => {
     let snapshot = await getDocs(
         query(
@@ -111,27 +128,21 @@ export const getSongById = async (id) => {
         throw error;
     }
 }
-export const getAllArtist = async () => {
-    let snapshot = await getDocs(
-        query(
-            artistColection
-        )
-    )
-    return snapshot.docs.map((e) => (e.data()))
+export const getSongByArtist = async (artistId) =>{
+    try {
+        // const docRef = doc(songColection , id);
+        console.log(" song data" );
+        const songQuery = query(songColection, where('artistId', '==', artistId));
+        console.log(" song data" , songQuery);
+        const docSnapshot = await getDocs(songQuery);
+        console.log(" song data" , docSnapshot);
+            return docSnapshot.docs.map((e) => (e.data()))
+    } catch (error) {
+        console.log("Error not fetching song data" , error);
+        throw error;
+    }
 }
-export const getArtistById = async (id) => {
-    const docfire = doc(artistColection, id)
-    const data = await getDoc(docfire)
-    return data.data()
-}
-export const getAllUser = async () => {
-    let snapshot = await getDocs(
-        query(
-            userColection
-        )
-    )
-    return snapshot.docs.map((e) => (e.data()))
-}
+// subscriptionPlan----------------------------------------------------------------------------------------
 export const getAllSubscriptionPlans = async () => {
     let snapshot = await getDocs(
         query(

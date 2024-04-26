@@ -43,17 +43,15 @@ export default {
         })
     },
     methods : {
-        ...mapActions(usePaymentStoreStore , ["paymentDataSubscription"]),
-        async subscriptionPlansBuy(data) {
-           await this.paymentDataSubscription({
+         subscriptionPlansBuy(data) {
+            const dataSubPlan = {
                 "currency":data.currency,
                 "price":data.price,
                 "id" : data.id,
-            });
-            this.$router.push({name : "payment", params: data})
-        }
-    }
-    
+            };
+            this.$router.push({path : `payment/` , query : dataSubPlan } )
+            },
+        } 
 };
 </script>
 

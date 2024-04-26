@@ -19,7 +19,8 @@
                 </div>
                 <div class="col-lg-4 px-1">
                   <div class="custom-form">
-                    <select id="inputState" class="custom-form bg-module-1 border-0 text-white" v-model="this.formData.category">
+                    <select id="inputState" class="custom-form bg-module-1 border-0 text-white" 
+                    v-model="this.formData.category">
                       <option selected>Category</option>
                       <option>Pop</option>
                       <option>Jazz</option>
@@ -54,6 +55,9 @@
                 </div>
               </div>
               <div class="col-12">
+                <tag-input :onValueChange="onValueChange"></tag-input>
+              </div>
+              <div class="col-12">
                 <textarea class="col-12 " placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px" v-model="this.formData.description"></textarea>
               </div>
               <div class="col-12 d-flex">
@@ -71,6 +75,7 @@
      <div class="row">
       <input type="file" name="" id="fileSong" accept="audio/*" @change="uploadSong()">
      </div>
+     
     </div>
  
   </div>
@@ -87,12 +92,14 @@ import { ref , uploadBytes} from 'firebase/storage';
 import {  uploadSingleFile , getSong , getAvatarSong} from '@/firebase/storage/storageQuery';
 import { convertFireStorageUrl } from "@/util/download_url_parse";
 import { uploadSong , getAllArtist } from '@/firebase/fireStore/fireQuery';
+import tagInput from '@/components/input/tag_input.vue';
 export default {
   components: {
     sideBar,
     buttonMdRadius,
     buttonLgRadius,
-    navbarFisrt
+    navbarFisrt,
+    tagInput
   },
   data() {
     return {
@@ -104,6 +111,7 @@ export default {
         lyric: null,
         url: null,
         otherArtist: [],
+        tags : [],
         // dynamic data
         id: "",
         duration: 0,
@@ -115,7 +123,6 @@ export default {
       create: "Create",
       cancel: "Cancel",
       allArtist: {},
-    
       audio: new Audio(),
     }
   },
@@ -132,7 +139,6 @@ export default {
       const fileSong = document.getElementById("fileSong").files[0];
         const storageRef = ref(firebase.storage , `Song/${firebase.auth.currentUser.uid}/` + fileSong.name);
         const uploadResource = await uploadSingleFile(storageRef,fileSong);
-        this.formData.token = uploadResource.token;
         convertFireStorageUrl(uploadResource);
       await uploadBytes(storageRef , fileSong).then((snapshot) => {
               console.log("Upload nhạc thành công!" , snapshot);
@@ -194,6 +200,7 @@ export default {
             "lyric":this.formData.lyric,
             "name":this.formData.name,
             "otherArtist":this.formData.otherArtist,
+            "tags":this.formData.tags,
             "token":this.formData.token,
             "uploadTime":this.formData.uploadTime,
             "url":this.formData.url,
@@ -206,6 +213,10 @@ export default {
         }).catch((error) =>{
           console.log("upload detailSong false" , error);
         })
+    },
+    onValueChange(value){
+      this.tags = [...value]
+      console.log("123 = " ,this.tags);
     }
   },
   
@@ -213,7 +224,7 @@ export default {
 
 </script>
 
-<style>
+<style scoped>
 /*  */
 
 </style>

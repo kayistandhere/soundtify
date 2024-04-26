@@ -1,4 +1,5 @@
 
+import { httpsCallable } from "firebase/functions";
 import firebaseAuth  from "../../firebase.js";
 import { addUser } from '../../firebase/fireStore/fireQuery.js';
 import {
@@ -17,6 +18,7 @@ import {
 
 const signIn = (email, password) => {
     return setPersistence(firebaseAuth.auth,browserLocalPersistence ).then(() => {
+
         return signInWithEmailAndPassword(firebaseAuth.auth, email, password);
     }).catch((error) =>{
       console.log(error);
@@ -49,6 +51,10 @@ const signWithGoogle = () => {
 const sendEmail = (email) => {
   return sendPasswordResetEmail(firebaseAuth.auth, email);
 };
+const createStripeId = () =>{
+  httpsCallable(firebaseAuth.firebaseFunction, 'createStripeIfNeed')()
+  console.log("đâsdasdasd = ",httpsCallable(firebaseAuth.firebaseFunction , 'createStripeIfNeed')());
+}
 
 const logout = () => {
   return signOut(firebaseAuth.auth);
@@ -60,4 +66,5 @@ export default {
   signWithGoogle,
   sendEmail,
   logout,
+  createStripeId,
 };

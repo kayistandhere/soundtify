@@ -91,18 +91,16 @@ export default {
       if(!this.isCheckValidation){
         auth.signIn(this.formData.email,this.formData.password)
         .then(() => {
+          auth.createStripeId();
           this.$router.push({name: "home.view"});
         })
         .catch((error) => {
           console.log("lỗi", error);
         });
+     
       }else{
         alert("Please check validate form");
       }
-      // store.commit('login', {
-      //   email: this.formData.email,
-      //   password : this.formData.password
-      // });
     },
    async loginWithGoogle(){
     await  auth.signWithGoogle().then(()=>{
@@ -110,6 +108,7 @@ export default {
       }).catch((error)=>{
         console.log(error);
       })
+      auth.createStripeId();
     },
     Validator(){
       if(regex.isRequired(this.formData.email)){

@@ -3,6 +3,7 @@ import { defineStore, acceptHMRUpdate } from 'pinia'
 export const useIndexStore = defineStore('index', {
  state: () => ({
    songId: "",
+   artistId: "",
  }),
  getters: {
 
@@ -10,6 +11,9 @@ export const useIndexStore = defineStore('index', {
  actions: {
   songDetailId(data){
     this.songId = data;
+},
+artistDetailId(data){
+  this.artistId = data;
 }
  },
 })

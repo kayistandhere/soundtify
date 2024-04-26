@@ -6,7 +6,7 @@ export const createPaymentIntent = async (plan, user) => {
             {
                 'amount': `${plan.price}`,
                 'currency': plan.currency,
-                'customer': "cus_PvhxSKVnrv2eiZ",
+                'customer': "cus_PvhxSKVnrv2eiZ", 
                 'receipt_email': "anhk90443@gmail.com",
                 'description': plan.id,
             },

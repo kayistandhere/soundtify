@@ -13,10 +13,10 @@
           <th scope="col-1">Name</th>
           <th scope="col-1">artist</th>
           <th scope="col-1">thumbnail</th>
-          <th scope="col-3">description</th>
+          <th scope="col-2 ">description</th>
           <th scope="col-1">duration</th>
           <th scope="col-1">viewer</th>
-          <th scope="col-2">action</th>
+          <th scope="col-3">action</th>
         </tr>
       </thead>
       <tbody>
@@ -27,7 +27,7 @@
           <td>
             <img :src="song.cover" alt="thumbnail-song" class="custom-images" />
           </td>
-          <td>{{ song.description }}</td>
+          <td class="col-2">{{ song.description }}</td>
           <td>{{ song.duration }}</td>
           <td>{{ song.listenCount }}</td>
           <td>
@@ -96,7 +96,7 @@
                         </div>
                       </div>
                       <div class="row">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" > 
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                           Close
                         </button>
                         <button type="submit" class="btn btn-primary">
@@ -133,6 +133,7 @@ import {
   getAllSong,
   getSongById,
   updateSong,
+  getArtistById
 } from "@/firebase/fireStore/fireQuery";
 import navbarFist from "@/components/navbar/navbar_fisrt.vue";
 import { ref, uploadBytes } from "firebase/storage";
@@ -166,7 +167,7 @@ export default {
     updateSongEvent() {
       updateSong(this.updateSongData).then((res) => {
         console.log("update song successfull", res);
-        this.$router.push({name : "trackManagerment"});
+        this.$router.push({ name: "trackManagerment" });
       }).catch((error) => {
         console.log("update song false", error);
       })

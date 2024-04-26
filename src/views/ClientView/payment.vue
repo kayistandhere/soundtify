@@ -112,14 +112,16 @@ export default {
     },
     methods: {
         async initPayment() {
-            getSubPlantById(this.dataSubscription.id).then((res) => {
+            const subData = this.$route.query.id;
+            console.log(subData);
+            getSubPlantById(subData).then((res) => {
                 this.subscriptionPlansData = res;
             }).catch((error) => {
                 console.log(error);
             })
             const paymentIntent = await createPaymentIntent({
-                price: 100000,
-                currency: "vnd",
+                price: this.$route.query.price,
+                currency: this.$route.query.currency,
                 id: "asdsfwnek"
             }, this.user);
 
@@ -149,8 +151,6 @@ export default {
 
     },
     computed: {
-
-        ...mapWritableState(usePaymentStoreStore, ["dataSubscription"]),
         pk: `${process.env.VUE_APP_STRIPE_PUBLIC_KEY}`
     }
 }

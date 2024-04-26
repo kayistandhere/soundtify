@@ -1,9 +1,10 @@
 <template>
-    <div class="card custom-bg-card m-2" style="width: 12rem;">
-      <img src="../../assets/Images/Artists/Tlinh.jpg" class="custom-img-thumbnail p-2" alt="...">
+    <div class="card custom-bg-card m-2" style="width: 12rem;" :key="artist.id" v-for="artist in limitData" 
+    @click="redirectArtistDetail(artist.id)">
+      <img :src="artist.thumbnail" class="custom-img-thumbnail p-2" alt="...">
       <div class="p-2">
-              <h5 class="card-title fs-6 fw-bolder text-white">Pop Rising Vietnam</h5>
-              <p class="two-lines fs-8">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+              <h5 class="card-title fs-6 fw-bolder text-white">{{ artist.name }}</h5>
+              <p class="two-lines fs-8">{{ artist.description }}</p>
       </div>
       <div class="custom-btn-position">
         <div class="custom-btn-play">
@@ -14,8 +15,34 @@
   </template> 
   
   <script>
+    import { getAllArtist } from '@/firebase/fireStore/fireQuery';
+  import { mapActions } from 'pinia';
+  import { useIndexStore } from '@/store';
   export default {
-  
+    data(){
+        return {
+            dataArtist : [],
+            limitData :[],
+        }
+    },
+    created(){
+        
+        this.limitDataArtist();
+    },
+    methods:{
+        ...mapActions(useIndexStore , ["artistDetailId"]),
+        async limitDataArtist(){
+           await getAllArtist().then((res) =>{
+            this.dataArtist = res
+        })
+            this.limitData = this.dataArtist.slice(0,6); 
+        },
+        async redirectArtistDetail(id){
+           await this.artistDetailId(id);
+           this.$router.push({path : `artistAllbums/${id}`})
+        }
+
+    }
   }
   </script>
   

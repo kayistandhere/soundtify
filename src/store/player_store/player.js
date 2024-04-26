@@ -15,7 +15,6 @@ export default {
   currentTime: 0,
   currentTrack: 0,
   isTimerPlaying: false,
-
   
   // function
   created() {

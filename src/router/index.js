@@ -39,7 +39,7 @@ const routes = [
     }
   },
   {
-    path: '/songDetail',
+    path: '/songDetail/:id',
     name: 'songdetail.list',
     component: songDetail
   },
@@ -79,7 +79,7 @@ const routes = [
     component: payment
   },
   {
-    path: '/upgradePackage',
+    path: '/upgradePackage:',
     name: 'upgradePackage',
     component: upgradePackage
   },

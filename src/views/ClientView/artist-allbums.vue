@@ -44,12 +44,6 @@
             </div>
             <div class="d-flex">
                 <card-item-song></card-item-song>
-                <card-item-song></card-item-song>
-                <card-item-song></card-item-song>
-                <card-item-song></card-item-song>
-                <card-item-song></card-item-song>
-                <card-item-song></card-item-song>
-                <card-item-song></card-item-song>
             </div>
           </section>
           <section>

@@ -1,7 +1,7 @@
 <template>
     <div class="d-flex">
             <div class="card custom-bg-card m-2 position-relative" style="width: 12rem;" :key="song.id" 
-                v-for="song in dataSong"
+                v-for="song in limitdataSong"
                 @click="redirectSongDetail(song.id)">
                 <img :src="song.cover" class="custom-img-thumbnail p-2" alt="...">
                 <div class="p-2">
@@ -15,7 +15,6 @@
                 </div>
             </div>
     </div>
-
 </template>
 
 <script>
@@ -29,21 +28,23 @@ export default {
             limitdataSong: [],
         }
     },
-    created() { 
-        getAllSong().then((res) => {
-            this.dataSong = res;
-        });
+    created() {    
         this.limitedDataSong();
     },
     methods:{
         ...mapActions(useIndexStore , ["songDetailId"]),
-        limitedDataSong(){
-           this.limitdataSong = this.dataSong.slice(0,5);
+        async limitedDataSong(){
+           await getAllSong().then((res) => {
+            this.dataSong = res;
+        }).catch((error) =>{
+            console.log(error);
+        });
+           this.limitdataSong = this.dataSong.slice(0,6);
         },
         async redirectSongDetail(id){
             console.log(id);
            await this.songDetailId(id);
-           this.$router.push({name : "songdetail.list"})
+           this.$router.push({path : `songdetail/${id}`} )
         }
     },
     computed:{

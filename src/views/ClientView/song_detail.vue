@@ -31,7 +31,7 @@
         </div>
         <!-- Table Music -->
         <section>
-            <table-items-border></table-items-border>
+            <table-items-border :artistIDValue="artist.artistId"></table-items-border>
         </section>
         <!-- Copy Right -->
         <section>
@@ -53,8 +53,6 @@ import navbarFisrt from '../../components/navbar/navbar_fisrt.vue'
 import tableItemsBorder from '../../components/table/table_items_border.vue'
 import cardItemSong from '../../components/card/card_item_song.vue'
 import footer1 from '../../components/footer/footer_1.vue'
-import { useIndexStore } from '@/store/index'
-import { mapWritableState } from 'pinia'
 import { getSongById, getArtistById } from '@/firebase/fireStore/fireQuery'
 export default {
     components: {
@@ -77,7 +75,9 @@ export default {
     },
     methods: {
         async songDetail() {
-            await getSongById(this.songId).then((res) => {
+            const songId = this.$route.params.id;
+            console.log(songId);
+            await getSongById(songId).then((res) => {
                 this.songDetailData = res;
                 console.log(res);
             });
@@ -101,10 +101,6 @@ export default {
             return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
         }
     },
-    computed: {
-        ...mapWritableState(useIndexStore, ["songId"]),
-
-    }
 }
 </script>
 
