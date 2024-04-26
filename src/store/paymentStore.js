@@ -15,6 +15,9 @@ export const usePaymentStoreStore = defineStore('paymentStore', {
       }
       const paymentIntent = await createPaymentIntent(plan, user);
       return paymentIntent;
+    },
+    paymentDataSubscription(data){
+      this.dataSubscription = data;
     }
   },
 })

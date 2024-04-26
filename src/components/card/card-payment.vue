@@ -43,13 +43,13 @@ export default {
         })
     },
     methods : {
-        // ...mapActions(usePaymentStoreStore , ["paymentStore"]),
+        ...mapActions(usePaymentStoreStore , ["paymentDataSubscription"]),
         async subscriptionPlansBuy(data) {
-        //    await this.paymentStore({
-        //         "currency":data.currency,
-        //         "price":data.price,
-        //         "id" : data.id,
-        //     });
+           await this.paymentDataSubscription({
+                "currency":data.currency,
+                "price":data.price,
+                "id" : data.id,
+            });
             this.$router.push({name : "payment", params: data})
         }
     }
