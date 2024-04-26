@@ -127,12 +127,6 @@
       </div>
       <div class="d-flex">
         <card-items-artists></card-items-artists>
-        <card-items-artists></card-items-artists>
-        <card-items-artists></card-items-artists>
-        <card-items-artists></card-items-artists>
-        <card-items-artists></card-items-artists>
-        <card-items-artists></card-items-artists>
-        <card-items-artists></card-items-artists>
       </div>
     </section>
     <section class="mt-5 p-2">
@@ -149,8 +143,6 @@
           <span class="fs-4 fw-bolder text-white"><a class="custom-text-link" href="#">Top Albums</a></span>
         </div>
         <div class="d-flex">
-          <card-items-song></card-items-song>
-          <card-items-song></card-items-song>
           <card-items-song></card-items-song>
         </div>
       </div>
@@ -173,8 +165,8 @@ import firebase from "../../firebase.js";
 import { ref, uploadBytes ,  } from "firebase/storage";
 import { uploadSingleFile } from "@/firebase/storage/storageQuery";
 import { convertFireStorageUrl } from "@/util/download_url_parse";
-import { getAvatarUser } from "@/firebase/storage/storageQuery.js";
 import { updateUserClient , getUserById } from "@/firebase/fireStore/fireQuery";
+import { defaultAvatar } from "@/util/global";
 export default {
   name: "Profile",
   components: {
@@ -206,14 +198,8 @@ export default {
   },
   created() {
     this.getProfileUser();
-    this.avatarUser();
   },
   methods: {
-    avatarUser() {
-      getAvatarUser().then((res) => {
-        this.formData.avatar = res;
-      });
-    },
     async uploadFile() {
       const file = document.getElementById("fileImage").files[0];
       const storageRef = ref(firebase.storage,`User/${firebase.auth.currentUser.uid}/avatar/` + file.name);
@@ -235,7 +221,8 @@ export default {
         this.formData.phone = res.phone
         this.formData.age = res.age
         this.formData.gender = res.gender
-        this.formData.avatar = res.avatar
+        this.formData.avatar = res.avatar ?? defaultAvatar(this.formData.avatar)
+
       }).catch((error)=>{
         console.log(error);
       });
@@ -249,6 +236,7 @@ export default {
         this.formData.age,
         this.formData.avatar
       );
+      this.getProfileUser();
     },
   },
 };

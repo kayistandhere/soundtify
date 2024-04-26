@@ -61,6 +61,7 @@ import { getAvatarArtist, uploadSingleFile } from '@/firebase/storage/storageQue
 import { convertFireStorageUrl } from "@/util/download_url_parse";
 import { useAuthStoreStore } from '@/store/authStore';
 import { mapStores, mapWritableState} from 'pinia';
+import { defaultAvatar } from '@/util/global';
 export default {
   components :{
       buttonLgRadius,
@@ -80,6 +81,8 @@ export default {
   created(){
     getAvatarArtist().then((res) =>{
         this.formData.avatarArtist = res;
+      }).catch((error)=>{
+        this.formData.avatarArtist = defaultAvatar(this.formData.avatarArtist);
       })
   },
   methods:{

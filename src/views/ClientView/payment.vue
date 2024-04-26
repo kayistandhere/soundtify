@@ -184,7 +184,7 @@ export default {
                 elements: this.elements,
                 confirmParams: {
                     /// Tạo một trang để nhận kết quả
-                    // return_url: 'http://localhost:8080/success'
+                    return_url: 'http://localhost:8080/paymentResult'
                 }
                
             });

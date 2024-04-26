@@ -15,6 +15,7 @@ import upgradePackage from '@/views/ClientView/upgrade-package.vue'
 import trackManagerment from '@/views/ClientView/track-managerment.vue'
 import audioSocial from '@/views/ClientView/audio-social.vue'
 import artistAllbums from '@/views/ClientView/artist-allbums.vue'
+import paymentResult from '@/views/ClientView/payment-result.vue'
 const routes = [
   {
     path: '/',
@@ -91,6 +92,11 @@ const routes = [
     path: '/trackManagerment',
     name: 'trackManagerment',
     component: trackManagerment
+  },
+  {
+    path: '/paymentResult',
+    name: 'paymentResult',
+    component: paymentResult
   },
   {
     path: '/audioSocial',

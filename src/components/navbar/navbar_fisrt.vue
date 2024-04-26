@@ -61,6 +61,7 @@ import auth from '../../service/auth/auth.js'
 import modalBasic from '../modal/modal-basic.vue';
 import { getAvatarUser } from '@/firebase/storage/storageQuery.js';
 import { useAuthStoreStore } from '@/store/authStore.js';
+import { defaultAvatar } from '@/util/global.js';
 import { mapActions , mapWritableState } from 'pinia';
 export default {
     components:{
@@ -73,6 +74,7 @@ export default {
     },
     created(){
         this.avatarUser();
+        
     },
     methods:{
         logoutAccount(){
@@ -81,7 +83,10 @@ export default {
         },
       async avatarUser(){
          await getAvatarUser().then((res) =>{
+            
             this.avatarClient = res;
+          }).catch((error)=>{
+            this.avatarClient = defaultAvatar(this.avatarClient);
           })
         },
     },
