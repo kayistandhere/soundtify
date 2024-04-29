@@ -139,6 +139,8 @@ export default {
       const fileSong = document.getElementById("fileSong").files[0];
         const storageRef = ref(firebase.storage , `Song/${firebase.auth.currentUser.uid}/` + fileSong.name);
         const uploadResource = await uploadSingleFile(storageRef,fileSong);
+        this.formData.token = uploadResource.token;
+        console.log("token" , this.formData.token);
         convertFireStorageUrl(uploadResource);
       await uploadBytes(storageRef , fileSong).then((snapshot) => {
               console.log("Upload nhạc thành công!" , snapshot);
@@ -215,7 +217,7 @@ export default {
         })
     },
     onValueChange(value){
-      this.tags = [...value]
+      this.formData.tags = [...value]
       console.log("123 = " ,this.tags);
     }
   },

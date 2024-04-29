@@ -65,5 +65,6 @@ export default {
     padding: 3px 5px 3px 5px;
     border-radius: 8px;
     margin: 10px 0px 10px 10px;
+    cursor: pointer;
 }
 </style>

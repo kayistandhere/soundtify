@@ -31,7 +31,7 @@
         </div>
         <!-- Table Music -->
         <section>
-            <table-items-border :artistIDValue="artist.artistId"></table-items-border>
+            <table-items-border :artistIDValue="artistId"></table-items-border>
         </section>
         <!-- Copy Right -->
         <section>
@@ -68,6 +68,7 @@ export default {
             hours: 0,
             minutes: 0,
             seconds: 0,
+            artistId : "",
         }
     },
     created() {
@@ -75,19 +76,24 @@ export default {
     },
     methods: {
         async songDetail() {
-            const songId = this.$route.params.id;
+            const songId = this.$route.query.id;
+            this.artistId= this.$route.query.artistId
             console.log(songId);
             await getSongById(songId).then((res) => {
                 this.songDetailData = res;
                 console.log(res);
             });
             await getArtistById(this.songDetailData.artistId).then((res) => {
+                this.artistWithID = res.id;
                 this.artist = res;
-                console.log(res);
+                
+                
+                console.log("id artist = ",this.artistWithID);
 
             });
             this.msToTime(this.songDetailData.duration);
         },
+        
         msToTime(duration) {
             const milliseconds = Math.floor((duration % 1000) / 100),
                 seconds = Math.floor((duration / 1000) % 60),

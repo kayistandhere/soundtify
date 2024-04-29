@@ -81,7 +81,7 @@
   <section class="" style="height:10vh;">
     <div class="d-flex align-items-center justify-content-between">
       <div class="nav-item d-flex align-items-center ps-3">
-          <track-item-card-albums-2 class="text-white"></track-item-card-albums-2>
+          <track-item-card-albums-2 class="text-white" :images="audioCurrent.cover" :nameSong="audioCurrent.name" :artistId="audioCurrent.artistId"></track-item-card-albums-2>
       </div>
       <div class="nav-item d-block">
         <div class="function_control_music d-flex justify-content-center align-items-center">
@@ -112,8 +112,8 @@
       </div>
     </div>
   </section>
+  <meta name="google-adsense-account" content="ca-pub-4787357286986736">
   </div>
- 
 </template>
 
 <script>
@@ -121,9 +121,9 @@ import trackItemCardAlbums2 from './components/card/track_item_card_albums_2.vue
 import trackItemCardAlbums from './components/card/track_item_card_albums.vue'
 import artistsItemCardAlbums from './components/card/artists_item_card_albums.vue'
 import btnTopic from '../src/components/button/button_radius.vue'
-import player from './store/player_store/player.js'
-import { mapActions } from 'pinia';
+import { mapActions , mapWritableState } from 'pinia';
 import { useAuthStoreStore } from './store/authStore';
+import { usePlayerStoreStore } from './store/playerStore';
 
   export default {
     components : {
@@ -152,42 +152,55 @@ import { useAuthStoreStore } from './store/authStore';
     },
     methods:{
         ...mapActions(useAuthStoreStore, ['setup']),
+        ...mapActions(usePlayerStoreStore, [
+          'created',
+          'playControl',
+          'pauseControl',
+          'volumeControl',
+          'seekBackward',
+          'seekForward',
+          'prevousSong',
+          'nextSong',
+          'seekingChange',
+          'debounce',
+          'generateTime'
+        ]),
         createTracks(){
-          player.created();
-
+          this.created();
         },
         play(){
-          player.playControl();
+          this.playControl();
           this.playOrPause = true;
         },
         pause(){
-          player.pauseControl();
+          this.pauseControl();
           this.playOrPause = false;
         },
         onVolume(){
-          player.volumeControl(this.volumeValue);
+          this.volumeControl(this.volumeValue);
         },
         onSeekBackward(){
-          player.seekBackward();
+          this.seekBackward();
         },
         onSeekForward(){
-          player.seekForward();
+          this.seekForward();
         },
         prevousTrack(){
           console.log("Prevous Track");
-          player.prevousSong();
+          this.prevousSong();
         },
         nextTrack(){
           console.log("Next Track");
-          player.nextSong();
+          this.nextSong();
         },
         onSeekSliderChange(){
-          console.log("seeking", this.seekingData);
-          player.debounce(player.seekingChange(this.seekingData),1000);
+          console.log("seeking data = ", this.seekingData);
+          this.debounce(this.seekingChange(this.seekingData),1000);
         },
 
       },
     computed:{
+      ...mapWritableState(usePlayerStoreStore , ["audioCurrent"]),
   },
     watch:{
 

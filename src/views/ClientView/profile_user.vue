@@ -129,14 +129,6 @@
         <card-items-artists></card-items-artists>
       </div>
     </section>
-    <section class="mt-5 p-2">
-      <div class="d-flex justify-content-between mx-2">
-        <span class="fs-4 fw-bolder text-white"><a class="custom-text-link" href="#">Top Song</a></span>
-      </div>
-      <div class="">
-        <table-items-border></table-items-border>
-      </div>
-    </section>
     <section>
       <div class="mx-2">
         <div class="d-flex justify-content-between mx-2">

@@ -2,7 +2,7 @@
     <div class="d-flex">
             <div class="card custom-bg-card m-2 position-relative" style="width: 12rem;" :key="song.id" 
                 v-for="song in limitdataSong"
-                @click="redirectSongDetail(song.id)">
+                @click="redirectSongDetail(song.id,song.artistId)">
                 <img :src="song.cover" class="custom-img-thumbnail p-2" alt="...">
                 <div class="p-2">
                     <h5 class="card-title fs-6 fw-bolder text-white">{{ song.name }}</h5>
@@ -32,7 +32,7 @@ export default {
         this.limitedDataSong();
     },
     methods:{
-        ...mapActions(useIndexStore , ["songDetailId"]),
+
         async limitedDataSong(){
            await getAllSong().then((res) => {
             this.dataSong = res;
@@ -41,10 +41,12 @@ export default {
         });
            this.limitdataSong = this.dataSong.slice(0,6);
         },
-        async redirectSongDetail(id){
-            console.log(id);
-           await this.songDetailId(id);
-           this.$router.push({path : `songdetail/${id}`} )
+        async redirectSongDetail(id ,artist){
+            const value = {
+                "id":id,
+                "artistId":artist
+            }
+           this.$router.push({path : `songdetail/` , query : value} )
         }
     },
     computed:{

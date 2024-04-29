@@ -28,6 +28,14 @@
                 <card-item-artists></card-item-artists>
             </div>
         </section>
+        <!-- <section>
+            <vue-adsense
+                ad-client="ca-pub-xxxxxxxxxxxxxxxx"
+                ad-slot="XXXXXXXX"
+                ad-style="display: block"
+                ad-format="auto">
+                </vue-adsense>
+        </section> -->
     </div>
 </template>
 
@@ -37,6 +45,7 @@ import cardItemSong from '../../components/card/card_item_song.vue'
 import navbarFisrt from '../../components/navbar/navbar_fisrt.vue'
 import auth from '../../firebase.js'
 import { onAuthStateChanged } from 'firebase/auth'
+// import VueAdsense from 'vue-adsense'
 export default {
     components:{
         navbarFisrt,
@@ -49,8 +58,7 @@ export default {
                 console.log("Co tai khoan",user); 
             }else {
                 console.log("khong co tai khoan", user)
-            }
-             
+            }     
         })
       
     }

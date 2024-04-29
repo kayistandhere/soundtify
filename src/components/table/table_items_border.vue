@@ -42,7 +42,7 @@ import { getSongByArtist } from '@/firebase/fireStore/fireQuery';
 
 export default {
   props:{
-      artistIDValue : "",
+      artistIDValue : String,
   },
   data(){
     return {
@@ -54,7 +54,9 @@ export default {
   },
   methods:{
     getSongArtist(){
-      const id = "20240330-1108-8e28-8234-19f6ac2b148e";
+      // const id = "20240330-1108-8e28-8234-19f6ac2b148e";
+      const id = this.artistIDValue;
+      console.log("data table" , id);
       getSongByArtist(id).then((res) =>{
           this.songByArtist = res;
           console.log("song by artist = ", res);

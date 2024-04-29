@@ -39,7 +39,7 @@ const routes = [
     }
   },
   {
-    path: '/songDetail/:id',
+    path: '/songDetail/',
     name: 'songdetail.list',
     component: songDetail
   },

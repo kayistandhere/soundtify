@@ -86,8 +86,6 @@ import navbarFist from '@/components/navbar/navbar_fisrt.vue';
 import buttonMdRadius from '@/components/button/button_md_radius.vue';
 import { createPaymentIntent } from '@/service/payment_service/payment';
 import { loadStripe } from '@stripe/stripe-js'
-import { mapWritableState } from 'pinia';
-import { usePaymentStoreStore } from '@/store/paymentStore';
 import { getSubPlantById, getUserById } from '@/firebase/fireStore/fireQuery';
 import firebase from '@/firebase';
 

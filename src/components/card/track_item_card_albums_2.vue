@@ -1,17 +1,36 @@
 <template>
     <div class="custom_card d-flex align-items-center">
-      <img class="custom_Img" src="../../assets/Images/Artists/WrenEvan.jpg" alt="" srcset="" width="50" height="50">
+      <img class="custom_Img" :src="this.images" alt="" srcset="" width="50" height="50">
       <div class="custom_LineHeight">
-          <p class=" fs-8    mt-3">Sơn Tùng MTP</p>
-          <p class=" fs-9 ">Artists</p> 
+          <p class=" fs-8    mt-3">{{ nameSong }}</p>
+          <p class=" fs-9 ">{{ artistName }}</p> 
       </div>
-      
     </div>
   </template>
   
   <script>
+import { getArtistById } from '@/firebase/fireStore/fireQuery';
+
   export default {
-  
+    props: {
+      artistId : String,
+      nameSong : String,
+      images : File
+    },
+    data(){
+      return {
+        artistName :"",
+      }
+    },
+    created(){
+    },
+    computed:{
+      getArtist(){
+        getArtistById(artistId).then((res) =>{
+        this.artistName = res.name;
+      })
+      }
+    }
   }
   </script>
   

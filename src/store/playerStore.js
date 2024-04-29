@@ -10,13 +10,16 @@ export const usePlayerStoreStore = defineStore('playerStore', {
     currentTime: 0,
     currentTrack: 0,
     isTimerPlaying: false,
+    audioCurrent : {},
   }),
   getters: {},
   actions: {
     // function
     async created() {
       await this.getDataSong();
-      this.audio.src = this.tracks[this.currentTrackIndex].url;
+      this.audio.src = this.tracks[this.currentTrackIndex].url + "&token=" + this.tracks[this.currentTrackIndex].token;
+      this.audioCurrent = this.tracks[this.currentTrackIndex];
+      console.log("dulieu = ",this.audioCurrent);
       this.generateTime();
       this.audio.ontimeupdate = () => {
         this.generateTime();
@@ -26,10 +29,9 @@ export const usePlayerStoreStore = defineStore('playerStore', {
         console.log("currentTime", this.currentTime);
       };
     },
-    getDataSong() {
-      getAllSong().then((res) => {
-        this.tracks = res
-      })
+    async getDataSong() {
+       this.tracks = await getAllSong()
+        console.log("track",this.tracks);
     },
     playControl() {
       this.audio.play();
@@ -64,8 +66,10 @@ export const usePlayerStoreStore = defineStore('playerStore', {
       }
       this.audio.pause();
       console.log("test 1", this.currentTrackIndex);
-      this.audio.src = this.tracks[this.currentTrackIndex].source;
-      console.log("test 2", this.currentTrackIndex);
+      this.audio.src = this.tracks[this.currentTrackIndex].url;
+      this.audioCurrent = this.tracks[this.currentTrackIndex];
+
+      console.log("Audio current = ", this.audioCurrent);
       this.audio.load();
       this.audio.play();
     },
@@ -73,6 +77,7 @@ export const usePlayerStoreStore = defineStore('playerStore', {
     // time to change audio
     seekingChange(seekSlider) {
       const seekTo = (parseInt(this.audio.duration) * seekSlider) / 100;
+      console.log("seekTo" , seekTo);
       this.audio.currentTime = seekTo;
     },
     debounce(fn, ms) {
