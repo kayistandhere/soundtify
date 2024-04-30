@@ -1,5 +1,5 @@
-import { doc, getDoc, getDocs, query, setDoc, runTransaction, deleteDoc ,updateDoc ,where} from "firebase/firestore"
-import { userColection, artistColection , songColection , subscriptionPlans } from './firePath.js'
+import { doc, getDoc, getDocs, query, setDoc, runTransaction,addDoc,arrayUnion, deleteDoc ,updateDoc ,where} from "firebase/firestore"
+import { userColection, artistColection , songColection , subscriptionPlans , playList } from './firePath.js'
 import firebase from '../../firebase.js'
 
 // User----------------------------------------------------------------------------------------
@@ -130,18 +130,28 @@ export const getSongById = async (id) => {
 }
 export const getSongByArtist = async (artistId) =>{
     try {
-        // const docRef = doc(songColection , id);
-        console.log(" song data" );
         const songQuery = query(songColection, where('artistId', '==', artistId));
-        console.log(" song data" , songQuery);
         const docSnapshot = await getDocs(songQuery);
-        console.log(" song data" , docSnapshot);
             return docSnapshot.docs.map((e) => (e.data()))
     } catch (error) {
         console.log("Error not fetching song data" , error);
         throw error;
     }
 }
+export const getSongsWithArray = async (songIds) => {
+    try {
+      if (!Array.isArray(songIds)) {
+        throw new Error('songIds must be an array of strings');
+      }
+      const songQuery = query(songColection, where('id', 'in', songIds));
+      const docSnapshots = await getDocs(songQuery);
+      const songs = docSnapshots.docs.map((doc) => doc.data());
+      return songs;
+    } catch (error) {
+      console.error("Error fetching song data:", error);
+      throw error;
+    }
+  };
 // subscriptionPlan----------------------------------------------------------------------------------------
 export const getAllSubscriptionPlans = async () => {
     let snapshot = await getDocs(
@@ -156,3 +166,34 @@ export const getSubPlantById = async (id) => {
     const data = await getDoc(docfire)
     return data.data()
 }
+// Playlist................................................................................................
+export const createPlaylist = async (playlist) => (await setDoc(doc(playList, playlist.id), playlist))
+
+export const getAllPlaylist = async () => {
+    let snapshot = await getDocs(
+        query(
+            playList
+        )
+    )
+    return snapshot.docs.map((e) => (e.data()))
+}
+export const getPlaylistById = async (id) => {
+    const docfire = doc(playList, id)
+    const data = await getDoc(docfire)
+    return data.data()
+}
+export const updatePlaylist = async (playlist, idSong) => {
+    console.log(`playlist ${playlist.id} && id song = ${idSong}`);
+    try {
+      const docRef = doc(playList, playlist.id);
+      await updateDoc(docRef, {
+        "songs": arrayUnion(idSong)
+      });
+      console.log("Song successfully added to playlist!");
+    } catch (error) {
+      console.error("Error updating playlist:", error);
+    }
+  };
+//b1 lấy dữ liệu của của playlist đó cùng với id của bài hát đang chọn update vào songs của playlist ;
+//b2 show dữ liệu lên playlist có các nhạc trong playlist đó
+//b3 sau đó chỉnh sửa hàm getPlaylistById (id) là id của userid để show đúng playlist của người đó ;

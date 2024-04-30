@@ -134,7 +134,6 @@ export default {
     
   },
   methods: {
-
     async uploadSong(){
       const fileSong = document.getElementById("fileSong").files[0];
         const storageRef = ref(firebase.storage , `Song/${firebase.auth.currentUser.uid}/` + fileSong.name);

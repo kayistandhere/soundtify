@@ -8,9 +8,12 @@ const artistColection = collection(firebase.database , 'Artist');
 const songColection = collection(firebase.database, 'Song');
 
 const subscriptionPlans = collection(firebase.database , 'SubscriptionPlans');
+
+const playList = collection(firebase.database , 'Playlist');
 export  {
     userColection,
     artistColection,
     songColection,
-    subscriptionPlans
+    subscriptionPlans,
+    playList
 }

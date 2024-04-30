@@ -46,3 +46,9 @@ export const getAvatarSong = async () =>{
     const data = await getDownloadURL(file);
  return data;
 }
+export const getAvatarPlaylist = async () => {
+    const playlistAvatarRef = ref(firebase.storage, `Playlist/${firebase.auth.currentUser.uid}/`);
+    const file = (await listAll(playlistAvatarRef)).items[0];
+ const data = await getDownloadURL(file);
+ return data;
+}

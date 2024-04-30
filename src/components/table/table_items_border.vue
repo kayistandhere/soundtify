@@ -12,7 +12,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr class="fs-9 text-white table-items-hover" :key="song.id" v-for="song in songByArtist">
+        <tr class="fs-9 text-white table-items-hover" id="item" :key="song.id" v-for="song in songData">
           <th scope="row">1</th>
           <td>
             <div class="custom_card d-flex align-items-center">
@@ -29,7 +29,9 @@
           </td>
           <td>Dance Dance Dance</td>
           <td>{{ song.uploadTime }}</td>
-          <td>{{ song.duration }}</td>
+          <td class="d-flex">{{ song.duration }}
+          <dropdown-function id="dropdown" class="ps-2" :id-song="song.id"></dropdown-function>
+          </td>
         </tr>
        
       </tbody>
@@ -38,31 +40,45 @@
 </template>
 
 <script>
-import { getSongByArtist } from '@/firebase/fireStore/fireQuery';
-
+import { getSongByArtist ,getSongsWithArray} from '@/firebase/fireStore/fireQuery';
+import dropdownFunction from '../dropdown/dropdown_function.vue';
 export default {
+  components:{
+    dropdownFunction,
+  },
   props:{
       artistIDValue : String,
+      songIDValue :Array,
   },
   data(){
     return {
-      songByArtist : [],
+      songData : [],
     }
   },
   created(){
-    this.getSongArtist();
+    this.getSongByQuery();
   },
   methods:{
-    getSongArtist(){
-      // const id = "20240330-1108-8e28-8234-19f6ac2b148e";
-      const id = this.artistIDValue;
-      console.log("data table" , id);
-      getSongByArtist(id).then((res) =>{
-          this.songByArtist = res;
+    getSongByQuery(){
+     
+      console.log("artist id = " , this.artistIDValue);
+      console.log("arr id = " , this.songIDValue);
+      if(this.artistIDValue != null){
+        const id = this.artistIDValue;
+        getSongByArtist(id).then((res) =>{
+          this.songData = res;
           console.log("song by artist = ", res);
       })
+      }else if(this.songIDValue != null){
+        getSongsWithArray(this.songIDValue).then((res) =>{
+          this.songData = res;
+          console.log("song by array = ", res);
+      })
+    }else{
+      console.log("khong trung ne");
     }
   }
+}
 }
 </script>
 <style scoped>
@@ -88,5 +104,11 @@ export default {
 .table-items-hover:hover {
   opacity: 1.1;
   background: #3b3b3b;
+}
+#dropdown {
+  display: none;
+}
+#item:hover #dropdown{
+  display: block;
 }
 </style>

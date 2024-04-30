@@ -23,10 +23,12 @@ import { getArtistById } from '@/firebase/fireStore/fireQuery';
       }
     },
     created(){
+      // this.getArtist();
     },
-    computed:{
+    methods:{
       getArtist(){
-        getArtistById(artistId).then((res) =>{
+        console.log("artist id = " ,this.artistId);
+        getArtistById(this.artistId).then((res) =>{
         this.artistName = res.name;
       })
       }
@@ -43,7 +45,7 @@ import { getArtistById } from '@/firebase/fireStore/fireQuery';
   }
   .custom_Img {
     border-radius: 5px;
-    object-fit: contain;
+    object-fit: cover;
     margin-right: 5px;
   }
   .custom_LineHeight {

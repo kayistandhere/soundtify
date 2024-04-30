@@ -28,14 +28,16 @@
                 <card-item-artists></card-item-artists>
             </div>
         </section>
-        <!-- <section>
-            <vue-adsense
-                ad-client="ca-pub-xxxxxxxxxxxxxxxx"
-                ad-slot="XXXXXXXX"
-                ad-style="display: block"
-                ad-format="auto">
-                </vue-adsense>
-        </section> -->
+        <section>
+            <amp-ad width="100vw" height="320" google-adtest="on"
+                type="adsense"
+                data-ad-client="ca-pub-4787357286986736"
+                data-ad-slot="8744431583"
+                data-auto-format="rspv"
+                data-full-width="">
+            <div overflow=""></div>
+            </amp-ad>
+        </section>
     </div>
 </template>
 
@@ -45,12 +47,13 @@ import cardItemSong from '../../components/card/card_item_song.vue'
 import navbarFisrt from '../../components/navbar/navbar_fisrt.vue'
 import auth from '../../firebase.js'
 import { onAuthStateChanged } from 'firebase/auth'
-// import VueAdsense from 'vue-adsense'
+
 export default {
     components:{
         navbarFisrt,
         cardItemSong,
         cardItemArtists,
+        
     },
     created(){
         onAuthStateChanged(auth.auth, (user) =>{
@@ -67,4 +70,4 @@ export default {
 
 <style>
 
-</style>../../firebase-config../../firebase-config
+</style>

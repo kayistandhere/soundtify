@@ -154,7 +154,7 @@ import footer1 from "../../components/footer/footer_1.vue";
 import buttonLgRadius from "../../components/button/button_lg-radius.vue";
 import buttonMdRadius from "../../components/button/button_md_radius.vue";
 import firebase from "../../firebase.js";
-import { ref, uploadBytes ,  } from "firebase/storage";
+import { ref, uploadBytes  } from "firebase/storage";
 import { uploadSingleFile } from "@/firebase/storage/storageQuery";
 import { convertFireStorageUrl } from "@/util/download_url_parse";
 import { updateUserClient , getUserById } from "@/firebase/fireStore/fireQuery";
@@ -247,9 +247,6 @@ export default {
   z-index: 998;
 }
 
-.custom-img-animation:hover {
-  transform: scale(102%);
-}
 
 .custom-btn-play {
   width: 50px;

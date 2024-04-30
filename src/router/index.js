@@ -16,6 +16,7 @@ import trackManagerment from '@/views/ClientView/track-managerment.vue'
 import audioSocial from '@/views/ClientView/audio-social.vue'
 import artistAllbums from '@/views/ClientView/artist-allbums.vue'
 import paymentResult from '@/views/ClientView/payment-result.vue'
+import playList from '@/views/ClientView/playlist.vue'
 const routes = [
   {
     path: '/',
@@ -47,6 +48,11 @@ const routes = [
     path: '/artistAllbums',
     name: 'artistAllbums',
     component: artistAllbums
+  },
+  {
+    path: '/playlist/',
+    name: 'playlist',
+    component: playList
   },
   {
     path: '/forgotpassword',

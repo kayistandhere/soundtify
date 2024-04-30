@@ -2,16 +2,15 @@
     <div class="container-fluid text-white bg-module rounded pb-5">
         <navbar-fisrt></navbar-fisrt>
         <div class="d-flex text-white align-items-end">
-            <img :src="songDetailData.cover" class="rounded m-2 custom-img-animation" alt="" srcset=""
+            <img :src="playlistData.avatarPlaylist" class="rounded m-2 custom-img-animation" alt="" srcset=""
                 width="220" height="220">
             <div class="ms-2">
-                <span class="fs-9 ">Song</span>
-                <h1 class="custom-text-title fw-bolder">{{ songDetailData.name }}</h1>
-                <span class="fs-8">{{ artist.name }} , Mck and more </span>
+                <span class="fs-9 ">Playlist</span>
+                <h1 class="custom-text-title fw-bolder">{{ playlistData.name }}</h1>
+                <span class="fs-8">{{ user.name }}</span>
                 <div class="d-flex align-items-center">
                     <span class="fs-8">Soundtify</span><span class="material-symbols-rounded fs-8 p-2">blur_on</span>
-                    <span class="fs-8">50 song,</span> <span class="fs-8"> about {{ this.hours }} hour {{ this.minutes
-                        }} min</span>
+                    <span class="fs-8">song,</span> <span class="fs-8"> about hour min</span>
                 </div>
             </div>
         </div>
@@ -31,11 +30,10 @@
         </div>
         <!-- Table Music -->
         <section>
-            <table-items-border :artistIDValue="artistId"></table-items-border>
+            <table-items-border :songIDValue="this.dulieu"></table-items-border>
         </section>
         <!-- Copy Right -->
         <section>
-
             <p class="fs-8">1 tháng 1, 2023</p>
             <p class="fs-9"><span class="material-symbols-rounded fs-9 px-2">copyright</span>2013 Avicii Music AB, /
                 PRMD under exclusive license to Universal Music AB</p>
@@ -51,61 +49,37 @@
 <script>
 import navbarFisrt from '../../components/navbar/navbar_fisrt.vue'
 import tableItemsBorder from '../../components/table/table_items_border.vue'
-import cardItemSong from '../../components/card/card_item_song.vue'
 import footer1 from '../../components/footer/footer_1.vue'
-import { getSongById, getArtistById } from '@/firebase/fireStore/fireQuery'
+import { getPlaylistById , getUserById } from '@/firebase/fireStore/fireQuery'
 export default {
     components: {
         navbarFisrt,
-        tableItemsBorder,
-        cardItemSong,
-        footer1
+        footer1,
+        tableItemsBorder
     },
+    
     data() {
         return {
-            songDetailData: {},
-            artist: {},
-            hours: 0,
-            minutes: 0,
-            seconds: 0,
-            artistId : "",
+            playlistData : {},
+            user :{},
+            dulieu : []
+                    
         }
     },
     created() {
-        this.songDetail();
+        this.playlist();
     },
     methods: {
-        async songDetail() {
-            const songId = this.$route.query.id;
-            this.artistId= this.$route.query.artistId;
-            console.log(songId);
-            await getSongById(songId).then((res) => {
-                this.songDetailData = res;
-                console.log(res);
-            });
-            await getArtistById(this.songDetailData.artistId).then((res) => {
-                this.artistWithID = res.id;
-                this.artist = res;
-                
-                
-                console.log("id artist = ",this.artistWithID);
-
-            });
-            this.msToTime(this.songDetailData.duration);
-        },
-        
-        msToTime(duration) {
-            const milliseconds = Math.floor((duration % 1000) / 100),
-                seconds = Math.floor((duration / 1000) % 60),
-                minutes = Math.floor((duration / (1000 * 60)) % 60),
-                hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
-
-            this.hours = (hours < 10) ? "0" + hours : hours;
-            this.minutes = (minutes < 10) ? "0" + minutes : minutes;
-            this.seconds = (seconds < 10) ? "0" + seconds : seconds;
-
-            return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
-        }
+       async playlist(){
+        const id = this.$route.query.id;
+        await getPlaylistById(id).then((res) =>{
+            this.playlistData = res;
+            console.log("playlistData = " , this.dulieu);
+        })
+        getUserById(this.playlistData.userId).then((res) =>{
+            this.user = res
+        })
+       }
     },
 }
 </script>

@@ -19,7 +19,7 @@ export const usePlayerStoreStore = defineStore('playerStore', {
       await this.getDataSong();
       this.audio.src = this.tracks[this.currentTrackIndex].url + "&token=" + this.tracks[this.currentTrackIndex].token;
       this.audioCurrent = this.tracks[this.currentTrackIndex];
-      console.log("dulieu = ",this.audioCurrent);
+      console.log("audioCurrent = ",this.audioCurrent);
       this.generateTime();
       this.audio.ontimeupdate = () => {
         this.generateTime();
