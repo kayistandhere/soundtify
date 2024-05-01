@@ -19,7 +19,7 @@ import firebase from '@/firebase.js';
       }
     },
     created(){
-      this.getAllbums();
+      // this.getAllbums();
     },
     methods:{
       getAllbums(){

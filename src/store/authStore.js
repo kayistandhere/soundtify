@@ -2,6 +2,7 @@ import { defineStore, acceptHMRUpdate } from 'pinia'
 import { onAuthStateChanged } from 'firebase/auth';
 import { getUserById, getArtistById } from '@/firebase/fireStore/fireQuery';
 import firebase from '@/firebase.js'
+import auth from '@/service/auth/auth.js'
 export const useAuthStoreStore = defineStore('authStore', {
   state: () => ({
     user: null,
@@ -42,6 +43,8 @@ export const useAuthStoreStore = defineStore('authStore', {
       if (this.isSyncing) return;
       this.isSyncing = true;
       this.user = await getUserById(uid);
+      auth.createStripeId();
+      console.log("log striped" , auth.createStripeId());
       // Check user profile if has artistId the sync Artist data
       if (this.user.artistId) {
         

@@ -18,7 +18,6 @@ import {
 
 const signIn = (email, password) => {
     return setPersistence(firebaseAuth.auth,browserLocalPersistence ).then(() => {
-
         return signInWithEmailAndPassword(firebaseAuth.auth, email, password);
     }).catch((error) =>{
       console.log(error);
@@ -53,9 +52,8 @@ const sendEmail = (email) => {
 };
 const createStripeId = () =>{
   httpsCallable(firebaseAuth.firebaseFunction, 'createStripeIfNeed')()
-  console.log("đâsdasdasd = ",httpsCallable(firebaseAuth.firebaseFunction , 'createStripeIfNeed')());
+  // console.log("đâsdasdasd = ",httpsCallable(firebaseAuth.firebaseFunction , 'createStripeIfNeed')());
 }
-
 const logout = () => {
   return signOut(firebaseAuth.auth);
 };

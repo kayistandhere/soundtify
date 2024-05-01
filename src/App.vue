@@ -118,16 +118,18 @@
           <div class="function_control_music d-flex justify-content-center align-items-center">
             <span class="material-symbols-rounded p-2 text-white fs-4 custom-opacity">shuffle</span>
             <span class="material-symbols-rounded p-2 text-white fs-2 custom-opacity"
-              @click="prevousTrack">skip_previous</span>
-            <span class="material-symbols-rounded p-2 text-white fs-2 custom-opacity"
               @click="onSeekBackward">replay_10</span>
-            <span class="material-symbols-rounded p-2 text-white fs-2 custom-opacity" @click="play"
+            <span class="material-symbols-rounded p-2 text-white fs-2 custom-opacity"
+              @click="prevousTrack">skip_previous</span>
+            
+            <span class="material-symbols-rounded p-2 text-white fs-2 custom-opacity " @click="play"
               v-if="!this.playOrPause">play_arrow</span>
             <span class="material-symbols-rounded p-2 text-white fs-2 custom-opacity" @click="pause" v-else>pause</span>
-            <span class="material-symbols-rounded p-2 text-white fs-2 custom-opacity"
-              @click="onSeekForward">forward_10</span>
+            
             <span class="material-symbols-rounded p-2 text-white fs-2 custom-opacity"
               @click="nextTrack">skip_next</span>
+              <span class="material-symbols-rounded p-2 text-white fs-2 custom-opacity"
+              @click="onSeekForward">forward_10</span>
             <span class="material-symbols-rounded p-2 text-white fs-4 custom-opacity">replay</span>
           </div>
           <div class="d-flex align-items-center">
@@ -342,6 +344,7 @@ export default {
 
 .custom-opacity {
   opacity: 0.7;
+  cursor: pointer;
 }
 
 .custom-opacity:hover {

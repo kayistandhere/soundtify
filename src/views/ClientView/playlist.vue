@@ -57,7 +57,6 @@ export default {
         footer1,
         tableItemsBorder
     },
-    
     data() {
         return {
             playlistData : {},
@@ -74,6 +73,7 @@ export default {
         const id = this.$route.query.id;
         await getPlaylistById(id).then((res) =>{
             this.playlistData = res;
+            this.dulieu = res.songs
             console.log("playlistData = " , this.dulieu);
         })
         getUserById(this.playlistData.userId).then((res) =>{

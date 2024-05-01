@@ -91,7 +91,6 @@ export default {
       if(!this.isCheckValidation){
         auth.signIn(this.formData.email,this.formData.password)
         .then(() => {
-          auth.createStripeId();
           this.$router.push({name: "home.view"});
         })
         .catch((error) => {
@@ -132,14 +131,7 @@ export default {
       return this.isCheckValidation;
     },
   },
-  computed:{
-    
-    },
-    watch:{
-      
-    }
-  
-   
+
 };
      
 </script>
