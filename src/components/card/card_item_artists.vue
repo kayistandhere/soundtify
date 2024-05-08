@@ -26,7 +26,6 @@
         }
     },
     created(){
-        
         this.limitDataArtist();
     },
     methods:{
@@ -38,8 +37,10 @@
             this.limitData = this.dataArtist.slice(0,6); 
         },
         async redirectArtistDetail(id){
-           await this.artistDetailId(id);
-           this.$router.push({path : `artistAllbums/${id}`})
+            const idArtist = {
+                "id": id
+            }
+           this.$router.push({path : `artistAllbums/`, query : idArtist})
         }
 
     }

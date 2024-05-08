@@ -1,84 +1,108 @@
-import { getAllSong } from '@/firebase/fireStore/fireQuery';
-import { defineStore, acceptHMRUpdate } from 'pinia'
+import { getAllSong } from "@/firebase/fireStore/fireQuery";
+import { defineStore, acceptHMRUpdate } from "pinia";
 
-export const usePlayerStoreStore = defineStore('playerStore', {
+export const usePlayerStoreStore = defineStore("playerStore", {
   state: () => ({
     audio: new Audio(),
     tracks: [],
     currentTrackIndex: 0,
     duration: null,
     currentTime: 0,
-    currentTrack: 0,
-    isTimerPlaying: false,
-    audioCurrent : {},
+    currentSong: null,
+    isPlaying: false,
+    replayOne: false
   }),
-  getters: {},
+  getters: {
+
+  },
   actions: {
-    // function
+    play() {
+      if(this.isPlaying) {
+        return;
+      }
+      this.isPlaying = true;
+      this.currentSong = this.tracks[this.currentTrackIndex];
+      this.audio.src = this.currentSong.url + "&token=" +this.currentSong.token;
+      this.audio.load();
+      this.audio.play();
+    },
+
+    pause() {
+      this.audio.pause();
+      this.isPlaying = false;
+    },
+
+    stop() {
+      this.tracks = [];
+      this.currentTrackIndex = 0;
+      this.duration = null;
+      this.currentTime = 0;
+      this.currentSong = null;
+      this.isPlaying = false;
+    },
+
+    next() {
+      this.pause();
+      if(this.currentTrackIndex >= this.tracks.length - 1) {
+        this.currentTrackIndex = 0;
+      } else {
+        this.currentTrackIndex += 1;
+      }
+      this.play()
+    },
+
+    previous() {
+      this.pause();
+      if(this.currentTrackIndex <= 0) {
+        this.currentTrackIndex = this.tracks.length - 1;
+      } else {
+        this.currentTrackIndex -= 1;
+      }
+      this.play();
+    },
+
+    seek(seekingvalue) {
+      this.audio.currentTime = (parseInt(this.audio.duration) * seekingvalue) / 100;
+    },
+
+    seekAdd(value) {
+      this.audio.currentTime += value;
+    },
+
+    setReplayMode(replayOne) {
+      this.replayOne = replayOne;
+    },
+
+
+    playlistSingleSong(song) {
+    console.log(song)
+     this.stop();
+     this.tracks.push(song);
+     console.log(this.currentTrackIndex, song);
+     this.play();
+    },
+
+    playlistWithPlaylist(value){
+    this.stop();
+     this.tracks = value;
+     this.play();
+    },
+
     async created() {
-      await this.getDataSong();
-      this.audio.src = this.tracks[this.currentTrackIndex].url + "&token=" + this.tracks[this.currentTrackIndex].token;
-      this.audioCurrent = this.tracks[this.currentTrackIndex];
-      console.log("audioCurrent = ",this.audioCurrent);
       this.generateTime();
       this.audio.ontimeupdate = () => {
         this.generateTime();
         this.currentTime = Math.floor(
           (this.audio.currentTime / this.audio.duration) * 100
         );
-        console.log("currentTime", this.currentTime);
       };
-    },
-    async getDataSong() {
-       this.tracks = await getAllSong()
-        console.log("track",this.tracks);
-    },
-    playControl() {
-      this.audio.play();
-    },
-    pauseControl() {
-      this.audio.pause();
-    },
-    volumeControl(value) {
-      this.audio.volume = value;
-    },
-    seekBackward() {
-      this.audio.currentTime -= 10;
-    },
-    seekForward() {
-      this.audio.currentTime += 10;
-    },
-    prevousSong() {
-      this.audio.pause();
-      if (this.currentTrackIndex > 0) {
-        this.currentTrackIndex--;
-      } else {
-        this.currentTrackIndex = this.tracks.length - 1;
+      this.audio.onended = () => {
+        if(this.replayOne) {
+          this.play();
+        } else {
+          this.next();
+        }
       }
-      this.audio.load();
-      this.audio.play();
-    },
-    nextSong() {
-      if (this.currentTrackIndex < this.tracks.length - 1) {
-        this.currentTrackIndex++;
-      } else {
-        this.currentTrackIndex = 0;
-      }
-      this.audio.pause();
-      console.log("test 1", this.currentTrackIndex);
-      this.audio.src = this.tracks[this.currentTrackIndex].url;
-      this.audioCurrent = this.tracks[this.currentTrackIndex];
-
-      console.log("Audio current = ", this.audioCurrent);
-      this.audio.load();
-      this.audio.play();
-    },
-
-    // time to change audio
-    seekingChange(seekSlider) {
-      const seekTo = (parseInt(this.audio.duration) * seekSlider) / 100;
-      console.log("seekTo" , seekTo);
-      this.audio.currentTime = seekTo;
     },
     debounce(fn, ms) {
       let timer;
@@ -93,6 +117,9 @@ export const usePlayerStoreStore = defineStore('playerStore', {
           fn.apply(context, args);
         }, ms);
       };
+    },
+    volume(value){
+        this.audio.volume = value
     },
     generateTime() {
       let durmin = Math.floor(this.audio.duration / 60);
@@ -115,8 +142,8 @@ export const usePlayerStoreStore = defineStore('playerStore', {
       this.currentTime = curmin + ":" + cursec;
     },
   },
-})
+});
 
 if (import.meta.hot) {
-  import.meta.hot.accept(acceptHMRUpdate(usePlayerStoreStore, import.meta.hot))
+  import.meta.hot.accept(acceptHMRUpdate(usePlayerStoreStore, import.meta.hot));
 }

@@ -2,9 +2,9 @@
     <div class="container-fluid text-white bg-module rounded pb-5">
         <navbar-fisrt></navbar-fisrt>
         <div class="d-flex text-white align-items-end">
-            <img :src="songDetailData.cover" class="rounded m-2 custom-img-animation" alt="" srcset=""
-                width="220" height="220">
-            <div class="ms-2">
+            <img v-if="!isLoading" :src="songDetailData.cover" class="rounded m-2 custom-img-animation" alt="" srcset=""
+                width="220" height="220"> 
+             <div class="ms-2" v-if="!isLoading">
                 <span class="fs-9 ">Song</span>
                 <h1 class="custom-text-title fw-bolder">{{ songDetailData.name }}</h1>
                 <span class="fs-8">{{ artist.name }} , Mck and more </span>
@@ -18,7 +18,7 @@
         <!-- function play -->
         <div class="d-flex justify-content-between align-items-center m-2">
             <div class="d-flex align-items-center">
-                <div class="custom-btn-play mx-2">
+                <div class="custom-btn-play mx-2 custom-cursor" @click="this.playlistSingleSong(songDetailData)">
                     <i class="bi bi-play-fill fs-3 text-dark ms-1"></i>
                 </div>
                 <span class="material-symbols-rounded fs-1 mx-4 txt-green">favorite</span>
@@ -31,7 +31,7 @@
         </div>
         <!-- Table Music -->
         <section>
-            <table-items-border :artistIDValue="artistId"></table-items-border>
+            <table-items-border v-if="!this.isLoading" :songIdValue="this.songId"></table-items-border>
         </section>
         <!-- Copy Right -->
         <section>
@@ -54,6 +54,8 @@ import tableItemsBorder from '../../components/table/table_items_border.vue'
 import cardItemSong from '../../components/card/card_item_song.vue'
 import footer1 from '../../components/footer/footer_1.vue'
 import { getSongById, getArtistById } from '@/firebase/fireStore/fireQuery'
+import { mapActions } from 'pinia'
+import { usePlayerStoreStore } from '@/store/playerStore'
 export default {
     components: {
         navbarFisrt,
@@ -61,7 +63,7 @@ export default {
         cardItemSong,
         footer1
     },
-    data() {
+     data() {
         return {
             songDetailData: {},
             artist: {},
@@ -69,29 +71,30 @@ export default {
             minutes: 0,
             seconds: 0,
             artistId : "",
+            songId : "",
+            isLoading : true,
+            
         }
     },
     created() {
         this.songDetail();
     },
     methods: {
+        ...mapActions(usePlayerStoreStore , ['playlistSingleSong']),
         async songDetail() {
-            const songId = this.$route.query.id;
+            try {
+            this.isLoading = true;
+            const id = this.$route.query.id;
+            this.songId = id;
+            console.log("songid = " ,this.songId);
             this.artistId= this.$route.query.artistId;
-            console.log(songId);
-            await getSongById(songId).then((res) => {
-                this.songDetailData = res;
-                console.log(res);
-            });
-            await getArtistById(this.songDetailData.artistId).then((res) => {
-                this.artistWithID = res.id;
-                this.artist = res;
-                
-                
-                console.log("id artist = ",this.artistWithID);
-
-            });
+            this.songDetailData = await getSongById(this.songId)
+            this.artist = await getArtistById(this.songDetailData.artistId)
             this.msToTime(this.songDetailData.duration);
+            this.isLoading = false;
+            } catch (error) {
+                console.log("loi song detail = ",error);
+            }
         },
         
         msToTime(duration) {

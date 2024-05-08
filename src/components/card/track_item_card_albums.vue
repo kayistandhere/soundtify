@@ -19,7 +19,7 @@ import firebase from '@/firebase.js';
       }
     },
     created(){
-      // this.getAllbums();
+      this.getAllbums();
     },
     methods:{
       getAllbums(){
@@ -35,7 +35,7 @@ import firebase from '@/firebase.js';
         const playlistId = {
           "id" : id
         }
-          this.$router.push({path : `playlist/` ,query : playlistId });
+          this.$router.push({path : `/playlist` , query :  playlistId });
       }
     }
   }

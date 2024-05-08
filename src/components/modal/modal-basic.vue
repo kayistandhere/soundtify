@@ -88,7 +88,7 @@ export default {
   methods:{
       async createArtists(){
         const user = await getUser();
-        console.log("getUser" , user);
+
         const id = v4();
         await registerAsArtist({"id":id ,"name":this.formData.artistName , "description":this.formData.description, "thumbnail":this.formData.avatarArtist},user).then(()=>{
           console.log("create Artist successfully");

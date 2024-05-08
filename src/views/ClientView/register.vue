@@ -24,8 +24,8 @@
             <!-- Sex -->
             <div class="col-4 px-1 py-2">
               <div class="custom-form">
-                    <select id="inputState" class="custom-form bg-module-1 border-0 text-white" v-model="this.formData.gender">
-                      <option selected value="">male</option>
+                    <select id="inputState" class="custom-form bg-module-1 border-0 text-white" v-model="this.formData.gender" @blur="Validator">
+                      <option selected>male</option>
                       <option>female</option>
                       <option>Non-binary</option>
                       <option>Prefer Not To Say</option>
@@ -149,9 +149,10 @@ export default {
     };
   },
   methods: {
-
     register() {
-      if(this.isCheckValidation){
+      console.log("formData", this.formData);
+      console.log("ádasdas", this.isCheckValidation);
+      if(true){
         auth.signUp(this.formData.name, this.formData.email, this.formData.password ,this.formData.gender, this.formData.phone , this.formData.age)
         .then((res) => {
           this.$router.push({ name: "login.view" });
@@ -159,8 +160,7 @@ export default {
           // ...
         })
         .catch((error) => {
-          const errorMessage = error.message;
-          console.log("test2", errorMessage);
+          console.log("test2", error);
           // ..
         });
       }

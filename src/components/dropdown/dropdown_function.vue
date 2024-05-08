@@ -46,7 +46,6 @@ export default {
         })  
         },
         updateSongToPlaylist(playlist){
-            console.log(`playlist ${playlist} && id song = ${this.idSong}`);
             updatePlaylist(playlist,this.idSong).then((res) => {
         console.log("playlist updated successfully!" ,res);
         }).catch((error) => {

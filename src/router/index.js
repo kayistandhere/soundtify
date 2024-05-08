@@ -50,7 +50,7 @@ const routes = [
     component: artistAllbums
   },
   {
-    path: '/playlist/',
+    path: '/playlist',
     name: 'playlist',
     component: playList
   },

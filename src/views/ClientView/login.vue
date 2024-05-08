@@ -107,7 +107,6 @@ export default {
       }).catch((error)=>{
         console.log(error);
       })
-      auth.createStripeId();
     },
     Validator(){
       if(regex.isRequired(this.formData.email)){

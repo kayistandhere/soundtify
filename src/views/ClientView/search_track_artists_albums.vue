@@ -2,7 +2,7 @@
   <div class="bg-module">
     <section>
     <div class="col-4 px-5 py-2">
-      <search-track></search-track>
+      <search-track style="z-index: 1;"></search-track>
     </div>
      
   </section>

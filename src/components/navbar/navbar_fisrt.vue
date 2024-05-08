@@ -6,7 +6,8 @@
                 <ul class="navbar-nav">
                     <li class="nav-item p-2">
                         <div class="custom-button_radius d-flex align-items-center">
-                            <span class="fs-8 fw-bold">Music</span>
+                            <span class="fs-8 fw-bold" v-if="(this.upgradeAccount)">Prenium</span>
+                            <span class="fs-8 fw-bold" v-else>Soundtify</span>
                         </div>
                     </li>
                     <li class="nav-item p-2">
@@ -57,44 +58,58 @@
 </template>
 
 <script>
+import { getUserById } from '@/firebase/fireStore/fireQuery.js';
 import auth from '../../service/auth/auth.js'
 import modalBasic from '../modal/modal-basic.vue';
 import { getAvatarUser } from '@/firebase/storage/storageQuery.js';
 import { useAuthStoreStore } from '@/store/authStore.js';
 import { defaultAvatar } from '@/util/global.js';
-import { mapActions , mapWritableState } from 'pinia';
+import { mapActions , mapState  ,mapWritableState} from 'pinia';
+import firebase from '@/firebase.js';
 export default {
     components:{
         modalBasic,
     },
     data(){
         return {
+            upgradeAccount : false,
             avatarClient: null,
         }
     },
     created(){
         this.avatarUser();
-        
+        this.checkAcount()
     },
     methods:{
+        checkAcount(){
+            getUserById(firebase.auth.currentUser.uid).then((res) =>{
+                console.log("test subscription   = ", res.subscription);
+                if(res.subscription != undefined || res.subscription != null){
+                this.upgradeAccount = true;
+                console.log("account true = " , this.upgradeAccount);
+            }else {
+                this.upgradeAccount = false;
+                console.log("false = " , this.upgradeAccount);
+            }
+            })  
+        },
         logoutAccount(){
              auth.logout();
             this.$router.push({name: "login.view"});
         },
       async avatarUser(){
          await getAvatarUser().then((res) =>{
-            
             this.avatarClient = res;
           }).catch((error)=>{
             this.avatarClient = defaultAvatar(this.avatarClient);
           })
         },
     },
-    
     computed:{
-    ...mapActions(useAuthStoreStore , ["toggleArtist"])
+    ...mapActions(useAuthStoreStore , ["toggleArtist"]),
     
-    }
+    },
+  
 }
 </script>
 

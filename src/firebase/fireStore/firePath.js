@@ -10,10 +10,13 @@ const songColection = collection(firebase.database, 'Song');
 const subscriptionPlans = collection(firebase.database , 'SubscriptionPlans');
 
 const playList = collection(firebase.database , 'Playlist');
+
+const tagMetaData = collection(firebase.database , 'TagsMetaData')
 export  {
     userColection,
     artistColection,
     songColection,
     subscriptionPlans,
-    playList
+    playList,
+    tagMetaData,
 }

@@ -7,7 +7,7 @@
             <div class="ms-2">
                 <span class="fs-9 ">Playlist</span>
                 <h1 class="custom-text-title fw-bolder">{{ playlistData.name }}</h1>
-                <span class="fs-8">{{ user.name }}</span>
+                <span class="fs-8">{{ playlistData.name }}</span>
                 <div class="d-flex align-items-center">
                     <span class="fs-8">Soundtify</span><span class="material-symbols-rounded fs-8 p-2">blur_on</span>
                     <span class="fs-8">song,</span> <span class="fs-8"> about hour min</span>
@@ -17,7 +17,7 @@
         <!-- function play -->
         <div class="d-flex justify-content-between align-items-center m-2">
             <div class="d-flex align-items-center">
-                <div class="custom-btn-play mx-2">
+                <div class="custom-btn-play mx-2 custom-cursor" @click="this.playlistWithPlaylist(allPlaylist)">
                     <i class="bi bi-play-fill fs-3 text-dark ms-1"></i>
                 </div>
                 <span class="material-symbols-rounded fs-1 mx-4 txt-green">favorite</span>
@@ -30,11 +30,11 @@
         </div>
         <!-- Table Music -->
         <section>
-            <table-items-border :songIDValue="this.dulieu"></table-items-border>
+            <table-items-border v-if="!this.isLoading" :arraySong="this.playlistData.songs"></table-items-border>
         </section>
         <!-- Copy Right -->
         <section>
-            <p class="fs-8">1 tháng 1, 2023</p>
+            <p class="fs-8">1 tháng 1, 2023</p>s
             <p class="fs-9"><span class="material-symbols-rounded fs-9 px-2">copyright</span>2013 Avicii Music AB, /
                 PRMD under exclusive license to Universal Music AB</p>
         </section>
@@ -50,7 +50,9 @@
 import navbarFisrt from '../../components/navbar/navbar_fisrt.vue'
 import tableItemsBorder from '../../components/table/table_items_border.vue'
 import footer1 from '../../components/footer/footer_1.vue'
-import { getPlaylistById , getUserById } from '@/firebase/fireStore/fireQuery'
+import { getPlaylistById , getSongsWithArray, getUserById } from '@/firebase/fireStore/fireQuery'
+import { mapActions } from 'pinia'
+import { usePlayerStoreStore } from '@/store/playerStore'
 export default {
     components: {
         navbarFisrt,
@@ -61,26 +63,29 @@ export default {
         return {
             playlistData : {},
             user :{},
-            dulieu : []
-                    
+            isLoading : false , 
+            allPlaylist : []          
         }
     },
     created() {
         this.playlist();
     },
     methods: {
+        ...mapActions(usePlayerStoreStore , ["playlistWithPlaylist"]),
+        
        async playlist(){
+        this.isLoading = true;
         const id = this.$route.query.id;
-        await getPlaylistById(id).then((res) =>{
-            this.playlistData = res;
-            this.dulieu = res.songs
-            console.log("playlistData = " , this.dulieu);
-        })
-        getUserById(this.playlistData.userId).then((res) =>{
-            this.user = res
-        })
+        this.playlistData = await getPlaylistById(id)
+        console.log("show array = "  , this.playlistData);
+        this.allPlaylist = await getSongsWithArray(this.playlistData.songs)
+        console.log("array song = ",  this.allPlaylist);
+        this.user = await getUserById(this.playlistData.extraData.ownerId)
+        this.isLoading = false;
        }
     },
+    watch:{
+    }
 }
 </script>
 

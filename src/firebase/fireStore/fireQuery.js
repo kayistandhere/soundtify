@@ -1,5 +1,5 @@
 import { doc, getDoc, getDocs, query, setDoc, runTransaction,addDoc,arrayUnion, deleteDoc ,updateDoc ,where} from "firebase/firestore"
-import { userColection, artistColection , songColection , subscriptionPlans , playList } from './firePath.js'
+import { userColection, artistColection , songColection , subscriptionPlans , playList , tagMetaData } from './firePath.js'
 import firebase from '../../firebase.js'
 
 // User----------------------------------------------------------------------------------------
@@ -10,7 +10,7 @@ export const addUser = async (user) => {
 export const updateUserClient = async (name , email ,gender , phone , age ,avatar) => {
     const indexUser = firebase.auth.currentUser.uid
     const docRef = doc(userColection ,`${indexUser}`)
-    await setDoc(docRef,{
+    await updateDoc(docRef,{
         "name": name, 
         "email": email, 
         "gender": gender, 
@@ -125,7 +125,6 @@ export const getSongById = async (id) => {
         }
     } catch (error) {
         console.log("Error not fetching song data" , error);
-        throw error;
     }
 }
 export const getSongByArtist = async (artistId) =>{
@@ -135,10 +134,10 @@ export const getSongByArtist = async (artistId) =>{
             return docSnapshot.docs.map((e) => (e.data()))
     } catch (error) {
         console.log("Error not fetching song data" , error);
-        throw error;
     }
 }
 export const getSongsWithArray = async (songIds) => {
+    console.log("array = " , songIds);
     try {
       if (!Array.isArray(songIds)) {
         throw new Error('songIds must be an array of strings');
@@ -148,10 +147,21 @@ export const getSongsWithArray = async (songIds) => {
       const songs = docSnapshots.docs.map((doc) => doc.data());
       return songs;
     } catch (error) {
-      console.error("Error fetching song data:", error);
-      throw error;
+      console.log("Error fetching song data:", error);
     }
   };
+export const getSongByTag = async (value) => {
+    try {
+        console.log("TEST VALUE =" , value);
+        const tagQuery = query(songColection , where('tags' , "array-contains-any" , value))
+        const docSnapshot = await getDocs(tagQuery);
+        return docSnapshot.docs.map((e) => (e.data())) 
+    } catch (error) {
+        console.error("Error not fetching song data",error);
+        throw error;
+    }
+    
+}
 // subscriptionPlan----------------------------------------------------------------------------------------
 export const getAllSubscriptionPlans = async () => {
     let snapshot = await getDocs(
@@ -182,6 +192,17 @@ export const getPlaylistById = async (id) => {
     const data = await getDoc(docfire)
     return data.data()
 }
+export const getPlaylistWithUser = async (id) => {
+    try {
+      const songQuery = query(doc(playList , "extraData"), where('id', 'in', id));
+      const docSnapshots = await getDocs(songQuery);
+      const playlist = docSnapshots.docs.map((doc) => doc.data());
+      return playlist;
+    } catch (error) {
+      console.error("Error fetching song data:", error);
+      throw error;
+    }
+  };
 export const updatePlaylist = async (playlist, idSong) => {
     console.log(`playlist ${playlist.id} && id song = ${idSong}`);
     try {
@@ -197,3 +218,39 @@ export const updatePlaylist = async (playlist, idSong) => {
 //b1 lấy dữ liệu của của playlist đó cùng với id của bài hát đang chọn update vào songs của playlist ;
 //b2 show dữ liệu lên playlist có các nhạc trong playlist đó
 //b3 sau đó chỉnh sửa hàm getPlaylistById (id) là id của userid để show đúng playlist của người đó ;
+
+//   TagMetaData ---------------------------------------------------------------------------------------
+
+export const getAllTag = async () => {
+    let snapshot = await getDocs(
+        query(
+            tagMetaData
+        )
+    )
+    return snapshot.docs.map((e) => (e.data()))
+}
+//  Search ----------------------------------------------------------------------------------------------
+export const search = async (values) => {
+    try {
+                switch (values) {
+                    case values:
+                        if(values.charAt(0) == '#'){
+                        console.log("check n ", values);
+                            getSongByTag([values.slice(1)]).then((res) =>{
+                                console.log("tagValue = ", res);
+                            })
+                           
+                        break;
+                        }    
+                    case values:
+                        console.log("search by song or artist")
+                        break;
+                    default:
+                        console.log("some error");
+                        break;
+                }
+    } catch (error) {
+        console.log("Error not fetching song data" , error);
+        throw error;
+    }
+}

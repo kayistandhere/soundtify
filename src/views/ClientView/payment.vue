@@ -88,6 +88,8 @@ import { createPaymentIntent } from '@/service/payment_service/payment';
 import { loadStripe } from '@stripe/stripe-js'
 import { getSubPlantById, getUserById } from '@/firebase/fireStore/fireQuery';
 import firebase from '@/firebase';
+import { mapState } from 'pinia';
+import { useAuthStoreStore } from '@/store/authStore';
 
 export default {
     components: {
@@ -120,7 +122,7 @@ export default {
             const paymentIntent = await createPaymentIntent({
                 price: this.$route.query.price,
                 currency: this.$route.query.currency,
-                id: "asdsfwnek"
+                id: this.$route.query.id,     
             }, this.user);
 
             this.stripe = await loadStripe("pk_test_51P12gMRv6DqQwfzyu9TjKKrn0UHthbuT99e4ADBzFBR5YSkzFonvow0jqelkp9CTqcDco0MNbJackNo5FDubYW2Y00ETgXAAcJ".toString());
@@ -149,6 +151,8 @@ export default {
 
     },
     computed: {
+        ...mapState(useAuthStoreStore , ['user']),
+
         pk: `${process.env.VUE_APP_STRIPE_PUBLIC_KEY}`
     }
 }

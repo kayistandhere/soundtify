@@ -1,5 +1,5 @@
 <template>
-    <div class="container-fluid text-secondary bg-module rounded" style="height: 200vh;">
+    <div class="container-fluid text-secondary bg-module rounded">
         <navbar-fisrt></navbar-fisrt>
         <section>
             <div class="d-flex justify-content-between">
@@ -29,14 +29,14 @@
             </div>
         </section>
         <section>
-            <amp-ad width="100vw" height="320" google-adtest="on"
+            <!-- <amp-ad width="100vw" height="320" google-adtest="on"
                 type="adsense"
                 data-ad-client="ca-pub-4787357286986736"
                 data-ad-slot="8744431583"
                 data-auto-format="rspv"
                 data-full-width="">
             <div overflow=""></div>
-            </amp-ad>
+            </amp-ad> -->
         </section>
     </div>
 </template>

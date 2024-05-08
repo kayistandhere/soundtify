@@ -11,19 +11,19 @@
           </th>
         </tr>
       </thead>
-      <tbody>
-        <tr class="fs-9 text-white table-items-hover" id="item" :key="song.id" v-for="song in songData">
-          <th scope="row">1</th>
+      <tbody v-if="!this.isLoading">
+        <tr class="fs-9 text-white table-items-hover"  id="item" :key="song" v-for="song in this.songData">
+          <!-- <th scope="row" class="test">1</th> -->
+          <th scope="row" class="custom-cursor"><span class="material-symbols-rounded" @click="addSong(song)">play_arrow</span></th>
           <td>
             <div class="custom_card d-flex align-items-center">
-              <img class="custom_Img" :src="song.cover" alt="" srcset="" width="30"
-                height="30">
+     
+              <img class="custom_Img" :src="song.cover" alt="" srcset="" width="30" height="30">
               <div class="">
                 <span class="fs-8">{{ song.name }}</span>
                 <div class="d-flex align-items-center">
                   <span class=" fs-9">{{ song.artistId }}</span>
                 </div>
-
               </div>
             </div>
           </td>
@@ -33,53 +33,77 @@
           <dropdown-function id="dropdown" class="ps-2" :id-song="song.id"></dropdown-function>
           </td>
         </tr>
-       
       </tbody>
     </table>
   </div>
 </template>
 
 <script>
-import { getSongByArtist ,getSongsWithArray} from '@/firebase/fireStore/fireQuery';
+import { getSongByArtist ,getSongById,getSongsWithArray} from '@/firebase/fireStore/fireQuery';
 import dropdownFunction from '../dropdown/dropdown_function.vue';
+import { defaultAvatar } from '@/util/global';
+import { mapActions } from 'pinia';
+import { usePlayerStoreStore } from '@/store/playerStore';
+
 export default {
   components:{
     dropdownFunction,
   },
   props:{
-      artistIDValue : String,
-      songIDValue :Array,
+      artistIdValue : String,
+      arraySong : Array,
+      songIdValue : String,
   },
   data(){
     return {
-      songData : [],
+      songData : null,
+      isLoading : true,
+      songById : true,
+      stt: 0,
     }
   },
   created(){
     this.getSongByQuery();
+    
   },
   methods:{
-    getSongByQuery(){
-     
+    ...mapActions(usePlayerStoreStore , ['playlistSingleSong']),
+    addSong(value){
+      this.playlistSingleSong(value)
+    },
+    async getSongByQuery(){
+      this.isLoading = true;
       console.log("artist id = " , this.artistIDValue);
-      console.log("arr id = " , this.songIDValue);
-      if(this.artistIDValue != null){
-        const id = this.artistIDValue;
-        getSongByArtist(id).then((res) =>{
-          this.songData = res;
-          console.log("song by artist = ", res);
-      })
-      }else if(this.songIDValue != null){
-        getSongsWithArray(this.songIDValue).then((res) =>{
-          this.songData = res;
-          console.log("song by array = ", res);
-      })
-    }else{
-      console.log("khong trung ne");
-    }
+      console.log("song id = " , this.songIdValue);
+      console.log("arr id = " , this.arraySong);
+      if(this.artistIdValue != null){
+       this.songData =  await getSongByArtist(this.artistIdValue)
+      }else if(this.songIdValue != null){
+        this.songById = false;
+        this.songData = [await getSongById(this.songIdValue)]
+        console.log("song Data = " , this.songData);
+    }else if(this.arraySong != null ){
+      this.songData = await getSongsWithArray(this.arraySong)
+  }else {
+    console.log("khong trung lap");
   }
+  this.isLoading = false;
+  
 }
-}
+  },
+  watch:{
+    songIDValue(value) {
+      if (value != null){
+        const id = value;
+         getSongById(id).then((res) =>{
+          this.songData = res;
+          console.log("song by id = ", res);
+      })
+    }
+    },
+    
+  }
+  }
 </script>
 <style scoped>
 .custom-table-title {
@@ -111,4 +135,5 @@ export default {
 #item:hover #dropdown{
   display: block;
 }
+
 </style>

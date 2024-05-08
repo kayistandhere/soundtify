@@ -23,11 +23,10 @@ import { getArtistById } from '@/firebase/fireStore/fireQuery';
       }
     },
     created(){
-      // this.getArtist();
+      this.getArtist();
     },
     methods:{
       getArtist(){
-        console.log("artist id = " ,this.artistId);
         getArtistById(this.artistId).then((res) =>{
         this.artistName = res.name;
       })

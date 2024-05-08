@@ -50,10 +50,6 @@ const signWithGoogle = () => {
 const sendEmail = (email) => {
   return sendPasswordResetEmail(firebaseAuth.auth, email);
 };
-const createStripeId = () =>{
-  httpsCallable(firebaseAuth.firebaseFunction, 'createStripeIfNeed')()
-  // console.log("đâsdasdasd = ",httpsCallable(firebaseAuth.firebaseFunction , 'createStripeIfNeed')());
-}
 const logout = () => {
   return signOut(firebaseAuth.auth);
 };
@@ -64,5 +60,4 @@ export default {
   signWithGoogle,
   sendEmail,
   logout,
-  createStripeId,
 };

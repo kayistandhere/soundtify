@@ -36,7 +36,6 @@ export default {
      },
      methods:{
         onInputChange(){
-            console.log("ádas");
             if(this.inputValue.includes(',') || this.inputValue.includes(' ')){
                 const tags = this.inputValue.trim().split(" ").flatMap((value) => (value.split(','))).filter((value) =>(value.length > 0))
                 for (const tag of tags) {
