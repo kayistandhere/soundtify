@@ -1,7 +1,8 @@
 <template>
-    <div class="d-flex">
+    <div class="d-flex" v-if="!isLoading">
             <div class="card custom-bg-card m-2 position-relative custom-cursor" style="width: 12rem;" :key="song.id" 
-                v-for="song in limitdataSong"
+                v-for="song in dataSong"
+                
                 @click="redirectSongDetail(song.id,song.artistId)"
                 > 
                 <img :src="song.cover" class="custom-img-thumbnail p-2" alt="...">
@@ -19,14 +20,17 @@
 </template>
 
 <script>
-import { getAllSong } from '@/firebase/fireStore/fireQuery';
+import { getAllSong, getSongsWithArray } from '@/firebase/fireStore/fireQuery';
 import { mapActions } from 'pinia';
 import { usePlayerStoreStore } from '@/store/playerStore.js';
 export default {
+    props :{
+        arraySong : Array,
+    },
     data() {
         return {
             dataSong: [],
-            limitdataSong: [],
+            isLoading : true,
         }
     },
     created() {    
@@ -39,12 +43,17 @@ export default {
             this.playlistSingleSong(value);
         },
         async limitedDataSong(){
-           await getAllSong().then((res) => {
-            this.dataSong = res;
-        }).catch((error) =>{
-            console.log(error);
-        });
-           this.limitdataSong = this.dataSong.slice(0,6);
+            if(this.arraySong != null){
+                console.log("show array song 1= " , this.arraySong);
+                this.isLoading = true;  
+                this.dataSong = await getSongsWithArray(this.arraySong);
+                console.log("show array song 2= " , this.dataSong);
+            }else {
+                this.isLoading =true ;
+                this.dataSong = await getAllSong();
+            }
+           this.dataSong = this.dataSong.slice(0,6);
+           this.isLoading = false
         },
         async redirectSongDetail(id ,artist){
             const value = {

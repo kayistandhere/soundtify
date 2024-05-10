@@ -29,14 +29,14 @@
             </div>
         </section>
         <section>
-            <!-- <amp-ad width="100vw" height="320" google-adtest="on"
+            <amp-ad width="100vw" height="320"
                 type="adsense"
                 data-ad-client="ca-pub-4787357286986736"
                 data-ad-slot="8744431583"
                 data-auto-format="rspv"
                 data-full-width="">
             <div overflow=""></div>
-            </amp-ad> -->
+            </amp-ad>
         </section>
     </div>
 </template>

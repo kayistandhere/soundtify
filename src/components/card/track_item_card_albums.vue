@@ -9,7 +9,7 @@
   </template>
   
   <script>
-import { getAllPlaylist, getUserById } from '@/firebase/fireStore/fireQuery';
+import { getAllPlaylist, getPlaylistWithUser, getUserById } from '@/firebase/fireStore/fireQuery';
 import firebase from '@/firebase.js';
   export default {
     data(){
@@ -23,8 +23,9 @@ import firebase from '@/firebase.js';
     },
     methods:{
       getAllbums(){
-        getAllPlaylist().then((res) =>{
+        getPlaylistWithUser(firebase.auth.currentUser.uid).then((res) =>{
             this.allbumData = res;
+            console.log("playlistQuery = ", res);
         });
         const id = firebase.auth.currentUser.uid;
         getUserById(id).then((res) =>{
@@ -35,7 +36,7 @@ import firebase from '@/firebase.js';
         const playlistId = {
           "id" : id
         }
-          this.$router.push({path : `/playlist` , query :  playlistId });
+          this.$router.replace({path : `/playlist` , query :  playlistId });
       }
     }
   }

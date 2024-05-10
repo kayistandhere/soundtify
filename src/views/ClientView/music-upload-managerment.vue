@@ -7,7 +7,7 @@
         <div class="col-6 border">
           <form class="row g-3" @submit.prevent="uploadDetailSong">
             <div class="d-flex align-items-center justify-content-between">
-              <div class="col-lg-8 px-1">
+              <div class="col-lg-12 px-1">
                 <div class="my-2 d-flex justify-content-center">
                   <div class="custom-form">
                     <input type="text" name="text" id="email" required class="bg-module-1"
@@ -16,22 +16,6 @@
                       <span class="content-name text-dark"> Name Track </span>
                     </label>
                   </div>
-                </div>
-              </div>
-              <div class="col-lg-4 px-1">
-                <div class="custom-form">
-                  <select id="inputState" class="custom-form bg-module-1 border-0 text-white"
-                    v-model="this.formData.category">
-                    <option selected>Category</option>
-                    <option>Pop</option>
-                    <option>Jazz</option>
-                    <option>Rock</option>
-                    <option>A&B</option>
-                    <option>EDM</option>
-                    <option>Sleep</option>
-                    <option>Love</option>
-                    <option>Punk</option>
-                  </select>
                 </div>
               </div>
             </div>
@@ -88,7 +72,7 @@
           </div>
         </div>
       </div>
-      <div class=" border">
+      <div class="border">
         <input type="file" name="" id="fileSong" accept="audio/*" @change="uploadSong()">
 
       </div>

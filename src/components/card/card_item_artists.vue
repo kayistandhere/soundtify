@@ -19,6 +19,7 @@
   import { mapActions } from 'pinia';
   import { useIndexStore } from '@/store';
   export default {
+    
     data(){
         return {
             dataArtist : [],

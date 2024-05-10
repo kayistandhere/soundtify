@@ -6,7 +6,7 @@
                 <ul class="navbar-nav">
                     <li class="nav-item p-2">
                         <div class="custom-button_radius d-flex align-items-center">
-                            <span class="fs-8 fw-bold" v-if="(this.upgradeAccount)">Prenium</span>
+                            <span class="fs-8 fw-bold" v-if="this.upgradeAccount">Prenium</span>
                             <span class="fs-8 fw-bold" v-else>Soundtify</span>
                         </div>
                     </li>
@@ -37,7 +37,7 @@
                     <li class="nav-item row align-items-center p-3">
                         <div class="btn-group ">
                         <button type="button" class="bg-module border-0" data-bs-toggle="dropdown" aria-expanded="false" >
-                            <img v-bind:src="this.avatarClient" class="customImages" alt="images user"
+                            <img v-bind:src="this.avatarUser" class="customImages" alt="images user"
                                 srcset="" width="40" height="40">
                         </button>
                         <ul class="dropdown-menu dropdown-menu-lg-end custom-dropdown fs-8">
@@ -72,42 +72,27 @@ export default {
     },
     data(){
         return {
-            upgradeAccount : false,
             avatarClient: null,
         }
     },
     created(){
-        this.avatarUser();
-        this.checkAcount()
     },
     methods:{
-        checkAcount(){
-            getUserById(firebase.auth.currentUser.uid).then((res) =>{
-                console.log("test subscription   = ", res.subscription);
-                if(res.subscription != undefined || res.subscription != null){
-                this.upgradeAccount = true;
-                console.log("account true = " , this.upgradeAccount);
-            }else {
-                this.upgradeAccount = false;
-                console.log("false = " , this.upgradeAccount);
-            }
-            })  
-        },
+
         logoutAccount(){
              auth.logout();
             this.$router.push({name: "login.view"});
         },
-      async avatarUser(){
-         await getAvatarUser().then((res) =>{
-            this.avatarClient = res;
-          }).catch((error)=>{
-            this.avatarClient = defaultAvatar(this.avatarClient);
-          })
-        },
     },
     computed:{
     ...mapActions(useAuthStoreStore , ["toggleArtist"]),
-    
+    ...mapState(useAuthStoreStore , ['user']),
+    upgradeAccount(){
+       return this.user?.subscription != null
+    },
+    avatarUser(){
+        return this.user?.avatar 
+    }
     },
   
 }

@@ -86,6 +86,20 @@ export const getArtistById = async (id) => {
     const data = await getDoc(docfire)
     return data.data()
 }
+export const getArtistByName = async (name) => {
+    try {
+        const docRef = query(artistColection , where('name' , '==' , name) );
+        const docSnapshot = await getDocs(docRef);
+        if(docSnapshot.exists()){
+            return docSnapshot.data();
+        } else {
+            console.warn(`Artist with name ${name} not found in fireStore`);
+            return null;
+        }
+    } catch (error) {
+        console.log("Error not fetching song data" , error);
+    }
+}
 // Song----------------------------------------------------------------------------------------
 export const uploadSong = async (song) => (await setDoc(doc(songColection, song.id), song))
 
@@ -123,6 +137,16 @@ export const getSongById = async (id) => {
             console.warn(`Song with id ${id} not found in fireStore`);
             return null;
         }
+    } catch (error) {
+        console.log("Error not fetching song data" , error);
+    }
+}
+export const getSongByName = async (name) => {
+    try {
+        console.log('check value = ', name);
+        const docRef = query(songColection , where('name' , '==' , name) );
+        const docSnapshot = await getDocs(docRef);
+        return docSnapshot.docs.map((e) => (e.data()))
     } catch (error) {
         console.log("Error not fetching song data" , error);
     }
@@ -194,10 +218,10 @@ export const getPlaylistById = async (id) => {
 }
 export const getPlaylistWithUser = async (id) => {
     try {
-      const songQuery = query(doc(playList , "extraData"), where('id', 'in', id));
-      const docSnapshots = await getDocs(songQuery);
-      const playlist = docSnapshots.docs.map((doc) => doc.data());
-      return playlist;
+        console.log("Test value = ", id);
+      const playlistQuery = query(playList , where('extraData.ownerId' , "==" , id));
+      const docSnapshot = await getDocs(playlistQuery);
+        return docSnapshot.docs.map((e) => (e.data()))
     } catch (error) {
       console.error("Error fetching song data:", error);
       throw error;
@@ -236,15 +260,11 @@ export const search = async (values) => {
                     case values:
                         if(values.charAt(0) == '#'){
                         console.log("check n ", values);
-                            getSongByTag([values.slice(1)]).then((res) =>{
-                                console.log("tagValue = ", res);
-                            })
-                           
-                        break;
+                           return getSongByTag([values.slice(1)])
                         }    
                     case values:
-                        console.log("search by song or artist")
-                        break;
+                        console.log("check name ", values);
+                        return await getSongByName(values)
                     default:
                         console.log("some error");
                         break;

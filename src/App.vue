@@ -31,13 +31,13 @@ export default {
     BottomNavigationBar,
     sideBar,
   },
-  async created() {
+   created() {
     if (firebase.auth.currentUser) {
       this.masterPage = true
     } else {
       this.masterPage = false
     }
-    await this.setup();
+     this.setup();
   },
   methods: {
     ...mapActions(useAuthStoreStore, ['setup']),

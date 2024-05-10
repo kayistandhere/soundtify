@@ -72,7 +72,6 @@ export default {
     },
     methods: {
         ...mapActions(usePlayerStoreStore , ["playlistWithPlaylist"]),
-        
        async playlist(){
         this.isLoading = true;
         const id = this.$route.query.id;
