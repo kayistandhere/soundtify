@@ -21,7 +21,12 @@
                     <i class="bi bi-play-fill fs-3 text-dark ms-1"></i>
                 </div>
                 <span class="material-symbols-rounded fs-1 mx-4 txt-green">favorite</span>
-                <span class="material-symbols-rounded fs-2 mx-2">more_horiz</span>
+                <div class="dropdown">
+                <span class="material-symbols-rounded fs-2 mx-2 custom-cursor" id="playlistFunction" data-bs-toggle="dropdown">more_horiz</span>
+                <ul class="dropdown-menu custom-dropdown fs-8" aria-labelledby="playlistFunction">
+                            <li><a class="dropdown-item custom-dropdown-item text-white custom-cursor" @click="removePlaylist">delete playlist</a></li>
+                        </ul>
+            </div>
             </div>
             <div class="d-flex align-items-center">
                 <span class="fs-8 mx-1">List</span>
@@ -50,7 +55,7 @@
 import navbarFisrt from '../../components/navbar/navbar_fisrt.vue'
 import tableItemsBorder from '../../components/table/table_items_border.vue'
 import footer1 from '../../components/footer/footer_1.vue'
-import { getPlaylistById , getSongsWithArray, getUserById } from '@/firebase/fireStore/fireQuery'
+import { getPlaylistById , getSongsWithArray, getUserById , deletePlaylist } from '@/firebase/fireStore/fireQuery'
 import { mapActions } from 'pinia'
 import { usePlayerStoreStore } from '@/store/playerStore'
 export default {
@@ -76,15 +81,19 @@ export default {
         this.isLoading = true;
         const id = this.$route.query.id;
         this.playlistData = await getPlaylistById(id)
-        console.log("show array = "  , this.playlistData);
         this.allPlaylist = await getSongsWithArray(this.playlistData.songs)
-        console.log("array song = ",  this.allPlaylist);
         this.user = await getUserById(this.playlistData.extraData.ownerId)
         this.isLoading = false;
+       },
+       removePlaylist(){
+            deletePlaylist(this.playlistData.id).then((res) =>{
+                console.log(res);
+                this.$router.replace({path : "/home"})
+            }).catch((error) =>{
+                console.log(error);
+            })
        }
     },
-    watch:{
-    }
 }
 </script>
 

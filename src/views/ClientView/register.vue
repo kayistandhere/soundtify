@@ -120,6 +120,7 @@
 import customBtn1 from "../../components/button/button_md_radius.vue";
 import auth from "../../service/auth/auth.js";
 import regex from "../../util/regex.js";
+import { useToast } from "vue-toastification";
 export default {
   components: {
     customBtn1,
@@ -150,13 +151,12 @@ export default {
   },
   methods: {
     register() {
-      console.log("formData", this.formData);
-      console.log("ádasdas", this.isCheckValidation);
       if(true){
         auth.signUp(this.formData.name, this.formData.email, this.formData.password ,this.formData.gender, this.formData.phone , this.formData.age)
         .then((res) => {
+          const toast = useToast();
+            toast.success("register a account successfull", {position: "top-left"})
           this.$router.push({ name: "login.view" });
-          console.log("dang ky thanh cong ", res);
           // ...
         })
         .catch((error) => {
@@ -167,6 +167,14 @@ export default {
       
     },
     Validator() {
+      switch (key) {
+        case value:
+          
+          break;
+      
+        default:
+          break;
+      }
       if (regex.isRequired(this.formData.name)) {
         this.error.name = "Please enter this field";
         this.isCheckValidation = false;

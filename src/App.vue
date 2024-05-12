@@ -1,25 +1,20 @@
 <template>
-  <div class="container-fluid bg-black m-0 p-0 align-items-center justify-content-center">
-    <section class="d-flex" style="height: 90vh;" >
+  <div class="container-fluid m-0 bg-black p-0 align-items-center justify-content-center">
+    <section class="d-flex" style="height: 92vh;">
       <!-- Start Colums Left -->
-      <div class="col-lg-3 overflow-hidden rounded" v-if="this.masterPage">
-        <side-bar></side-bar>
-        <!-- Button function -->
+      <div class="col-lg-3 overflow-hidden rounded px-2" v-if="this.masterPage" >
+        <side-bar ></side-bar>
       </div>
-      <div :class="{ 'col-lg-9 overflow-auto': this.masterPage, 'col-lg-12': !this.masterPage }">
-        <div :class="{ 'mt-2 me-2': this.masterPage, 'mt-0 me-0': !this.masterPage }">
+      <div :class="{ 'col-lg-9 overflow-auto ': this.masterPage, 'col-lg-12 ': !this.masterPage }">
           <router-view />
-        </div>
       </div>
     </section>
-    <section class="" style="height:10vh;" v-if="this.masterPage">
-      <bottom-navigation-bar></bottom-navigation-bar>
-    </section>
+      <bottom-navigation-bar class="bg-dark" v-if="this.currentSong" style="height: 8vh;"></bottom-navigation-bar>
   </div>
 </template>
 
 <script>
-import BottomNavigationBar from './components/BottomNavigationBar/Bottom-Navigation-Bar.vue'
+import BottomNavigationBar from '@/components/BottomNavigationBar/Bottom-Navigation-Bar.vue'
 import sideBar from './components/sidebar/sidebar.vue';
 import firebase from "@/firebase.js"
 import { mapActions ,mapWritableState } from 'pinia';
@@ -43,7 +38,7 @@ export default {
     ...mapActions(useAuthStoreStore, ['setup']),
   },
   computed: {
-    ...mapWritableState(usePlayerStoreStore , ["isPlaying"])
+    ...mapWritableState(usePlayerStoreStore , ["isPlaying" , "currentSong"])
   }
 
 }

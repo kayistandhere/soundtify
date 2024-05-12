@@ -27,6 +27,7 @@
 
 <script>
 import { getAllPlaylist, updatePlaylist } from '@/firebase/fireStore/fireQuery';
+import { useToast } from 'vue-toastification';
 export default {
     props:{
         idSong : String,
@@ -46,10 +47,11 @@ export default {
         })  
         },
         updateSongToPlaylist(playlist){
-            updatePlaylist(playlist,this.idSong).then((res) => {
-        console.log("playlist updated successfully!" ,res);
-        }).catch((error) => {
-            console.error("Error updating to playlist document:", error);
+            const toast = useToast();
+            updatePlaylist(playlist,this.idSong).then(() => {
+            toast.success("playlist update successfull", {position: "top-left"})
+        }).catch(() => {
+            toast.error("playlist update false", {position: "top-left"})
         });
         }
         

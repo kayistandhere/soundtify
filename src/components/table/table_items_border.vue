@@ -44,6 +44,7 @@ import dropdownFunction from '../dropdown/dropdown_function.vue';
 import { defaultAvatar } from '@/util/global';
 import { mapActions } from 'pinia';
 import { usePlayerStoreStore } from '@/store/playerStore';
+import { useToast } from 'vue-toastification';
 
 export default {
   components:{
@@ -73,35 +74,28 @@ export default {
     },
     async getSongByQuery(){
       this.isLoading = true;
-      console.log("artist id = " , this.artistIDValue);
-      console.log("song id = " , this.songIdValue);
-      console.log("arr id = " , this.arraySong);
       if(this.artistIdValue != null){
        this.songData =  await getSongByArtist(this.artistIdValue)
       }else if(this.songIdValue != null){
         this.songById = false;
         this.songData = [await getSongById(this.songIdValue)]
-        console.log("song Data = " , this.songData);
     }else if(this.arraySong != null ){
       this.songData = await getSongsWithArray(this.arraySong)
   }else {
-    console.log("khong trung lap");
+    const toast = useToast();
+    toast.info("Not work")
   }
   this.isLoading = false;
   
 }
   },
   watch:{
-    songIDValue(value) {
+    async songIDValue(value) {
       if (value != null){
         const id = value;
-         getSongById(id).then((res) =>{
-          this.songData = res;
-          console.log("song by id = ", res);
-      })
+       this.songData = await getSongById(id);
     }
     },
-    
   }
   }
 </script>

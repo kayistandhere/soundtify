@@ -113,7 +113,6 @@ export default {
     methods: {
         async initPayment() {
             const subData = this.$route.query.id;
-            console.log(subData);
             getSubPlantById(subData).then((res) => {
                 this.subscriptionPlansData = res;
             }).catch((error) => {
@@ -137,7 +136,6 @@ export default {
             this.stripeLoaded = true;
         },
         async pay() {
-            console.log("Submit");
             const data = await this.stripe.confirmPayment({
                 elements: this.elements,
                 confirmParams: {
@@ -146,7 +144,6 @@ export default {
                 }
 
             });
-            console.log(data);
         },
 
     },

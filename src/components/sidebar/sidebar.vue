@@ -1,6 +1,6 @@
 <template>
-  <div>
-        <div class="d-block bg-module text-white m-2 rounded">
+  <div class="text-secondary rounded overflow-hidden">
+        <div class="d-block bg-module text-white rounded my-2">
           <div class="">
             <router-link :to="'/home'" class="custom-router-link d-flex px-2 py-2 align-items-center">
               <span class="material-symbols-rounded mx-3 fs-3">home</span>
@@ -15,7 +15,7 @@
           </div>
         </div>
         <!-- Library -->
-        <div class="d-block bg-module text-white mx-2 rounded ">
+        <div class="bg-module text-white rounded ">
           <!-- Title Library -->
           <div class="d-flex justify-content-between align-items-center">
             <div class="d-flex px-2 py-2 align-items-center">
@@ -25,8 +25,6 @@
             <div class="rounded p-2">
               <span class="material-symbols-rounded custom-cursor" data-bs-toggle="modal"
                 data-bs-target="#ModalPlaylist">add</span>
-              <!-- Button trigger modal -->
-
               <!-- Modal -->
               <div class="modal fade" id="ModalPlaylist" tabindex="-1" aria-labelledby="exampleModalLabel"
                 aria-hidden="true">
@@ -52,23 +50,6 @@
                                     <span class="content-name text-dark"> Playlist Name </span>
                                   </label>
                                 </div>
-                                <!-- <div class="d-flex my-2">
-                                  <div class="form-check me-4">
-                                  <input class="form-check-input" type="radio" name="flexRadioDefault"
-                                    id="flexRadioDefault1" v-model="this.formData.isPublic" value="true">
-                                  <label class="form-check-label" for="flexRadioDefault1">
-                                    Public 
-                                  </label>
-                                </div>
-                                <div class="form-check">
-                                  <input class="form-check-input" type="radio" name="flexRadioDefault"
-                                    id="flexRadioDefault2" v-model="this.isPublic" value="false" checked>
-                                  <label class="form-check-label" for="flexRadioDefault2">
-                                    Private
-                                  </label>
-                                </div>
-                                </div> -->
-                                
                                 <textarea class="col-12 " placeholder="Description a comment here"
                                   id="floatingTextarea2" style="height: 150px"
                                   v-model="this.playlist.description"></textarea>
@@ -103,14 +84,21 @@
             <button-radius class="mx-2" :customContent="Artists"></button-radius>
             <button-radius class="mx-2" :customContent="Podcasts"></button-radius>
           </div>
-          <div class="d-flex justify-content-between align-items-center ">
+          <div class="d-flex justify-content-between align-items-center">
             <span class="material-symbols-rounded mx-3 fs-5">search</span>
             <div class="d-flex px-3">
               <span class="fs-8 mx-1">Recents</span>
               <span class="material-symbols-rounded fs-5 ">sort</span>
             </div>
           </div>
-          <div class="d-block overflow-auto" style="height: 70vh">
+          <div class="d-block overflow-auto p-3" style="height: 100vh">
+            <track-item-card-albums></track-item-card-albums>
+            <track-item-card-albums></track-item-card-albums>
+            <track-item-card-albums></track-item-card-albums>
+            <track-item-card-albums></track-item-card-albums>
+            <track-item-card-albums></track-item-card-albums>
+            <track-item-card-albums></track-item-card-albums>
+            <track-item-card-albums></track-item-card-albums>
             <track-item-card-albums></track-item-card-albums>
           </div>
         </div>
@@ -128,7 +116,8 @@ import { createPlaylist } from '@/firebase/fireStore/fireQuery';
 import { getAvatarPlaylist, uploadSingleFile } from '@/firebase/storage/storageQuery';
 import { ref , uploadBytes } from 'firebase/storage';
 import { convertFireStorageUrl } from '@/util/download_url_parse';
-
+import { useToast } from 'vue-toastification';
+import { defaultAvatar } from '@/util/global';
 export default {
     components:{
         trackItemCardAlbums,
@@ -159,50 +148,38 @@ export default {
           updatedAt : Date.now(),
         },
         songs: [],
-        avatarPlaylist: null,
+        avatarPlaylist: null ,
         description: null,
       },
         }
     },
     created(){
-        this.avatarPlaylistEvent();
     },
     methods:{
         playList() {
       createPlaylist(this.playlist).then((res) => {
-        console.log("create playlist successfull !", res);
+        const toast = useToast();
+            toast.success("create playlist done", {position: "top-left"})
         this.$router.push({ path: "home" })
       }).catch((error) => {
-        console.log("create playlist false !", error);
+        const toast = useToast();
+            toast.error("false", {position: "top-left"})
       })
     },
     async uploadFile() {
       const file = document.getElementById("fileImage").files[0];
       const storageRef = ref(firebase.storage, `Playlist/${firebase.auth.currentUser.uid}/` + file.name);
       const uploadResource = await uploadSingleFile(storageRef, file);
-      convertFireStorageUrl(uploadResource);
-      await uploadBytes(storageRef, file).then((snapshot) => {
-        console.log("Upload ảnh thành công!", snapshot);
-        this.clearData();
-        this.avatarPlaylistEvent();
-      }).catch((error) => {
-        console.log("Upload image false!", error);
-      });
+      const avatar = convertFireStorageUrl(uploadResource);
+      this.playlist.avatarPlaylist = avatar;
     },
-    avatarPlaylistEvent() {
-      console.log("tes1");
-      getAvatarPlaylist().then((res) => {
-        console.log("avatar playlist =", res);
-        this.playlist.avatarPlaylist = res;
-
-      })
-    },
+    
     clearData() {
       this.formData.namePlaylist = "";
       this.formData.descriptionPlaylist = "";
       this.formData.avatarPlaylist = null;
     }
-    }
+    },
 }
 </script>
 

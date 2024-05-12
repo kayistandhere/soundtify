@@ -75,10 +75,8 @@ export const usePlayerStoreStore = defineStore("playerStore", {
 
 
     playlistSingleSong(song) {
-    console.log(song)
      this.stop();
      this.tracks.push(song);
-     console.log(this.currentTrackIndex, song);
      this.play();
     },
 

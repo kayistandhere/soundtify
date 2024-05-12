@@ -60,7 +60,7 @@ import btnMdRadius from '../../components/button/button_md_radius.vue'
 import btnLogoRadius from '../../components/button/button_logo_radius.vue'
 import regex from '../../util/regex.js'
 import auth from "../../service/auth/auth.js";
-
+import { useToast } from 'vue-toastification';
 export default {
   components:{
     btnLogoRadius,

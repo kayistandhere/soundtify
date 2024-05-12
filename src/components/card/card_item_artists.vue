@@ -1,5 +1,6 @@
 <template>
-    <div class="card custom-bg-card m-2" style="width: 12rem;" :key="artist.id" v-for="artist in limitData" 
+    <div class="d-flex justify-content-start">
+        <div class="card custom-bg-card m-2" style="width: 12rem;" :key="artist.id" v-for="artist in limitData" 
     @click="redirectArtistDetail(artist.id)">
       <img :src="artist.thumbnail" class="custom-img-thumbnail p-2" alt="...">
       <div class="p-2">
@@ -12,10 +13,12 @@
         </div>
     </div>
   </div>
+    </div>
+    
   </template> 
   
   <script>
-    import { getAllArtist } from '@/firebase/fireStore/fireQuery';
+import { getAllArtist } from '@/firebase/fireStore/fireQuery';
   import { mapActions } from 'pinia';
   import { useIndexStore } from '@/store';
   export default {
@@ -47,7 +50,7 @@
     }
   }
   </script>
-  
+
   <style scoped>
   .custom-img-thumbnail {
       width: 100%;

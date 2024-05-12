@@ -1,11 +1,12 @@
 <template>
   <!-- Button trigger modal -->
-<button type="button" class="btn bg-green d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-    <span class="material-symbols-rounded me-2">stars</span>Faculty upgrades {{ isArtist }}
-</button>
+<div class="d-flex align-items-center fs-8 fw-bold" data-bs-toggle="modal" data-bs-target="#staticBackdrop1">
+  <span class="material-symbols-rounded fs-6 me-2">star</span>
+    Upgrade to Artist
+</div>
 
 <!-- Modal -->
-<div class="modal fade " id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade " id="staticBackdrop1" aria-labelledby="staticBackdropLabel">
   <div class="modal-dialog ">
     <div class="modal-content bg-module">
       <div class="modal-header border-0">
@@ -16,8 +17,11 @@
       <div class="modal-body">
         
         <div class="row">
-            <img :src="this.formData.avatarArtist" alt="" class="img">
-            <input type="file" name="" id="file" accept="image/*" @change="uploadAvatarArtist">
+            <img :src="this.formData.avatarArtist" alt="" class="custom-img preview-box">
+            <input type="file" id="input-file" name="input-file" accept="image/*" @change="handleChange()" hidden>
+            <label class="btn-upload" for="input-file" role="button">
+              Upload Thumbnail
+            </label>
         </div>
             <div class="col-md-12">
               <div class="border border-dark m-2">
@@ -55,13 +59,14 @@ import buttonMdRadius from '../button/button_md_radius.vue';
 import buttonLgRadius from '../button/button_lg-radius.vue';
 import { getUser, registerAsArtist} from '@/firebase/fireStore/fireQuery';
 import { v4 } from "uuid"
-import { ref , uploadBytes} from 'firebase/storage';
+import { ref } from 'firebase/storage';
 import firebase from '../../firebase.js';
 import { getAvatarArtist, uploadSingleFile } from '@/firebase/storage/storageQuery';
 import { convertFireStorageUrl } from "@/util/download_url_parse";
 import { useAuthStoreStore } from '@/store/authStore';
 import { mapStores, mapWritableState} from 'pinia';
 import { defaultAvatar } from '@/util/global';
+import { useToast } from 'vue-toastification';
 export default {
   components :{
       buttonLgRadius,
@@ -83,28 +88,41 @@ export default {
         this.formData.avatarArtist = res;
       }).catch((error)=>{
         this.formData.avatarArtist = defaultAvatar(this.formData.avatarArtist);
-      })
+      });
   },
   methods:{
       async createArtists(){
         const user = await getUser();
-
+        const toast = useToast();
         const id = v4();
         await registerAsArtist({"id":id ,"name":this.formData.artistName , "description":this.formData.description, "thumbnail":this.formData.avatarArtist},user).then(()=>{
-          console.log("create Artist successfully");
-        }).catch((error)=>{
-            console.log("Create failed",error);
+          toast.success("create artist successfull", {position: "top-left"})
+        }).catch(()=>{
+          toast.error("create asrtist have error", {position: "top-left"})
         })
       },
-      async uploadAvatarArtist(){
-        const file = document.getElementById("file").files[0];
-        const storageRef = ref(firebase.storage , `User/${firebase.auth.currentUser.uid}/artist/` + file.name);
-        const uploadResource = await uploadSingleFile(storageRef,file);
-        convertFireStorageUrl(uploadResource);
-        await uploadBytes(storageRef , file).then((snapshot) => {
-              console.log("Upload ảnh thành công!" , snapshot);
-      }); 
+      async handleChange() {
+      const fileUploader = document.querySelector('#input-file');
+      const getFile = fileUploader.files
+      if (getFile.length !== 0) {
+        const fileImage = getFile[0];
+        const storageRef = ref(firebase.storage, `User/${firebase.auth.currentUser.uid}/artist/` + fileImage.name);
+        const uploadResource = await uploadSingleFile(storageRef, fileImage);
+        const img = convertFireStorageUrl(uploadResource);
+        this.formData.avatarArtist = img
+        await this.readFile(fileImage);
       }
+    },
+    readFile(uploadedFile) {
+      if (uploadedFile) {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const parent = document.querySelector('.preview-box');
+          parent.innerHTML = `<img class="preview-content img-thumbnail" src=${reader.result} />`;
+        };
+        reader.readAsDataURL(uploadedFile);
+      }
+    }
   },
   computed: {
     ...mapWritableState(useAuthStoreStore, ['isArtist'])
@@ -113,6 +131,9 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+.custom-img {
+  height: 300px;
+  object-fit: cover;
+}
 </style>

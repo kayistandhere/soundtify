@@ -1,8 +1,8 @@
 <template>
     <div class="custom_card d-flex align-items-center">
       <img class="custom_Img" :src="this.images" alt="" srcset="" width="50" height="50">
-      <div class="custom_LineHeight">
-          <p class=" fs-8    mt-3">{{ nameSong }}</p>
+      <div class="custom_LineHeight ">
+          <p class=" fs-8 fw-bold mt-3">{{ nameSong }}</p>
           <p class=" fs-9 ">{{ artistName }}</p> 
       </div>
     </div>
@@ -45,10 +45,10 @@ import { getArtistById } from '@/firebase/fireStore/fireQuery';
   .custom_Img {
     border-radius: 5px;
     object-fit: cover;
-    margin-right: 5px;
+    margin-right: 10px;
   }
   .custom_LineHeight {
-    line-height: 0px;
+    line-height: 4px;
   }
 
   </style>

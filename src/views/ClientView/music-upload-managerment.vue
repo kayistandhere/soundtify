@@ -3,7 +3,7 @@
     <navbar-fisrt></navbar-fisrt>
     <div>
       <div class="d-flex">
-        <!-- formData -->
+        <!-- songData -->
         <div class="col-6 border">
           <form class="row g-3" @submit.prevent="uploadDetailSong">
             <div class="d-flex align-items-center justify-content-between">
@@ -11,7 +11,7 @@
                 <div class="my-2 d-flex justify-content-center">
                   <div class="custom-form">
                     <input type="text" name="text" id="email" required class="bg-module-1"
-                      v-model="this.formData.name" />
+                      v-model="this.songData.name" />
                     <label for="text" class="label-name">
                       <span class="content-name text-dark"> Name Track </span>
                     </label>
@@ -24,7 +24,7 @@
               <div class="col-lg-4 px-1">
                 <div class="custom-form">
                   <select id="inputState" class="custom-form bg-module-1 border-0 text-white"
-                    v-model="this.formData.artistId">
+                    v-model="this.songData.artistId">
                     <option :key="artist.id" v-for="artist in allArtist" :value="artist.id" selected>{{ artist.name }}
                     </option>
                   </select>
@@ -46,7 +46,7 @@
             </div>
             <div class="col-12">
               <textarea class="col-12 " placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"
-                v-model="this.formData.description"></textarea>
+                v-model="this.songData.description"></textarea>
             </div>
             <div class="col-12 d-flex">
               <button-lg-radius :customContent="cancel"></button-lg-radius>
@@ -90,7 +90,7 @@ import navbarFisrt from '@/components/navbar/navbar_fisrt.vue';
 import firebase from '../../firebase.js'
 import { v4 } from "uuid"
 import { ref, uploadBytes } from 'firebase/storage';
-import { uploadSingleFile, getSong, getAvatarSong } from '@/firebase/storage/storageQuery';
+import { uploadSingleFile } from '@/firebase/storage/storageQuery';
 import { convertFireStorageUrl } from "@/util/download_url_parse";
 import { uploadSong, getAllArtist } from '@/firebase/fireStore/fireQuery';
 import tagInput from '@/components/input/tag_input.vue';
@@ -106,23 +106,23 @@ export default {
   },
   data() {
     return {
-      formData: {
+      songData: {
         name: "",
         description: "",
-        category: "",
         cover: null,
         lyric: null,
         url: null,
         otherArtist: [],
         tags: [],
         // dynamic data
-        id: "",
+        id: v4(),
         duration: 0,
         listenCount: 0,
         artistId: "",
         token: "",
         uploadTime: Date.now()
       },
+   
       create: "Create",
       cancel: "Cancel",
       allArtist: {},
@@ -132,7 +132,6 @@ export default {
   created() {
     getAllArtist().then((res) => {
       this.allArtist = res;
-      console.log("allArtist = ", res);
     });
 
   },
@@ -141,21 +140,14 @@ export default {
       const fileSong = document.getElementById("fileSong").files[0];
       const storageRef = ref(firebase.storage, `Song/${firebase.auth.currentUser.uid}/` + fileSong.name);
       const uploadResource = await uploadSingleFile(storageRef, fileSong);
-      this.formData.token = uploadResource.token;
-      console.log("token", this.formData.token);
-      convertFireStorageUrl(uploadResource);
-      await uploadBytes(storageRef, fileSong).then((snapshot) => {
-        console.log("Upload nhạc thành công!", snapshot);
-      }).catch((error) => {
-        console.log("Upload song false!", error);
+      this.songData.url = uploadResource.url
+      this.songData.token = uploadResource.token;
+      this.audio.src = convertFireStorageUrl(uploadResource);
+      this.audio.load();
+      this.audio.onloadedmetadata = (() =>{
+        this.songData.duration = this.audio.duration * 1000;
       });
-      await getSong().then((res) => {
-        this.formData.url = res;
-        console.log("url = ", this.formData.url);
-      }).catch((error) => {
-        console.log(error);
-      })
-      await this.getDataSong();
+      
     },
     async uploadLyric() {
       const fileLyric = document.getElementById("fileLyric").files[0];
@@ -166,38 +158,13 @@ export default {
         console.log("Upload lyric thành công!", snapshot);
       }).catch((error) => {
         console.log("Upload lyric false!", error);
-      });;
+      });
     },
-    async getDataSong() {
-      this.audio.src = await this.formData.url;
-      console.log("audio src = ", this.audio.src);
-      this.formData.duration = await this.audio.duration;
-      console.log("duration", this.audio.duration);
-    },
-    getDataAvatarSong() {
-      getAvatarSong().then((res) => {
-        this.formData.cover = res
-      })
-    },
-    uploadDetailSong() {
-      const detailSong = {
-        "artistId": this.formData.artistId,
-        "cover": this.formData.cover,
-        "description": this.formData.description,
-        "duration": this.formData.duration,
-        "id": v4(),
-        "listenCount": this.formData.listenCount,
-        "lyric": this.formData.lyric,
-        "name": this.formData.name,
-        "otherArtist": this.formData.otherArtist,
-        "tags": this.formData.tags,
-        "token": this.formData.token,
-        "uploadTime": this.formData.uploadTime,
-        "url": this.formData.url,
-      }
-      console.log("FormData = ", detailSong);
-      console.log("FormData = ", this.formData);
-      uploadSong(detailSong).then((res) => {
+    async uploadDetailSong() {
+      if(this.songData.url == null 
+        || this.songData.cover == null
+        || this.songData.name == null) return;
+      await uploadSong(this.songData).then((res) => {
         console.log("upload detailSong successful", res);
         this.$router.push({ name: "trackManagerment" })
       }).catch((error) => {
@@ -205,8 +172,7 @@ export default {
       })
     },
     onValueChange(value) {
-      this.formData.tags = [...value]
-      console.log("123 = ", this.tags);
+      this.songData.tags = [...value]
     },
     async handleChange() {
       const fileUploader = document.querySelector('#input-file');
@@ -215,14 +181,8 @@ export default {
         const fileImage = getFile[0];
         const storageRef = ref(firebase.storage, `Song/${firebase.auth.currentUser.uid}/avatar/` + fileImage.name);
         const uploadResource = await uploadSingleFile(storageRef, fileImage);
-        convertFireStorageUrl(uploadResource);
-        await uploadBytes(storageRef, fileImage).then((snapshot) => {
-          console.log("Upload ảnh thành công!", snapshot);
-
-        }).catch((error) => {
-          console.log("Upload image false!", error);
-        });;
-        await this.getDataAvatarSong();
+        const img = convertFireStorageUrl(uploadResource);
+        this.songData.cover = img
         await this.readFile(fileImage);
       }
     },

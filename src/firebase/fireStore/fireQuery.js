@@ -50,7 +50,6 @@ export const getAllUser = async () => {
 // Not working this function
 export const getUser = async () =>{
    const snapshot = await getDoc(doc(userColection , firebase.auth.currentUser.uid))
-   console.log("with data",snapshot.data());
    return snapshot.data();
 }
 // Artist----------------------------------------------------------------------------------------
@@ -63,10 +62,8 @@ export const registerAsArtist = async (artist, user) => {
         await runTransaction(firebase.database, async (transaction) => {
             user.artistId = artist.id
             await transaction.update(doc(userColection, user.uuid), user)
-            console.log("userColec" , doc(userColection, user.uuid));
             artist.uid = user.uuid
             await transaction.set(doc(artistColection, artist.id ),artist)
-            console.log("userColec" , doc(artistColection, artist.id));
         });
         console.log("Transaction successfully committed!");
     } catch (error) {
@@ -143,7 +140,6 @@ export const getSongById = async (id) => {
 }
 export const getSongByName = async (name) => {
     try {
-        console.log('check value = ', name);
         const docRef = query(songColection , where('name' , '==' , name) );
         const docSnapshot = await getDocs(docRef);
         return docSnapshot.docs.map((e) => (e.data()))
@@ -161,7 +157,6 @@ export const getSongByArtist = async (artistId) =>{
     }
 }
 export const getSongsWithArray = async (songIds) => {
-    console.log("array = " , songIds);
     try {
       if (!Array.isArray(songIds)) {
         throw new Error('songIds must be an array of strings');
@@ -176,7 +171,6 @@ export const getSongsWithArray = async (songIds) => {
   };
 export const getSongByTag = async (value) => {
     try {
-        console.log("TEST VALUE =" , value);
         const tagQuery = query(songColection , where('tags' , "array-contains-any" , value))
         const docSnapshot = await getDocs(tagQuery);
         return docSnapshot.docs.map((e) => (e.data())) 
@@ -218,7 +212,6 @@ export const getPlaylistById = async (id) => {
 }
 export const getPlaylistWithUser = async (id) => {
     try {
-        console.log("Test value = ", id);
       const playlistQuery = query(playList , where('extraData.ownerId' , "==" , id));
       const docSnapshot = await getDocs(playlistQuery);
         return docSnapshot.docs.map((e) => (e.data()))
@@ -226,7 +219,14 @@ export const getPlaylistWithUser = async (id) => {
       console.error("Error fetching song data:", error);
       throw error;
     }
-  };
+  }
+  export const deletePlaylist = async (id) =>{
+    return deleteDoc(doc(playList , id)).then((res) =>{
+        console.log("successfull" ,res);
+    }).catch((error) =>{
+        console.log("fasle" , error);
+    })
+}
 export const updatePlaylist = async (playlist, idSong) => {
     console.log(`playlist ${playlist.id} && id song = ${idSong}`);
     try {
@@ -259,11 +259,9 @@ export const search = async (values) => {
                 switch (values) {
                     case values:
                         if(values.charAt(0) == '#'){
-                        console.log("check n ", values);
                            return getSongByTag([values.slice(1)])
                         }    
                     case values:
-                        console.log("check name ", values);
                         return await getSongByName(values)
                     default:
                         console.log("some error");

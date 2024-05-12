@@ -1,5 +1,5 @@
 <template>
-    <nav class="navbar navbar-expand-lg sticky-md-top bg-module">
+    <nav class="navbar navbar-expand-lg position-relative bg-module">
         <div class="container-fluid ">
             <!-- <a class="navbar-brand fw-bolder custom-text-link_logo fs-3" href="#">Soundtify</a> -->
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -15,9 +15,14 @@
                             <router-link :to="'/audioSocial'" class="custom-router-link">
                                 <span class="fs-8 fw-bold">Soundtify Social</span>
                             </router-link>
-                            
                         </div>
                     </li>
+                    <li class="nav-item p-2">
+                        <div class="custom-button_radius d-flex align-items-center">
+                            <modal-basic></modal-basic>
+                        </div>
+                    </li>
+                    
                 </ul>
                 <!-- <form class="d-flex">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
@@ -42,7 +47,7 @@
                         </button>
                         <ul class="dropdown-menu dropdown-menu-lg-end custom-dropdown fs-8">
                             <li><router-link class="dropdown-item text-white custom-dropdown-item py-2" :to="'/profile'">Profile</router-link></li>
-                            <li><router-link class="dropdown-item text-white custom-dropdown-item py-2" :to="'/profile'" @click="toggleArtist">Upgrade To Artist</router-link></li>
+                            <li></li>
 
                             <li><router-link class="dropdown-item text-white custom-dropdown-item py-2" :to="'/upgradePackage'">Upgrade Package</router-link></li>
                             <li><a class="dropdown-item text-white custom-dropdown-item py-2" href="#">Setting</a></li>
@@ -58,14 +63,13 @@
 </template>
 
 <script>
-import { getUserById } from '@/firebase/fireStore/fireQuery.js';
 import auth from '../../service/auth/auth.js'
 import modalBasic from '../modal/modal-basic.vue';
-import { getAvatarUser } from '@/firebase/storage/storageQuery.js';
 import { useAuthStoreStore } from '@/store/authStore.js';
 import { defaultAvatar } from '@/util/global.js';
-import { mapActions , mapState  ,mapWritableState} from 'pinia';
-import firebase from '@/firebase.js';
+import { mapActions , mapState } from 'pinia';
+import { useToast } from "vue-toastification";
+
 export default {
     components:{
         modalBasic,
@@ -78,9 +82,10 @@ export default {
     created(){
     },
     methods:{
-
         logoutAccount(){
              auth.logout();
+             const toast = useToast();
+            toast.success("logout successfull", {position: "top-left"})
             this.$router.push({name: "login.view"});
         },
     },
@@ -91,7 +96,7 @@ export default {
        return this.user?.subscription != null
     },
     avatarUser(){
-        return this.user?.avatar 
+        return this.user?.avatar
     }
     },
   
@@ -132,19 +137,20 @@ export default {
   color: #17cf5b;
   opacity: 1;
 }
-.custom-dropdown {
-    border-radius: 0px;
-    background-color: var(--color-gray1);
-}
-.custom-dropdown-item {
-    color: #fff;
-    background-color: var(--color-gray1);
-    opacity: 0.9;
-    
-}
-.custom-dropdown-item:hover {
-    color: #fff;
-    background-color: #2e2d2d;
-    opacity: 1;
-}
+/* My custom */
+/* When setting CSS, remember that priority increases with specificity, so don't forget to select the existing classes as well */
+
+.Vue-Toastification__toast--default.my-custom-toast-class {
+        background-color: red;
+    }
+
+    /* Applied to the toast body when using regular strings as content */
+    .Vue-Toastification__toast-body.custom-class-1 {
+        font-size: 30px;
+    }
+
+    /* Applied to a wrapper div when using a custom component as content */
+    .Vue-Toastification__toast-component-body.custom-class-2 {
+        width: 100%;
+    }
 </style>

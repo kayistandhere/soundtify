@@ -1,6 +1,6 @@
 <template>
-    <div class="d-flex" v-if="!isLoading">
-            <div class="card custom-bg-card m-2 position-relative custom-cursor" style="width: 12rem;" :key="song.id" 
+    <div class="d-flex justify-content-start" v-if="!isLoading">
+            <div class="card custom-bg-card m-2 position-relative custom-cursor" style="width: 20rem;" :key="song.id" 
                 v-for="song in dataSong"
                 
                 @click="redirectSongDetail(song.id,song.artistId)"
@@ -39,15 +39,12 @@ export default {
     methods:{
         ...mapActions(usePlayerStoreStore , ["playlistSingleSong"]),
         addSong(value){
-            console.log("day la bai hat = " , value);
             this.playlistSingleSong(value);
         },
         async limitedDataSong(){
             if(this.arraySong != null){
-                console.log("show array song 1= " , this.arraySong);
                 this.isLoading = true;  
                 this.dataSong = await getSongsWithArray(this.arraySong);
-                console.log("show array song 2= " , this.dataSong);
             }else {
                 this.isLoading =true ;
                 this.dataSong = await getAllSong();

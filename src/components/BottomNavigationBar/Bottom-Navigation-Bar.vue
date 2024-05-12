@@ -1,9 +1,11 @@
 <template>
-  <div class="d-flex align-items-center justify-content-between" v-if="this.currentSong != null">
+  <div class="d-flex align-items-center justify-content-between" >
+        <!-- profile music -->
         <div class="nav-item d-flex align-items-center ps-3">
           <track-item-card-albums-2 v-if="this.currentSong != null" class="text-white" :images="currentSong.cover" :nameSong="currentSong.name"
             :artistId="currentSong.artistId"></track-item-card-albums-2>
         </div>
+        <!-- control music -->
         <div class="nav-item d-block">
           <div class="function_control_music d-flex justify-content-center align-items-center">
             <span class="material-symbols-rounded p-2 text-white fs-4 custom-opacity">shuffle</span>

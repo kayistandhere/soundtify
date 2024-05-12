@@ -30,7 +30,8 @@
     </div>
   </template>
   <script>
-  import btnLgRadius from '../../components/button/button_lg-radius.vue'
+  import { useToast } from 'vue-toastification';
+import btnLgRadius from '../../components/button/button_lg-radius.vue'
   import btnMdRadius from '../../components/button/button_md_radius.vue'
   import auth from "../../service/auth/auth.js";
   export default {
@@ -48,7 +49,8 @@
     methods: {
         forgotPassword() {
           auth.sendEmail(this.email).then((res) => {
-            console.log("Check Email Now" ,res);
+            const toast = useToast();
+            toast.info("check email")
                window.location.href ;
           }).catch((error) => {
             console.log(error);

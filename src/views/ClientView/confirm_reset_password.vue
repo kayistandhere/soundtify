@@ -47,8 +47,6 @@ export default {
         getLink(){
             this.mode =  this.$route.query.mode;
             this.oobCode = this.$route.query.oobCode;
-            console.log(this.mode);
-            console.log(this.oobCode);
         },
         resetConfirmPassword(){
 

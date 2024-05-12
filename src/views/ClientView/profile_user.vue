@@ -3,11 +3,11 @@
     <navbar-first></navbar-first>
     <!-- Profile Edit -->
     <section class="mt-5 p-2">
-      <modal-basic></modal-basic>
       <div class="d-flex text-white align-items-end custom-cursor" data-bs-toggle="modal"
         data-bs-target="#exampleModal">
         <img :src="this.formData.avatar" class="m-2 custom-img-animation" alt="" srcset="" />
         <div class="ms-2">
+         
           <span class="fs-9">Profile</span>
           <h1 class="custom-text-title fw-bolder">
             {{ this.formData.name }}
@@ -124,19 +124,15 @@
       <div class="d-flex justify-content-between mx-2">
         <span class="fs-4 fw-bolder text-white"><a class="custom-text-link" href="#">Top Artists</a></span>
         <span class="fs-9 fw-bold"><a class="custom-text-link" href="#">show all</a></span>
-      </div>
-      <div class="d-flex">
+      </div>  
         <card-items-artists></card-items-artists>
-      </div>
     </section>
     <section>
       <div class="mx-2">
         <div class="d-flex justify-content-between mx-2">
           <span class="fs-4 fw-bolder text-white"><a class="custom-text-link" href="#">Top Albums</a></span>
         </div>
-        <div class="d-flex">
           <card-items-song></card-items-song>
-        </div>
       </div>
     </section>
     <section>
@@ -196,18 +192,12 @@ export default {
       const file = document.getElementById("fileImage").files[0];
       const storageRef = ref(firebase.storage,`User/${firebase.auth.currentUser.uid}/avatar/` + file.name);
       const uploadResource = await uploadSingleFile(storageRef, file);
-      convertFireStorageUrl(uploadResource);
-      await uploadBytes(storageRef , file).then((snapshot) => {
-              console.log("Upload ảnh thành công!" , snapshot);
-
-      }).catch((error) =>{
-        console.log("Upload image false!" , error);
-      }); ;
+      const avatar = convertFireStorageUrl(uploadResource);
+      this.formData.avatar = avatar;
     },
     getProfileUser() {
       const id = firebase.auth.currentUser.uid;
       getUserById(id).then((res) => {
-        console.log("GET USER = ", res);
         this.formData.name = res.name
         this.formData.email = res.email
         this.formData.phone = res.phone

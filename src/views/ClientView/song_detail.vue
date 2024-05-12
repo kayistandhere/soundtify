@@ -86,7 +86,6 @@ export default {
             this.isLoading = true;
             const id = this.$route.query.id;
             this.songId = id;
-            console.log("songid = " ,this.songId);
             this.artistId= this.$route.query.artistId;
             this.songDetailData = await getSongById(this.songId)
             this.artist = await getArtistById(this.songDetailData.artistId)

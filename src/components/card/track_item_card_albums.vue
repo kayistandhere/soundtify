@@ -1,5 +1,5 @@
 <template>
-    <div class="custom_card d-flex align-items-center" :key="allbum.id" v-for="allbum in allbumData" @click="allbumsDetail(allbum.id)">
+    <div class="custom_card d-flex align-items-center custom-cursor" :key="allbum.id" v-for="allbum in allbumData" @click="allbumsDetail(allbum.id)">
       <img class="custom_Img" :src="allbum.avatarPlaylist" alt="" srcset="" width="50" height="50">
       <div>
           <p class=" fs-8 fw-bold">{{ allbum.name }}</p>
@@ -25,7 +25,6 @@ import firebase from '@/firebase.js';
       getAllbums(){
         getPlaylistWithUser(firebase.auth.currentUser.uid).then((res) =>{
             this.allbumData = res;
-            console.log("playlistQuery = ", res);
         });
         const id = firebase.auth.currentUser.uid;
         getUserById(id).then((res) =>{

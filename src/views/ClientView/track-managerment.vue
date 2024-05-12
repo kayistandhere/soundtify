@@ -173,7 +173,6 @@ export default {
       })
     },
     deleteSongEvent(id) {
-      console.log("show id = ", id);
       deleteSong(id)
         .then((res) => {
           console.log("delete song successfull !", res);
