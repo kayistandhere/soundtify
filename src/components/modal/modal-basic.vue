@@ -26,7 +26,7 @@
             <div class="col-md-12">
               <div class="border border-dark m-2">
             <div class="custom-form">
-              <input type="text" name="text" autocomplete="off" required v-model="formData.artistName"/>
+              <input type="text" name="text" autocomplete="off" required v-model="this.formData.artistName"/>
               <label for="text" class="label-name">
                 <span class="content-name text-dark"> Name </span>
               </label>
@@ -36,7 +36,7 @@
           <div class="col-md-12">
               <div class="border border-dark m-2">
             <div class="custom-form">
-              <input type="text" name="text" autocomplete="off" required v-model="formData.description"/>
+              <input type="text" name="text" autocomplete="off" required v-model="this.formData.description"/>
               <label for="text" class="label-name">
                 <span class="content-name text-dark"> Description </span>
               </label>
@@ -78,6 +78,9 @@ export default {
         artistName : "",
         description: "",
         avatarArtist : null ,
+        follower : 0,
+        following: 0,
+        totalListenCount : 0,
       },
         create : "Create",
         cancel : "cancel"
@@ -95,7 +98,16 @@ export default {
         const user = await getUser();
         const toast = useToast();
         const id = v4();
-        await registerAsArtist({"id":id ,"name":this.formData.artistName , "description":this.formData.description, "thumbnail":this.formData.avatarArtist},user).then(()=>{
+        const test = {"id":id ,
+        "name":this.formData.artistName , 
+        "description":this.formData.description, 
+        "thumbnail":this.formData.avatarArtist 
+        ,"follower":this.formData.follower,
+        'following':this.formData.following ,
+        'totalListenCount':this.formData.totalListenCount 
+      }
+      console.log("xem nghe si", test);
+        await registerAsArtist({"id":id ,"name":this.formData.artistName , "description":this.formData.description, "thumbnail":this.formData.avatarArtist ,"follower":this.formData.follower,'following':this.formData.following ,'totalListenCount':this.formData.totalListenCount },user).then(()=>{
           toast.success("create artist successfull", {position: "top-left"})
         }).catch(()=>{
           toast.error("create asrtist have error", {position: "top-left"})
