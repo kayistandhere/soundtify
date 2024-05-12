@@ -97,6 +97,15 @@ export const getArtistByName = async (name) => {
         console.log("Error not fetching song data" , error);
     }
 }
+export const getArtistByUser = async (id) => {
+    try {
+        const docRef = query(artistColection , where('uid' , '==' , id) );
+        const docSnapshot = await getDocs(docRef);
+        return docSnapshot.docs.map((e) => (e.data()))
+    } catch (error) {
+        console.log("Error not fetching song data" , error);
+    }
+}
 // Song----------------------------------------------------------------------------------------
 export const uploadSong = async (song) => (await setDoc(doc(songColection, song.id), song))
 

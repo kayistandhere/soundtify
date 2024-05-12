@@ -19,7 +19,7 @@
           <th scope="col-3">action</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody v-if="!this.isLoading">
         <tr :key="song.id" v-for="song in paginatedData">
           <th>{{ song.id.length }}</th>
           <td>{{ song.name }}</td>
@@ -133,7 +133,8 @@ import {
   getAllSong,
   getSongById,
   updateSong,
-  getArtistById
+  getArtistById,
+  getSongByArtist
 } from "@/firebase/fireStore/fireQuery";
 import navbarFist from "@/components/navbar/navbar_fisrt.vue";
 import { ref, uploadBytes } from "firebase/storage";
@@ -154,6 +155,7 @@ export default {
       updateSongData: {},
       perPage: 5,
       currentPage: 1,
+      isLoading : true,
     };
   },
   created() {
@@ -182,10 +184,11 @@ export default {
           console.log("delete track something false", error);
         });
     },
-    getDataSong() {
-      getAllSong().then((res) => {
-        this.songData = res;
-      });
+    async getDataSong() {
+      const idArtist = this.$route.query.id;
+      this.isLoading = true;
+      this.songData =await getSongByArtist(idArtist);
+      this.isLoading = false
     },
     showPopup(song) {
       this.updateSongData = song;

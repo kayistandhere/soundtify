@@ -17,12 +17,11 @@
                             </router-link>
                         </div>
                     </li>
-                    <li class="nav-item p-2">
+                    <li class="nav-item p-2" v-if="!this.artist">
                         <div class="custom-button_radius d-flex align-items-center">
                             <modal-basic></modal-basic>
                         </div>
                     </li>
-                    
                 </ul>
                 <!-- <form class="d-flex">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
@@ -47,7 +46,8 @@
                         </button>
                         <ul class="dropdown-menu dropdown-menu-lg-end custom-dropdown fs-8">
                             <li><router-link class="dropdown-item text-white custom-dropdown-item py-2" :to="'/profile'">Profile</router-link></li>
-                            <li></li>
+                            <li><router-link class="dropdown-item text-white custom-dropdown-item py-2" v-if="this.artist" :to="'/musicUploadManagerment'">upload music</router-link></li>
+                            <li><span class="dropdown-item text-white custom-dropdown-item py-2" v-if="this.artist" @click="reTrackManagerment()">Track Managerment</span></li>
 
                             <li><router-link class="dropdown-item text-white custom-dropdown-item py-2" :to="'/upgradePackage'">Upgrade Package</router-link></li>
                             <li><a class="dropdown-item text-white custom-dropdown-item py-2" href="#">Setting</a></li>
@@ -63,13 +63,14 @@
 </template>
 
 <script>
+import { getArtistByUser } from '@/firebase/fireStore/fireQuery.js';
 import auth from '../../service/auth/auth.js'
 import modalBasic from '../modal/modal-basic.vue';
 import { useAuthStoreStore } from '@/store/authStore.js';
 import { defaultAvatar } from '@/util/global.js';
-import { mapActions , mapState } from 'pinia';
+import { mapActions , mapState , mapWritableState } from 'pinia';
 import { useToast } from "vue-toastification";
-
+import firebase from '@/firebase.js';
 export default {
     components:{
         modalBasic,
@@ -77,6 +78,8 @@ export default {
     data(){
         return {
             avatarClient: null,
+            isLoading : true,
+            
         }
     },
     created(){
@@ -88,16 +91,26 @@ export default {
             toast.success("logout successfull", {position: "top-left"})
             this.$router.push({name: "login.view"});
         },
+       async reTrackManagerment(){
+       const id = await getArtistByUser(firebase.auth.currentUser.uid);
+       console.log("id artist = " , id[0].id);
+        const idArtist = {
+            'id': id[0].id
+        };
+        this.$router.push({path : "trackManagerment/" , query : idArtist})
+    }
     },
     computed:{
     ...mapActions(useAuthStoreStore , ["toggleArtist"]),
     ...mapState(useAuthStoreStore , ['user']),
+    ...mapWritableState(useAuthStoreStore , ['artist']),
     upgradeAccount(){
        return this.user?.subscription != null
     },
     avatarUser(){
         return this.user?.avatar
-    }
+    },
+    
     },
   
 }

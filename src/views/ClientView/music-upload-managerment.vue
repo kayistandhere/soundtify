@@ -74,7 +74,7 @@
       </div>
       <div class="border">
         <input type="file" name="" id="fileSong" accept="audio/*" @change="uploadSong()">
-
+          <h1 v-if="!this.isLoading" class="text-danger">wait upload song !!!!!</h1>
       </div>
 
     </div>
@@ -95,6 +95,7 @@ import { convertFireStorageUrl } from "@/util/download_url_parse";
 import { uploadSong, getAllArtist } from '@/firebase/fireStore/fireQuery';
 import tagInput from '@/components/input/tag_input.vue';
 import uploadImg from '@/components/upload/upload-img.vue';
+import { useToast } from 'vue-toastification';
 export default {
   components: {
     sideBar,
@@ -126,6 +127,7 @@ export default {
       create: "Create",
       cancel: "Cancel",
       allArtist: {},
+      isLoading : true,
       audio: new Audio(),
     }
   },
@@ -137,36 +139,40 @@ export default {
   },
   methods: {
     async uploadSong() {
+      this.isLoading = false;
       const fileSong = document.getElementById("fileSong").files[0];
       const storageRef = ref(firebase.storage, `Song/${firebase.auth.currentUser.uid}/` + fileSong.name);
       const uploadResource = await uploadSingleFile(storageRef, fileSong);
       this.songData.url = uploadResource.url
       this.songData.token = uploadResource.token;
-      this.audio.src = convertFireStorageUrl(uploadResource);
+      this.audio.src = await convertFireStorageUrl(uploadResource);
       this.audio.load();
       this.audio.onloadedmetadata = (() =>{
         this.songData.duration = this.audio.duration * 1000;
-      });
-      
+        console.log("show = " , this.songData.duration);
+      }); 
+      console.log(`url ${this.songData.url} token ${this.songData.token} duration ${this.songData.duration}`);
+      this.isLoading = true;
     },
-    async uploadLyric() {
-      const fileLyric = document.getElementById("fileLyric").files[0];
-      const storageRef = ref(firebase.storage, `Song/${firebase.auth.currentUser.uid}/lyric/` + fileLyric.name);
-      const uploadResource = await uploadSingleFile(storageRef, fileLyric);
-      convertFireStorageUrl(uploadResource);
-      await uploadBytes(storageRef, fileLyric).then((snapshot) => {
-        console.log("Upload lyric thành công!", snapshot);
-      }).catch((error) => {
-        console.log("Upload lyric false!", error);
-      });
-    },
+    // async uploadLyric() {
+    //   const fileLyric = document.getElementById("fileLyric").files[0];
+    //   const storageRef = ref(firebase.storage, `Song/${firebase.auth.currentUser.uid}/lyric/` + fileLyric.name);
+    //   const uploadResource = await uploadSingleFile(storageRef, fileLyric);
+    //   convertFireStorageUrl(uploadResource);
+    //   await uploadBytes(storageRef, fileLyric).then((snapshot) => {
+    //     console.log("Upload lyric thành công!", snapshot);
+    //   }).catch((error) => {
+    //     console.log("Upload lyric false!", error);
+    //   });
+    // },
     async uploadDetailSong() {
+      const toast = useToast();
       if(this.songData.url == null 
         || this.songData.cover == null
-        || this.songData.name == null) return;
+        || this.songData.name == null) return toast.error("upload song false");
       await uploadSong(this.songData).then((res) => {
-        console.log("upload detailSong successful", res);
-        this.$router.push({ name: "trackManagerment" })
+        toast.success("Upload music successfull !!")
+        this.$router.push({ name: "home.view" })
       }).catch((error) => {
         console.log("upload detailSong false", error);
       })
