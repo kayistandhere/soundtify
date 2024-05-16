@@ -93,13 +93,6 @@
           </div>
           <div class="d-block overflow-auto p-3" style="height: 100vh">
             <track-item-card-albums></track-item-card-albums>
-            <track-item-card-albums></track-item-card-albums>
-            <track-item-card-albums></track-item-card-albums>
-            <track-item-card-albums></track-item-card-albums>
-            <track-item-card-albums></track-item-card-albums>
-            <track-item-card-albums></track-item-card-albums>
-            <track-item-card-albums></track-item-card-albums>
-            <track-item-card-albums></track-item-card-albums>
           </div>
         </div>
       </div>

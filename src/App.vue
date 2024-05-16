@@ -1,6 +1,6 @@
 <template>
   <div class="container-fluid m-0 bg-black p-0 align-items-center justify-content-center">
-    <section class="d-flex" style="height: 92vh;">
+    <section class="d-flex" :style="`height: ${this.currentSong ? '92vh' : '100vh'}`">
       <!-- Start Colums Left -->
       <div class="col-lg-3 overflow-hidden rounded px-2" v-if="this.masterPage" >
         <side-bar ></side-bar>
@@ -9,7 +9,7 @@
           <router-view />
       </div>
     </section>
-      <bottom-navigation-bar class="bg-dark" v-if="this.currentSong" style="height: 8vh;"></bottom-navigation-bar>
+      <bottom-navigation-bar class="bg-black" v-if="this.currentSong" :style="`height: ${this.currentSong ? '8vh' : '0vh'}`"></bottom-navigation-bar>
   </div>
 </template>
 

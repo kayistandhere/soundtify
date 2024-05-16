@@ -7,7 +7,7 @@
         <div class="col-6 border">
           <form class="row g-3" @submit.prevent="uploadDetailSong">
             <div class="d-flex align-items-center justify-content-between">
-              <div class="col-lg-12 px-1">
+              <div class="col-lg-8 px-1">
                 <div class="my-2 d-flex justify-content-center">
                   <div class="custom-form">
                     <input type="text" name="text" id="email" required class="bg-module-1"
@@ -18,25 +18,10 @@
                   </div>
                 </div>
               </div>
-            </div>
-
-            <div class="d-flex align-items-center justify-content-between">
               <div class="col-lg-4 px-1">
                 <div class="custom-form">
-                  <select id="inputState" class="custom-form bg-module-1 border-0 text-white"
-                    v-model="this.songData.artistId">
-                    <option :key="artist.id" v-for="artist in allArtist" :value="artist.id" selected>{{ artist.name }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-lg-8 px-1">
-                <div class="my-2 d-flex justify-content-center">
                   <div class="custom-form">
-                    <input type="text" name="text" id="email" required class="bg-module-1" />
-                    <label for="text" class="label-name">
-                      <span class="content-name text-dark"> Orther Artist </span>
-                    </label>
+                    <input type="text" name="text" id="email" disabled class="bg-module-1" v-model="this.artistName" />
                   </div>
                 </div>
               </div>
@@ -58,23 +43,29 @@
         <div class="col-6 d-flex">
           <div class="col-6 border rounded position-relative">
             <input type="file" id="input-file" name="input-file" accept="image/*" @change="handleChange()" hidden />
-            <div class="bg-green position-absolute top-50 start-50">
-              <span class="material-symbols-rounded">upload</span>
-              <label class="btn-upload" for="input-file" role="button">
-              Upload Thumbnail
-            </label>
+            <div class="d-flex justify-content-center align-items-center">
+              <div class="">
+                <span class="material-symbols-rounded fs-1">folder_open</span>
+              <p><span class="material-symbols-rounded ">upload</span>
+                <label class="btn-upload" for="input-file" role="button">
+                  Upload Thumbnail
+                </label>
+              </p>
+              </div>
             </div>
-            
             <div class="preview-box"></div>
           </div>
           <div class="col-6 border">
-              <input type="file" name="" id="fileLyric" @change="uploadLyric()">
+            <!-- <input type="file" name="" id="fileLyric" @change="uploadLyric()"> -->
+           Lyric wait to update next version
           </div>
         </div>
       </div>
       <div class="border">
         <input type="file" name="" id="fileSong" accept="audio/*" @change="uploadSong()">
-          <h1 v-if="!this.isLoading" class="text-danger">wait upload song !!!!!</h1>
+        <h1 v-if="!this.isLoading" class="text-danger">wait upload song !!!!!</h1>
+        <audio controls v-else :src="this.audio.src" type="audio/mp3">
+        </audio>
       </div>
 
     </div>
@@ -89,12 +80,11 @@ import sideBar from '../../components/sidebar/sidebar.vue'
 import navbarFisrt from '@/components/navbar/navbar_fisrt.vue';
 import firebase from '../../firebase.js'
 import { v4 } from "uuid"
-import { ref, uploadBytes } from 'firebase/storage';
+import { ref } from 'firebase/storage';
 import { uploadSingleFile } from '@/firebase/storage/storageQuery';
 import { convertFireStorageUrl } from "@/util/download_url_parse";
-import { uploadSong, getAllArtist } from '@/firebase/fireStore/fireQuery';
+import { uploadSong, getArtistByUser } from '@/firebase/fireStore/fireQuery';
 import tagInput from '@/components/input/tag_input.vue';
-import uploadImg from '@/components/upload/upload-img.vue';
 import { useToast } from 'vue-toastification';
 export default {
   components: {
@@ -103,7 +93,6 @@ export default {
     buttonLgRadius,
     navbarFisrt,
     tagInput,
-    uploadImg,
   },
   data() {
     return {
@@ -123,17 +112,17 @@ export default {
         token: "",
         uploadTime: Date.now()
       },
-   
+      artistName: '',
       create: "Create",
       cancel: "Cancel",
-      allArtist: {},
-      isLoading : true,
+      isLoading: true,
       audio: new Audio(),
     }
   },
   created() {
-    getAllArtist().then((res) => {
-      this.allArtist = res;
+    getArtistByUser(firebase.auth.currentUser.uid).then((res) => {
+      this.songData.artistId = res[0].id;
+      this.artistName = res[0].name;
     });
 
   },
@@ -147,10 +136,10 @@ export default {
       this.songData.token = uploadResource.token;
       this.audio.src = await convertFireStorageUrl(uploadResource);
       this.audio.load();
-      this.audio.onloadedmetadata = (() =>{
+      this.audio.onloadedmetadata = (() => {
         this.songData.duration = this.audio.duration * 1000;
-        console.log("show = " , this.songData.duration);
-      }); 
+        console.log("show = ", this.songData.duration);
+      });
       console.log(`url ${this.songData.url} token ${this.songData.token} duration ${this.songData.duration}`);
       this.isLoading = true;
     },
@@ -167,7 +156,7 @@ export default {
     // },
     async uploadDetailSong() {
       const toast = useToast();
-      if(this.songData.url == null 
+      if (this.songData.url == null
         || this.songData.cover == null
         || this.songData.name == null) return toast.error("upload song false");
       await uploadSong(this.songData).then((res) => {
@@ -197,7 +186,7 @@ export default {
         const reader = new FileReader();
         reader.onload = () => {
           const parent = document.querySelector('.preview-box');
-          parent.innerHTML = `<img class="preview-content img-thumbnail" src=${reader.result} />`;
+          parent.innerHTML = `<img class="img-thumbnail" src=${reader.result} />`;
         };
         reader.readAsDataURL(uploadedFile);
       }

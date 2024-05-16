@@ -1,5 +1,5 @@
 import { doc, getDoc, getDocs, query, setDoc, runTransaction,addDoc,arrayUnion, deleteDoc ,updateDoc ,where} from "firebase/firestore"
-import { userColection, artistColection , songColection , subscriptionPlans , playList , tagMetaData } from './firePath.js'
+import { userColection, artistColection , songColection , subscriptionPlans , playList , tagMetaData, followCollection , sentimentCollection } from './firePath.js'
 import firebase from '../../firebase.js'
 
 // User----------------------------------------------------------------------------------------
@@ -280,4 +280,24 @@ export const search = async (values) => {
         console.log("Error not fetching song data" , error);
         throw error;
     }
+}
+// Follow --------------------------------------------------------------------------------------------
+export const getFollow = async (following , followId) =>{
+    const followRef = query(followCollection , where('uid' , '==' , followId), where('followId' , '==' , following));
+    const snapshot =await getDocs(followRef); 
+    if(snapshot.docs.length < 1) return null;
+    return snapshot.docs[0].data();
+    /// Néu cáo foloow thì trả về ! Object Follow nếu không thì trả về null
+}
+
+// total listen count ------------------------------------
+
+// Sentiment----------------------------------------------
+export const getAllSentiment = async () => {
+    let snapshot = await getDocs(
+        query(
+            sentimentCollection
+        )
+    )
+    return snapshot.docs.map((e) => (e.data()))
 }

@@ -2,15 +2,18 @@
     <div class="d-flex">
             <div  style="width: 12rem;" :key="artist"
                 v-for="artist in limitData">
-                <div class="card bg-transparent custom-bg-card m-2 border-0" v-if="isCard">
+                <div class="card bg-transparent custom-bg-card m-2 border-0 " v-if="isCard" >
                 <img :src="artist.thumbnail" class="custom-img-thumbnail p-2" alt="...">
                 <div class="p-2">
                     <h5 class="card-title fs-6 fw-bolder text-white text-start">{{ artist.name }}</h5>
                     <p class="text-white fs-8">Nghệ sĩ</p>
                 </div>
-                <div class="custom-btn-position">
+                <div class="custom-btn-position custom-cursor" @click="redirectArtistDetail(artist.id)">
                     <div class="custom-btn-play">
-                        <i class="bi bi-play-fill fs-2 text-dark ms-1"></i>
+                        <!-- <i class="bi bi-play-fill fs-2 text-dark ms-1"></i> -->
+                        <span class="material-symbols-rounded fs-2 text-dark text-white">
+account_circle
+</span>
                     </div>
                 </div>
                 <span class="material-symbols-rounded position-absolute end-0 text-secondary custom-cursor"

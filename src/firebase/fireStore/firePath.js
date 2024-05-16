@@ -12,6 +12,10 @@ const subscriptionPlans = collection(firebase.database , 'SubscriptionPlans');
 const playList = collection(firebase.database , 'Playlist');
 
 const tagMetaData = collection(firebase.database , 'TagsMetaData')
+
+const  followCollection = collection(firebase.database , 'Follow')
+
+const sentimentCollection = collection(firebase.database, 'Sentiment')
 export  {
     userColection,
     artistColection,
@@ -19,4 +23,6 @@ export  {
     subscriptionPlans,
     playList,
     tagMetaData,
+    followCollection,
+    sentimentCollection
 }

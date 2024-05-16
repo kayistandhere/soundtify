@@ -28,8 +28,8 @@
             </div>
           </td>
           <td>Dance Dance Dance</td>
-          <td>{{ song.uploadTime }}</td>
-          <td class="d-flex">{{ song.duration }}
+          <td>{{ Date(song.uploadTime) }}</td>
+          <td class="d-flex">{{ this.generateTime(song.duration) }}
           <dropdown-function id="dropdown" class="ps-2" :id-song="song.id"></dropdown-function>
           </td>
         </tr>
@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import { getSongByArtist ,getSongById,getSongsWithArray} from '@/firebase/fireStore/fireQuery';
+import { getArtistById, getSongByArtist ,getSongById,getSongsWithArray} from '@/firebase/fireStore/fireQuery';
 import dropdownFunction from '../dropdown/dropdown_function.vue';
 import { defaultAvatar } from '@/util/global';
 import { mapActions } from 'pinia';
@@ -76,9 +76,10 @@ export default {
       this.isLoading = true;
       if(this.artistIdValue != null){
        this.songData =  await getSongByArtist(this.artistIdValue)
+       
       }else if(this.songIdValue != null){
         this.songById = false;
-        this.songData = [await getSongById(this.songIdValue)]
+        this.songData = [await getSongById(this.songIdValue)];
     }else if(this.arraySong != null ){
       this.songData = await getSongsWithArray(this.arraySong)
   }else {
@@ -86,9 +87,14 @@ export default {
     toast.info("Not work")
   }
   this.isLoading = false;
-  
-}
+},
+generateTime(milisecond){
+      const minute = Math.floor(milisecond / 60000);
+      const second = Math.floor(milisecond / 10000 )
+      return `${minute}:${second}`
+    },
   },
+  
   watch:{
     async songIDValue(value) {
       if (value != null){

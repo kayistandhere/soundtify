@@ -17,6 +17,7 @@ import audioSocial from '@/views/ClientView/audio-social.vue'
 import artistAllbums from '@/views/ClientView/artist-allbums.vue'
 import paymentResult from '@/views/ClientView/payment-result.vue'
 import playList from '@/views/ClientView/playlist.vue'
+import profileSocial from '@/views/ClientView/profile-social.vue'
 const routes = [
   {
     path: '/',
@@ -57,12 +58,18 @@ const routes = [
   {
     path: '/forgotpassword',
     name: 'forgot.password',
-    component: forgotPassword
+    component: forgotPassword,
+    meta :{
+      ignoreAuth: true
+    }
   },
   {
-    path: '/auth/action',
+    path: '/deeplinks/action/',
     name: 'resetPassword.view',
-    component: resetPassword
+    component: resetPassword,
+    meta :{
+      ignoreAuth: true
+    }
   },
   {
     path: '/profile',
@@ -108,6 +115,11 @@ const routes = [
     path: '/audioSocial',
     name: 'audioSocial',
     component: audioSocial
+  },
+  {
+    path: '/profileSocial',
+    name: 'profileSocial',
+    component: profileSocial
   },
 ]
 

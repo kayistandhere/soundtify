@@ -9,12 +9,26 @@
               <span class="custom-font-size">Enter your email address or username, and we'll send you a link to get back into your account.</span>
             </div>
             <div class="my-3 d-flex justify-content-center">
-              <div class="custom-form">
-                <input type="text" name="text" autocomplete="off" v-model="passwordConfirm" />
-                <label for="text" class="label-name">
-                  <span class="content-name"> Email address </span>
-                </label>
-              </div>
+              <div class="row py-1">
+                    <div class="col-6 px-1">
+                      <div class="custom-form">
+                        <input type="text" name="text" id="email" required class="bg-module-1"
+                          v-model="this.newPassword"/>
+                        <label for="text" class="label-name">
+                          <span class="content-name text-dark"> New Password </span>
+                        </label>
+                      </div>
+                    </div>
+                    <div class="col-6 px-1">
+                      <div class="custom-form">
+                        <input type="text" name="text" id="email" required class="bg-module-1"
+                          v-model="this.passwordConfirm" />
+                        <label for="text" class="label-name">
+                          <span class="content-name text-dark"> Confirm Password</span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
             </div>
             <div class="px-3 py-2 col-8 d-flex justify-content-between">
               <router-link :to="'/'"><btn-lg-radius :customContent="backText"></btn-lg-radius></router-link>
@@ -30,11 +44,21 @@
 </template>
 
 <script>
+import buttonLgRadius from "@/components/button/button_lg-radius.vue";
+import buttonMdRadius from "@/components/button/button_md_radius.vue";
+import { verifyPasswordResetCode, confirmPasswordReset } from "firebase/auth";
+import { useToast } from "vue-toastification";
+import firebase from '@/firebase.js'
 export default {
+    components:{
+      buttonLgRadius,
+      buttonMdRadius
+    },
     data(){
         return {
             mode: {},
             oobCode: {},
+            newPassword : "",
             passwordConfirm: "",
             backText : "Confirm Password"
         }
@@ -49,7 +73,13 @@ export default {
             this.oobCode = this.$route.query.oobCode;
         },
         resetConfirmPassword(){
-
+            confirmPasswordReset(firebase.auth ,this.oobCode , this.newPassword ).then((res) =>{
+              const toast = useToast();
+              toast.success("Reset Password Successfull");
+            }).catch(() =>{
+              const toast = useToast();
+              toast.success("Reset Password False");
+            })
         }
     }
 }

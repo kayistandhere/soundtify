@@ -46,7 +46,7 @@
                         </button>
                         <ul class="dropdown-menu dropdown-menu-lg-end custom-dropdown fs-8">
                             <li><router-link class="dropdown-item text-white custom-dropdown-item py-2" :to="'/profile'">Profile</router-link></li>
-                            <li><router-link class="dropdown-item text-white custom-dropdown-item py-2" v-if="this.artist" :to="'/musicUploadManagerment'">upload music</router-link></li>
+                            <li><router-link class="dropdown-item text-white custom-dropdown-item py-2" v-if="this.artist" :to="'/musicUploadManagerment'">Upload Music</router-link></li>
                             <li><span class="dropdown-item text-white custom-dropdown-item py-2" v-if="this.artist" @click="reTrackManagerment()">Track Managerment</span></li>
 
                             <li><router-link class="dropdown-item text-white custom-dropdown-item py-2" :to="'/upgradePackage'">Upgrade Package</router-link></li>

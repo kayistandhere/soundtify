@@ -45,9 +45,9 @@
                     <div class="col-6 px-1">
                       <div class="custom-form">
                         <input type="text" name="text" id="email" required class="bg-module-1"
-                          v-model="this.formData.email" />
+                          v-model="this.formData.email" aria-label="Disabled input example" disabled/>
                         <label for="text" class="label-name">
-                          <span class="content-name text-dark"> Email</span>
+                          <!-- <span class="content-name text-dark"> Email</span> -->
                         </label>
                       </div>
                     </div>
@@ -81,24 +81,23 @@
                         <select id="inputState" class="custom-form bg-module-1 border-0 text-white"
                           v-model="this.formData.gender">
                           <option selected>male</option>
-                          <option>male</option>
                           <option>female</option>
-                          <option>male</option>
-                          <option>male</option>
-                          <option>male</option>
                         </select>
                       </div>
                     </div>
                   </div>
                   <div class="row py-1 ">
-                    <div class="col-12 px-1 d-flex">
+                    <div class="col-10 px-1 d-flex">
                       <div class="custom-form">
-                        <input type="password" name="text" id="email" required class="bg-module-1"
-                          v-model="this.formData.password" />
+                        <input type="password" name="text" id="email"  class="bg-module-1"
+                          v-model="this.formData.password" disabled/>
                         <label for="text" class="label-name">
                           <span class="content-name text-dark"> Password </span>
                         </label>
                       </div>
+                    </div>
+                    <div class="col-1">
+                      <router-link class="custom-router-link" :to="'/forgotpassword'">change</router-link>
                     </div>
                   </div>
                   <div class="d-flex justify-content-end">

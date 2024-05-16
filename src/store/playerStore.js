@@ -23,7 +23,7 @@ export const usePlayerStoreStore = defineStore("playerStore", {
       this.isPlaying = true;
       this.currentSong = this.tracks[this.currentTrackIndex];
       this.audio.src = this.currentSong.url + "&token=" +this.currentSong.token;
-      this.audio.load();
+      // this.audio.load();
       this.audio.play();
     },
 

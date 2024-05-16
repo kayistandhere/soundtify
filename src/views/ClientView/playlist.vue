@@ -39,7 +39,7 @@
         </section>
         <!-- Copy Right -->
         <section>
-            <p class="fs-8">1 tháng 1, 2023</p>s
+            <p class="fs-8">1 tháng 1, 2023</p>
             <p class="fs-9"><span class="material-symbols-rounded fs-9 px-2">copyright</span>2013 Avicii Music AB, /
                 PRMD under exclusive license to Universal Music AB</p>
         </section>

@@ -20,7 +20,7 @@
               </div>
               <span class="fs-8 p-0" v-if="!isCheckValidation">{{this.error.name}}</span>
             </div>
-           
+            
             <!-- Sex -->
             <div class="col-4 px-1 py-2">
               <div class="custom-form">
@@ -134,6 +134,8 @@ export default {
         age: 0,
         phone: "",
         password: "",
+        follower : 0 ,
+        following : 0 ,
         comfirmPassWord: "",
       },
       error: {
@@ -152,7 +154,7 @@ export default {
   methods: {
     register() {
       if(true){
-        auth.signUp(this.formData.name, this.formData.email, this.formData.password ,this.formData.gender, this.formData.phone , this.formData.age)
+        auth.signUp(this.formData.name, this.formData.email, this.formData.password ,this.formData.gender, this.formData.phone , this.formData.age , this.formData.follower , this.formData.following )
         .then((res) => {
           const toast = useToast();
             toast.success("register a account successfull", {position: "top-left"})
