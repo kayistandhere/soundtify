@@ -12,11 +12,10 @@
           <h1 class="custom-text-title fw-bolder">
             {{ this.formData.name }}
           </h1>
-          <span class="fs-8">Avicii , Mck and more </span>
           <div class="d-flex align-items-center">
             <span class="fs-8">Soundtify</span><span class="material-symbols-rounded fs-8 p-2">blur_on</span>
-            <span class="fs-8 mx-2">3 Playlist</span>
-            <span class="fs-8"> Folower : 2141</span>
+            <span class="fs-8 me-2"> Folower : {{ this.formData.follower }}</span>
+            <span class="fs-8"> Following : {{ this.formData.following }}</span>
           </div>
         </div>
       </div>
@@ -28,7 +27,7 @@
               <div class="d-flex justify-content-around position-relative">
                 <div class="d-block">
                   <img :src="this.formData.avatar" class="m-2 custom-img-animation" width="220" height="220" id="tb-image" />
-                  <input type="file" id="fileImage" @change="uploadFile" accept="image/*" />
+                  <input type="file" id="fileImageProfile" @change="uploadFile" accept="image/*" />
                 </div>
                 <!-- Form edit your profile -->
                 <div class="m-2">
@@ -175,12 +174,13 @@ export default {
         age: 0,
         gender: "",
         password: "",
+        follower : 0,
+        following : 0,
         avatar: null,
       },
       
       backText: "Back",
       saveText: "Save",
-      file: null,
     };
   },
   created() {
@@ -188,7 +188,9 @@ export default {
   },
   methods: {
     async uploadFile() {
-      const file = document.getElementById("fileImage").files[0];
+      const file = document.getElementById("fileImageProfile").files[0];
+      console.log("test = " , file);
+      if(file == null) return;
       const storageRef = ref(firebase.storage,`User/${firebase.auth.currentUser.uid}/avatar/` + file.name);
       const uploadResource = await uploadSingleFile(storageRef, file);
       const avatar = convertFireStorageUrl(uploadResource);
@@ -202,6 +204,8 @@ export default {
         this.formData.phone = res.phone
         this.formData.age = res.age
         this.formData.gender = res.gender
+        this.formData.follower = res.follower
+        this.formData.following = res.following
         this.formData.avatar = res.avatar ?? defaultAvatar(this.formData.avatar)
 
       }).catch((error)=>{

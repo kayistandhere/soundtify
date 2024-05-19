@@ -81,27 +81,11 @@
                               </div>
                             </div>
                           </div>
-                          <div class="col-md-12">
-                            <div class="border border-dark m-2">
-                              <div class="custom-form">
-                                <input type="file" name="text" id="fileLyric" autocomplete="off" required />
-                                <label for="text" class="label-name">
-                                  <span class="content-name text-dark">
-                                    Lyric
-                                  </span>
-                                </label>
-                              </div>
-                            </div>
-                          </div>
                         </div>
                       </div>
-                      <div class="row">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                          Close
-                        </button>
-                        <button type="submit" class="btn btn-primary">
-                          Update
-                        </button>
+                      <div class="d-flex justify-content-center">
+                        <button-lg-radius data-bs-dismiss="modal" :customContent="cancel"></button-lg-radius>
+                        <button-md-radius type="submit" :customContent="save"></button-md-radius>
                       </div>
                     </form>
                   </div>
@@ -130,22 +114,24 @@
 <script>
 import {
   deleteSong,
-  getAllSong,
-  getSongById,
   updateSong,
-  getArtistById,
   getSongByArtist
 } from "@/firebase/fireStore/fireQuery";
+import buttonLgRadius from "@/components/button/button_lg-radius.vue";
+import buttonMdRadius from '@/components/button/button_md_radius.vue';
 import navbarFist from "@/components/navbar/navbar_fisrt.vue";
 import { ref, uploadBytes } from "firebase/storage";
 import { convertFireStorageUrl } from "@/util/download_url_parse";
 // import { getSongById } from "@/firebase/fireStore/fireQuery";
 import firebase from "@/firebase.js";
 import { getAvatarSong, uploadSingleFile } from "@/firebase/storage/storageQuery";
+
 export default {
   name: "track-managerment",
   components: {
     navbarFist,
+    buttonLgRadius,
+    buttonMdRadius,
   },
   data() {
     return {
@@ -156,6 +142,8 @@ export default {
       perPage: 5,
       currentPage: 1,
       isLoading : true,
+      cancel:"cancel",
+      save : "save"
     };
   },
   created() {
@@ -185,10 +173,15 @@ export default {
         });
     },
     async getDataSong() {
-      const idArtist = this.$route.query.id;
+      try{
+        const idArtist = this.$route.query.id;
       this.isLoading = true;
       this.songData =await getSongByArtist(idArtist);
       this.isLoading = false
+      }catch(error) {
+        console.log("Something error !!" , error);
+      }
+      
     },
     showPopup(song) {
       this.updateSongData = song;

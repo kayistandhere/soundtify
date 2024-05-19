@@ -23,20 +23,21 @@
           
 
           <div class="my-3 d-flex justify-content-center">
-            <div class="custom-form">
-              <input type="text" name="text" id="password" required v-model="formData.password" @blur="Validator"/>
+            <div class="custom-form position-relative">
+              <input :type="inputType" name="text" id="password" required v-model="formData.password" @blur="Validator"/>
               <label for="text" class="label-name">
                 <span class="content-name"> Mật khẩu </span>
               </label>
+              <span class="material-symbols-rounded position-absolute end-0 me-3 mt-3 custom-cursor" v-if="this.changeType" @click="toggle()">visibility</span>
+              <span class="material-symbols-rounded position-absolute end-0 me-3 mt-3 custom-cursor" v-else @click="toggle()">visibility_off</span>
+              
             </div>
           </div>
          
           <span class="fs-8 p-0 " v-if="!isCheckValidation">{{ this.error.password }}</span>
           <div class="px-3 py-2">
-            <!-- <button class="custom_btn_1 py-2" type="submit">
-              Log in
-            </button> -->
-            <btn-Md-Radius :customContent="logintext" ></btn-Md-Radius>
+            
+            <btn-Md-Radius :customContent="logintext" type="submit"></btn-Md-Radius>
           </div>
         </form>
 
@@ -77,14 +78,16 @@ export default {
         email: "",
         password: "",
       },
+      inputType : "password",
+      changeType : true,
       isCheckValidation : true,
       logintext: "Log in",
       loginwidthGoogle: "Login With Google",
       dulieu : null,
     };
   },
-  setup(){
- 
+  created(){
+    
   },
   methods: {
     login() {
@@ -94,6 +97,8 @@ export default {
           this.$router.push({name: "home.view"});
         })
         .catch((error) => {
+          const toast = useToast();
+            toast.success(`Sai email hoặc password` , {position: "top-left"})
           console.log("lỗi", error);
         });
      
@@ -129,7 +134,19 @@ export default {
       }
       return this.isCheckValidation;
     },
+    toggle(){
+        if(this.changeType){
+          this.inputType = "text";
+          this.changeType = false;
+        }else {
+          this.inputType = "password";
+          this.changeType = true;
+        }
+    },
   },
+  computed:{
+    
+  }
 
 };
      

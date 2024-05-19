@@ -90,6 +90,7 @@ import { getSubPlantById, getUserById } from '@/firebase/fireStore/fireQuery';
 import firebase from '@/firebase';
 import { mapState } from 'pinia';
 import { useAuthStoreStore } from '@/store/authStore';
+import { useToast } from 'vue-toastification';
 
 export default {
     components: {
@@ -112,7 +113,8 @@ export default {
     },
     methods: {
         async initPayment() {
-            const subData = this.$route.query.id;
+            try{
+                const subData = this.$route.query.id;
             getSubPlantById(subData).then((res) => {
                 this.subscriptionPlansData = res;
             }).catch((error) => {
@@ -134,6 +136,12 @@ export default {
             });
             payElement.mount('#payment-container');
             this.stripeLoaded = true;
+            }catch(error) {
+                const toast = useToast();
+                toast.error(`Please Try Again : ${error}`);
+                this.$router.push({path : '/upgradePackage'});
+            }0
+            
         },
         async pay() {
             const data = await this.stripe.confirmPayment({

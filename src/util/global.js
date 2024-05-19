@@ -5,6 +5,9 @@ export const defaultAvatar = (value) => {
       value ??
       "https://firebasestorage.googleapis.com/v0/b/datn-578a6.appspot.com/o/DefaultAvatar%2FSonTung.jpg?alt=media&token=693157dc-641d-4fd2-9702-44d67f573dbe");
 };
+export const defaultAvatar1 = () => {
+   return "https://firebasestorage.googleapis.com/v0/b/datn-578a6.appspot.com/o/DefaultAvatar%2FSonTung.jpg?alt=media&token=693157dc-641d-4fd2-9702-44d67f573dbe";
+};
 export const following = async (typeClient, id) => {
    try {
       console.log(`${typeClient} and follow ${id}`);
@@ -27,7 +30,6 @@ export const unfollow = async (typeClient, follow) => {
       return true;
    }
 };
-
 export const totalListenCount = async (idClient) => {
    try {
       var listenCount = httpsCallable(firebase.firebaseFunction, "onPlaySongWithId");
@@ -36,4 +38,5 @@ export const totalListenCount = async (idClient) => {
    } catch (error) {
       console.log("unfollow error", error);
    }
-}
+};
+

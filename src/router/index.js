@@ -18,6 +18,7 @@ import artistAllbums from '@/views/ClientView/artist-allbums.vue'
 import paymentResult from '@/views/ClientView/payment-result.vue'
 import playList from '@/views/ClientView/playlist.vue'
 import profileSocial from '@/views/ClientView/profile-social.vue'
+import deeplinks from '@/views/ClientView/deeplinks.vue'
 const routes = [
   {
     path: '/',
@@ -65,7 +66,15 @@ const routes = [
   },
   {
     path: '/deeplinks/action/',
-    name: 'resetPassword.view',
+    name: 'deeplinks.view',
+    component: deeplinks,
+    meta :{
+      ignoreAuth: true
+    }
+  },
+  {
+    path: '/resetPassword',
+    name: 'resetPassword',
     component: resetPassword,
     meta :{
       ignoreAuth: true
@@ -121,6 +130,7 @@ const routes = [
     name: 'profileSocial',
     component: profileSocial
   },
+  
 ]
 
 const router = createRouter({

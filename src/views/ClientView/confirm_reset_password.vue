@@ -32,7 +32,7 @@
             </div>
             <div class="px-3 py-2 col-8 d-flex justify-content-between">
               <router-link :to="'/'"><btn-lg-radius :customContent="backText"></btn-lg-radius></router-link>
-              <btn-md-radius :customContent="forgotText"></btn-md-radius>
+              <button-md-radius :customContent="forgotText"></button-md-radius>
             </div>
             
             <div class="border-top border-secondary col-9 my-5 "></div>
@@ -48,6 +48,7 @@ import buttonLgRadius from "@/components/button/button_lg-radius.vue";
 import buttonMdRadius from "@/components/button/button_md_radius.vue";
 import { verifyPasswordResetCode, confirmPasswordReset } from "firebase/auth";
 import { useToast } from "vue-toastification";
+import auth from '@/service/auth/auth.js'
 import firebase from '@/firebase.js'
 export default {
     components:{
@@ -56,11 +57,11 @@ export default {
     },
     data(){
         return {
-            mode: {},
-            oobCode: {},
+
             newPassword : "",
             passwordConfirm: "",
-            backText : "Confirm Password"
+            backText : "Confirm Password",
+            forgotText : "forgotText"
         }
         
     },
@@ -69,17 +70,18 @@ export default {
     },
     methods: {
         getLink(){
-            this.mode =  this.$route.query.mode;
-            this.oobCode = this.$route.query.oobCode;
+            
         },
-        resetConfirmPassword(){
-            confirmPasswordReset(firebase.auth ,this.oobCode , this.newPassword ).then((res) =>{
-              const toast = useToast();
-              toast.success("Reset Password Successfull");
-            }).catch(() =>{
-              const toast = useToast();
-              toast.success("Reset Password False");
-            })
+        async resetConfirmPassword(){
+          try{
+            await auth.resetPassword(this.$route.query.oobCode , this.newPassword)
+            this.$router.push({path : "/"});
+          }catch(error){
+            const toast = useToast();
+            console.log(error);
+            toast.error(error);
+          }
+          
         }
     }
 }

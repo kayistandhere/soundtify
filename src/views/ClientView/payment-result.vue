@@ -23,6 +23,7 @@ export default {
     },
     data(){
         return {
+            // result : this.route.query.resutl
             back : "back"
         }
     }

@@ -1,6 +1,6 @@
 <template>
     <div class="d-flex justify-content-start">
-        <div class="card custom-bg-card m-2 custom-cursor" style="width: 12rem;" :key="artist.id" v-for="artist in limitData" 
+        <div class="card custom-bg-card m-2 custom-cursor" style="width: 20rem;" :key="artist.id" v-for="artist in limitData" 
     @click="redirectArtistDetail(artist.id)">
       <img :src="artist.thumbnail" class="custom-img-thumbnail p-2" alt="...">
       <div class="p-2">

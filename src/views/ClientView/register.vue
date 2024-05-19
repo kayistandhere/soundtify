@@ -73,10 +73,13 @@
             <!-- Password -->
             <div class="col-6 px-1 py-2">
               <div class="custom-form">
-                <input type="password" name="text" autocomplete="off" required v-model="formData.password" @blur="Validator" />
+                <input :type="inputType" name="text" autocomplete="off" required v-model="formData.password" @blur="Validator" />
                 <label for="text" class="label-name">
                   <span class="content-name"> Password </span>
                 </label>
+                <span class="material-symbols-rounded position-absolute end-0 me-3 mt-3 custom-cursor" v-if="this.changeType" @click="toggle()">visibility</span>
+              <span class="material-symbols-rounded position-absolute end-0 me-3 mt-3 custom-cursor" v-else @click="toggle()">visibility_off</span>
+             
               </div>
               <span class="fs-8 p-0" v-if="!isCheckValidation">{{this.error.password}}</span>
             </div>
@@ -84,12 +87,15 @@
             <!-- Comfirm Password -->
             <div class="col-6 px-1 py-2">
               <div class="custom-form">
-                <input type="password" name="text" autocomplete="off" required v-model="formData.comfirmPassWord"
+                <input :type="inputType" name="text" autocomplete="off" required v-model="formData.comfirmPassWord"
                   @blur="Validator" />
                   
                 <label for="text" class="label-name">
                   <span class="content-name"> Comfirm password </span>
                 </label>
+                <span class="material-symbols-rounded position-absolute end-0 me-3 mt-3 custom-cursor" v-if="this.changeType" @click="toggle()">visibility</span>
+              <span class="material-symbols-rounded position-absolute end-0 me-3 mt-3 custom-cursor" v-else @click="toggle()">visibility_off</span>
+             
               </div>
               <span class="fs-8 p-0" v-if="!isCheckValidation">{{this.error.comfirmPassWord}}</span>
             </div>
@@ -147,6 +153,8 @@ export default {
         password: "",
         comfirmPassWord: "",
       },
+      inputType : "password",
+      changeType : true,
       isCheckValidation: true,
       signUpText: "Sign up",
     };
@@ -169,14 +177,6 @@ export default {
       
     },
     Validator() {
-      switch (key) {
-        case value:
-          
-          break;
-      
-        default:
-          break;
-      }
       if (regex.isRequired(this.formData.name)) {
         this.error.name = "Please enter this field";
         this.isCheckValidation = false;
@@ -239,6 +239,15 @@ export default {
         this.error.comfirmPassWord = "";
       }
       return this.isCheckValidation;
+    },
+    toggle(){
+        if(this.changeType){
+          this.inputType = "text";
+          this.changeType = false;
+        }else {
+          this.inputType = "password";
+          this.changeType = true;
+        }
     },
   },
 };

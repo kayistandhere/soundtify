@@ -44,7 +44,7 @@ export default {
         async limitedDataSong(){
             if(this.arraySong != null){
                 this.isLoading = true;  
-                this.dataSong = await getSongsWithArray(this.arraySong);
+                this.dataSong = (await getSongsWithArray(this.arraySong));
             }else {
                 this.isLoading =true ;
                 this.dataSong = await getAllSong();

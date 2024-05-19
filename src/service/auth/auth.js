@@ -11,15 +11,14 @@ import {
   signOut,
   createUserWithEmailAndPassword,
   browserLocalPersistence,
-  updateProfile
+  updateProfile,
+  confirmPasswordReset
   // updateEmail,
 } from "firebase/auth";
 
 const signIn = (email, password) => {
     return setPersistence(firebaseAuth.auth,browserLocalPersistence ).then(() => {
         return signInWithEmailAndPassword(firebaseAuth.auth, email, password);
-    }).catch((error) =>{
-      console.log(error);
     })
 };
 const signUp = async (name, email, password , gender , phone , age , follower , following) => {
@@ -52,11 +51,14 @@ const sendEmail = (email) => {
 const logout = () => {
   return signOut(firebaseAuth.auth);
 };
-
+const resetPassword = (oobCode , newPassword) =>{
+  return confirmPasswordReset(firebaseAuth.auth , oobCode , newPassword);
+}
 export default {
   signUp, 
   signIn,
   signWithGoogle,
   sendEmail,
   logout,
+  resetPassword,
 };

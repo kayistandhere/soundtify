@@ -67,7 +67,7 @@ import { getArtistByUser } from '@/firebase/fireStore/fireQuery.js';
 import auth from '../../service/auth/auth.js'
 import modalBasic from '../modal/modal-basic.vue';
 import { useAuthStoreStore } from '@/store/authStore.js';
-import { defaultAvatar } from '@/util/global.js';
+import { defaultAvatar1 } from '@/util/global.js';
 import { mapActions , mapState , mapWritableState } from 'pinia';
 import { useToast } from "vue-toastification";
 import firebase from '@/firebase.js';
@@ -108,7 +108,7 @@ export default {
        return this.user?.subscription != null
     },
     avatarUser(){
-        return this.user?.avatar
+        return this.user?.avatar ?? defaultAvatar1();
     },
     
     },
