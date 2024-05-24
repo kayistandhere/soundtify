@@ -18,6 +18,16 @@ export default {
                 case "resetPassword":
                     this.$router.push({path : "/resetPassword" , query : query})
                     break;
+                    case "openSong":
+
+                    const id =  {
+                        'id' : this.$route.query.songId
+                    }          
+                    this.$router.push({path : "/songDetail" , query : id})
+                    break;
+                    case "openProfile":
+                    this.$router.push({path : "/profile" , query : query})
+                    break;
             }
         }
     }

@@ -125,6 +125,7 @@ import { convertFireStorageUrl } from "@/util/download_url_parse";
 // import { getSongById } from "@/firebase/fireStore/fireQuery";
 import firebase from "@/firebase.js";
 import { getAvatarSong, uploadSingleFile } from "@/firebase/storage/storageQuery";
+import { useToast } from "vue-toastification";
 
 export default {
   name: "track-managerment",
@@ -163,20 +164,23 @@ export default {
       })
     },
     deleteSongEvent(id) {
+      const toast = useToast();
+         
       deleteSong(id)
-        .then((res) => {
-          console.log("delete song successfull !", res);
+        .then(() => {
+          const toast = useToast();
+          toast.success("delete successfull");
           this.getDataSong();
         })
         .catch((error) => {
-          console.log("delete track something false", error);
+          toast.error("Some thing error ", error)
         });
     },
     async getDataSong() {
       try{
         const idArtist = this.$route.query.id;
       this.isLoading = true;
-      this.songData =await getSongByArtist(idArtist);
+      this.songData = await getSongByArtist(idArtist);
       this.isLoading = false
       }catch(error) {
         console.log("Something error !!" , error);

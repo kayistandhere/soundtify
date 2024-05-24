@@ -56,7 +56,7 @@
     </div>
   </div>
 </template>
-<script >
+<script>
 import btnMdRadius from '../../components/button/button_md_radius.vue'
 import btnLogoRadius from '../../components/button/button_logo_radius.vue'
 import regex from '../../util/regex.js'
