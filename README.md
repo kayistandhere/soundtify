@@ -3,6 +3,8 @@
 ## Project setup
 ```
 npm install
+npm i @vue/cli 
+npm run serve 
 ```
 
 ### Compiles and hot-reloads for development
