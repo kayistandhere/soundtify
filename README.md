@@ -22,5 +22,10 @@ npm run build
 npm run lint
 ```
 
+
+### Query database
+~/src/firebase/firestore/queryfire.js
+```
+
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
