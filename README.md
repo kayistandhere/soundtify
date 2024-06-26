@@ -29,3 +29,10 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+### Create a applicaltion
+install nodejs
+npm i -g @vue/cli 
+vue create project
+npm remove @vue/cli-plugin-eslint
+vue add router
